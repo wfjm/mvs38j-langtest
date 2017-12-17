@@ -1,0 +1,39 @@
+//** /*  master for ASM jobs (Assembler compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    128K                job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${SYSUT1SPA} (1700,(600,100))    SYSUT1   SPACE
+//** /*    ${SYSUT2SPA} (1700,(300,50))     SYSUT2/3 SPACE
+//** /*    ${SYSGOSPA}  (80,(2000,500))     SYSGO    SPACE
+//** /*    ${PARMC}     'NODECK,LOAD'       compile step PARM
+//** /*    ${PARML}     'MAP,LIST,LET,NCAL' linker  step PARM
+//** /*    ${PARMG}     ''                  go      step PARM
+//** /*    ${DMPLIM}    '2000'              go      step SYSUDUMP limit
+//** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-128K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC ASMFCLG,
+//      MAC1='SYS2.MACLIB',
+//      PARM.ASM=${PARMC:-'NODECK,LOAD'},
+//      PARM.LKED=${PARML:-'MAP,LIST,LET,NCAL'},
+//      PARM.GO=${PARMG:-''}
+//ASM.SYSUT1 DD DSN=&&SYSUT1,UNIT=SYSDA,SPACE=${SYSUT1SPA:-(1700,(600,100))}
+//ASM.SYSUT2 DD DSN=&&SYSUT2,UNIT=SYSDA,SPACE=${SYSUT2SPA:-(1700,(300,50))}
+//ASM.SYSUT3 DD DSN=&&SYSUT3,UNIT=SYSDA,SPACE=${SYSUT2SPA:-(1700,(300,50))}
+//ASM.SYSGO  DD DSN=&&OBJSET,UNIT=SYSDA,SPACE=${SYSGOSPA:-(80,(2000,500))}
+//ASM.SYSIN  DD *
+//** ##include ${DDSRC}
+/*
+//GO.SYSUDUMP DD SYSOUT=*,OUTLIM=${DMPLIM:-2000}
+//GO.SYSPRINT DD SYSOUT=*,OUTLIM=${OUTLIM:-5000}
+//GO.SYSIN DD *
+//** ##include ${DDDAT}
+/*
+//

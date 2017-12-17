@@ -1,0 +1,160 @@
+#!/usr/bin/perl -w
+# $Id: perf_asm_sum 970 2017-12-16 22:19:05Z mueller $
+#
+# Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+#
+# This program is free software; you may redistribute and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3, or at your option any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for complete details.
+#
+#  Revision History:
+# Date         Rev Version  Comment
+# 2017-12-02   967   1.0.1  fix 'overwrite' message
+# 2017-11-18   963   1.0    Initial version
+# 2017-11-16   962   0.1    First draft
+#
+
+use 5.14.0;                                 # require Perl 5.14 or higher
+use strict;                                 # require strict checking
+use Getopt::Long;
+
+my %opts = ();
+my %tag2txt;
+my %tag2val;
+my %fnum2fnam;
+my $nfile = 0;
+
+GetOptions(\%opts, "help", "nrr", "nrx", "min", "w50", "rel")
+  or die "bad options";
+
+
+# handle help
+if (defined $opts{'help'}) { do_help();  exit 0; }
+
+#
+# handle input files
+#
+
+foreach my $fname (@ARGV) {
+  $nfile += 1;
+  my $fnum = sprintf "%02d",$nfile;
+  $fnum2fnam{$fnum} = $fname;
+  do_file($fnum, $fname);
+}
+
+my @fnums = sort keys %fnum2fnam;
+
+do_show();
+
+exit 0;
+
+#
+# -- do_help: print help text ------------------------------------------------
+#
+
+sub do_help {
+  print "usage: perf_asm_sum [OPTIONS] [FILE]...\n";
+  print "  -nrr     use n-rr (T100 normalized)\n";
+  print "  -nrx     use n-rx (T102 normalized)\n";
+  print "  -min     use min  (minimal time)\n";
+  print "  -w50     use w50  (50% distribution width)\n";
+  print "  -rel     show relative speed for each tag\n";
+  print "  -help    help text\n";
+  return;
+}
+
+#
+# -- do_file: handle input file ----------------------------------------------
+#
+
+sub do_file {
+  my ($fnum,$fname) = @_;
+  open IFILE,"<$fname" or die "failed to open $fname";
+
+  while (<IFILE>) {
+    if (m/^(T\d\d\d)\s+(.*?)\s+:\s+(\d+)
+          \s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)%
+          \s+([0-9.]+)\s+([0-9.]+)\s*$/x) {
+      my $tag = $1;
+      my $txt = $2;
+      my $nt  = $3;
+      my $min = $4;
+      my $max = $5;
+      my $tpi = $6;
+      my $w50 = $7;
+      my $nrr = $8;
+      my $nrx = $9;
+      ##printf "%s %-22s : %8.2f\n",$tag,$txt,$tpi;
+      my $val = $tpi;
+      $val = $nrr if $opts{'nrr'};
+      $val = $nrx if $opts{'nrx'};
+      $val = $min if $opts{'min'};
+      $val = $w50 if $opts{'w50'};
+      #
+      if (exists $tag2txt{$tag} && $tag2txt{$tag} ne $txt) {
+        printf STDERR "perf_asm_sum-W file '%s' overwrites text for tag '%s'\n",
+          $fnum, $tag;
+        printf STDERR "  old: %s\n", $tag2txt{$tag};
+        printf STDERR "  new: %s\n", $txt;
+      }
+      $tag2txt{$tag} = $txt;
+      $tag2val{$tag}{$fnum} = $val;
+    }
+  }
+
+  close IFILE;
+  return;
+}
+
+#
+# -- do_show: show analysis---------------------------------------------------
+#
+
+sub do_show {
+  printf "File summary:\n";
+  foreach my $fnum (@fnums) {
+    printf "  file%s: %s\n", $fnum, $fnum2fnam{$fnum};
+  }
+  printf "\n";
+
+  my $vnam = 'tpi';
+  $vnam = 'nrr' if $opts{'nrr'};
+  $vnam = 'nrx' if $opts{'nrx'};
+  $vnam = 'min' if $opts{'min'};
+  $vnam = 'w50' if $opts{'w50'};
+  printf "Tag   Comment                :";
+  foreach my $fnum (@fnums) {
+    printf "   %s%s%s", ($opts{'rel'}?'r-':'  '),$vnam,$fnum;
+  }
+  printf "\n";
+
+  foreach my $tag (sort keys %tag2txt) {
+    printf "%s  %-22s :", $tag,$tag2txt{$tag};
+    my @vals;
+    foreach my $fnum (@fnums) {
+      push @vals, $tag2val{$tag}{$fnum};
+    }
+    my $vmin = 1.;
+    if ($opts{'rel'}) {
+      $vmin = 1.e20;
+      foreach my $val (@vals) {
+        $vmin = $val if defined $val && $val < $vmin;
+      }
+    }
+    foreach my $val (@vals) {
+      if (defined $val) {
+        printf " %9.2f", $val/$vmin;
+      } else {
+        printf "         -";
+      }
+    }
+    print "\n";
+  }
+  return;
+}
+

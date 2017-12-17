@@ -1,0 +1,4 @@
+//** ##define  JOB    HEWO#ASM
+//** ##define  DDSRC  ../codes/hewo_asm.asm
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_asm_clg.JESI

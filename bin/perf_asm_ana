@@ -1,0 +1,280 @@
+#!/usr/bin/perl -w
+# $Id: perf_asm_ana 970 2017-12-16 22:19:05Z mueller $
+#
+# Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+#
+# This program is free software; you may redistribute and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3, or at your option any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for complete details.
+#
+#  Revision History:
+# Date         Rev Version  Comment
+# 2017-12-16   970   1.1.1  add sprt() for sliding precision in output
+# 2017-12-10   969   1.1    adopt to new file format; add loop timing correction
+# 2017-11-16   962   1.0    Initial version
+# 2017-10-15   956   0.1    First draft
+#
+
+use 5.14.0;                                 # require Perl 5.14 or higher
+use strict;                                 # require strict checking
+use Getopt::Long;
+
+my %opts = ();
+my %tags;
+
+GetOptions(\%opts, "help", "ltpi", "ldf", "lrun", "ttim", "nolcor", "d1")
+  or die "bad options";
+
+my $dolcor = not exists $opts{nolcor};
+
+# handle help
+if (defined $opts{'help'}) { do_help();  exit 0; }
+
+#
+# handle input files
+#
+
+print "file name ----------------------------".
+      "  GMUL  i-count  -- total time --   MIPS\n" if $opts{'lrun'};
+
+foreach my $fname (@ARGV) {
+  do_file($fname);
+}
+
+print "\n" if $opts{'lrun'};
+
+do_anal();
+do_show();
+
+exit 0;
+
+#
+# -- do_help: print help text ------------------------------------------------
+#
+
+sub do_help {
+  print "usage: perf_asm_ana [OPTIONS] [FILE]...\n";
+  print "  -ltpi    list per run tpi values\n";
+  print "  -ldf     list tpi distribution function\n";
+  print "  -lrun    list file/run statistics\n";
+  print "  -ttim    use test time field (instead of instruction time)\n";
+  print "  -nolcor  no loop (bctr/bct) timing corrction\n";
+  print "  -d1      reduce time field precision (for slow systems)\n";
+  print "  -help    help text\n";
+  return;
+}
+
+#
+# -- do_file: handle input file ----------------------------------------------
+#
+
+sub do_file {
+  my ($fname) = @_;
+  open IFILE,"<$fname" or die "failed to open $fname";
+
+  my $resok = 0;
+  my $gmul  = 0;
+  my $gtim  = 0;
+  my $gcnt  = 0;
+  while (<IFILE>) {
+    s{\f}{}g;                               # drop ^L
+    $gmul  = $1 if m/^PERF002I run with GMUL=\s*(\d+)/;
+    if (m/^PERF003I start with tests/) {
+      $resok = 1;
+      $gtim  = 0.;
+      $gcnt  = 0;
+    }
+    next unless $resok;
+
+    if (m/^(T\d\d\d)\s+(.*?)\s+:\s+(\d+\.\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+:
+          \s+(\d+\.\d+)\s*$/x) {
+      my $tag   = $1;
+      my $txt   = $2;
+      my $tim   = $3;
+      my $lrcnt = $4;
+      my $igcnt = $5;
+      my $ltype = $6;
+      my $tpi   = $7;
+      ##printf "%s %-28s %6.2f %8d %6.4f\n",
+      ##       $tag,$txt,$tim,$lrcnt,$igcnt,$ltype,$tpi;
+      if (not exists $tags{$tag}) {
+        $tags{$tag}{txt} = $txt;
+      } else {
+        if ($tags{$tag}->{txt} ne $txt) {
+          $tags{$tag}{txt} = $txt;
+          print "perf_asm_ana-W tag text for $tag redefined\n";
+        }
+      }
+      my $lcnt = 1. * $gmul * $lrcnt * $igcnt;
+      $tpi = 1.e6 * $tim / $lcnt if ($opts{ttim});
+      $gcnt += $lcnt;
+      $gtim += $lcnt * $tpi * 1.e-6;
+      push @{$tags{$tag}->{tpival}},(1000.*$tpi);
+      $tags{$tag}{lrcnt} = $lrcnt;
+      $tags{$tag}{igcnt} = $igcnt;
+      $tags{$tag}{ltype} = $ltype;
+    }
+
+    if (m/^PERF004I done with tests/) {
+      $resok = 0;
+      if ($opts{'lrun'}) {
+        my $gtim_min = int ($gtim/60.);
+        my $gtim_sec = $gtim - 60.*$gtim_min;
+        my $mips = ($gtim>0) ? 1.e-6*$gcnt/$gtim : 0.;
+        printf "%-38s %5d %8.2e  %6.2fs %2dm%05.2f %6.1f\n",
+          substr($fname,-38),$gmul,$gcnt,$gtim,$gtim_min,$gtim_sec,$mips;
+      }
+    }
+  }
+
+  close IFILE;
+  return;
+}
+
+#
+# -- do_anal: do analysis ----------------------------------------------------
+#
+
+sub do_anal {
+  foreach my $tag (sort keys %tags) {
+    my @tpisort = sort { $a <=> $b } @{$tags{$tag}->{tpival}};
+    ## printf "%s : %s\n",$tag,join(",", @tpisort);
+    my $tpicnt = scalar(@tpisort);
+    my $tpimin = $tpisort[0];
+    my $tpimax = $tpisort[-1];
+    my $df25 = df_lookup(\@tpisort, 0.25);
+    my $df50 = df_lookup(\@tpisort, 0.50);
+    my $df75 = df_lookup(\@tpisort, 0.75);
+    $tags{$tag}->{tpicnt} = $tpicnt;
+    $tags{$tag}->{tpimin} = $tpimin;
+    $tags{$tag}->{tpimax} = $tpimax;
+    $tags{$tag}->{tpimed} = $df50;
+    $tags{$tag}->{tpiw50} = $df75-$df25;
+    $tags{$tag}->{tpicor} = $df50;
+  }
+
+  return unless $dolcor;
+
+  unless (exists $tags{T311} && exists $tags{T312}) {
+    printf STDERR "perf_asm_ana-E: T311 or T312 not found\n";
+    return;
+  }
+  my @lcor = (0.,0.,0.);
+  $lcor[1] = $tags{T311}->{tpimed};
+  $lcor[2] = $tags{T312}->{tpimed};
+  foreach my $tag (sort keys %tags) {
+    my $tpimed = $tags{$tag}->{tpimed};
+    my $ltype  = $tags{$tag}->{ltype};
+    if ($ltype >= 0 && $ltype <= 2) {
+      $tags{$tag}->{tpicor} = $tpimed - $lcor[$ltype] / $tags{$tag}->{igcnt};
+    }
+  }
+  return;
+}
+
+#
+# -- df_lookup: lookup df ----------------------------------------------------
+#
+sub df_lookup {
+  my ($df,$frac) = @_;
+  my $nval = scalar(@{$df});
+  return 0.        if $nval == 0;
+  return $df->[0]  if $nval == 1;
+  my $imax = $nval - 1;
+  my $rind = $frac * $imax;
+  my $ind  = int $rind;
+  return $df->[$ind] if $ind == $imax;
+  my $find = $rind - $ind;
+  return (1.-$find)*$df->[$ind] + $find*$df->[$ind+1];
+}
+
+#
+# -- do_show: show analysis---------------------------------------------------
+#
+
+sub do_show {
+  unless (exists $tags{T100} && exists $tags{T102}) {
+    printf STDERR "perf_asm_ana-E: T100 or T102 not found\n";
+    return;
+  }
+  my $norrr = $tags{T100}->{tpicor};
+  my $norrx = $tags{T102}->{tpicor};
+
+  my $vname = $dolcor ? "cor" : "med";
+  printf "Tag   Comment                ".
+         ": nt     min     max      %s   w50%%    n-rr   n-rx\n", $vname;
+
+  my $fmt1 = '%7.1f';
+  my $fmt2 = '%8.2f';
+  if ($opts{d1}) {
+    $fmt1 = '%7.0f';
+    $fmt2 = '%8.1f';
+  }
+
+  foreach my $tag (sort keys %tags) {
+
+    printf "%s  %-22s :%3d %s %s %s %5.1f%% %s %s\n",
+      $tag,$tags{$tag}->{txt},
+      $tags{$tag}->{tpicnt},
+      sprt($tags{$tag}->{tpimin},$fmt1),
+      sprt($tags{$tag}->{tpimax},$fmt1),
+      sprt($tags{$tag}->{tpicor},$fmt2),
+      100.*$tags{$tag}->{tpiw50}/$tags{$tag}->{tpimed},
+      sprt($tags{$tag}->{tpicor}/$norrr,'%7.2f'),
+      sprt($tags{$tag}->{tpicor}/$norrx,'%6.2f');
+
+    if ($opts{'ltpi'}) {
+      my $ival = 0;
+      my $nval = scalar(@{$tags{$tag}->{tpival}});
+      foreach my $val (@{$tags{$tag}->{tpival}}) {
+        print '  tpi:' if $ival%5 == 0;
+        printf "  %8.3f",$val;
+        $ival += 1;
+        print "\n" if $ival%5 == 0;
+      }
+      print "\n" unless $ival%5 == 0;
+    }
+    if ($opts{'ldf'}) {
+      my @tpisort = sort { $a <=> $b } @{$tags{$tag}->{tpival}};
+      my $ival = 0;
+      my $nval = scalar(@tpisort);
+      foreach my $val (@tpisort) {
+        print '   df:' if $ival%5 == 0;
+        printf "  %8.3f",$val;
+        $ival += 1;
+        print "\n" if $ival%5 == 0;
+      }
+      print "\n" unless $ival%5 == 0;
+
+      printf "  0.25: %8.3f\n", df_lookup(\@tpisort, 0.25);
+      printf "  0.50: %8.3f\n", df_lookup(\@tpisort, 0.50);
+      printf "  0.75: %8.3f\n", df_lookup(\@tpisort, 0.75);
+    }
+  }
+  return;
+}
+
+#
+# -- sprt: sprintf with sliding precision ------------------------------------
+#
+
+sub sprt {
+  my ($val,$fmt) = @_;
+  my ($ndig,$prec) = ($fmt =~ m/^.*(\d+)\.(\d+)f$/);
+  ## print "+++1 '$fmt': $ndig, $prec\n";
+  my $str   = sprintf $fmt,$val;
+  my $ntrim = length($str) - $ndig;
+  if ($ntrim > 0) {
+    if ($ntrim <= $prec+1) {
+      $str = substr $str,0,$ndig;
+    } else {
+      $str = substr $str,0,length($str)-($prec+1);
+    }
+  }
+  return $str;
+}

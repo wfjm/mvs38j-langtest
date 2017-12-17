@@ -1,0 +1,24 @@
+//** /*  master for GCCCLG jobs (GCCMVS compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    8192K               job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARMC}     '-O3'               compile step PARM
+//** /*    ${PARML}     'MAP,LIST'          linker  step PARM
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-8192K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC GCCCLG,COPTS=${PARMC:-'-O3'},
+//      PARM.LKED=${PARML:-'MAP,LIST'}
+//COMP.SYSIN DD DATA,DLM='/@'
+//** ##include ${DDSRC}
+/@
+//GO.SYSIN DD *
+//** ##include ${DDDAT}
+/*
+//

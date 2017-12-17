@@ -1,0 +1,28 @@
+//** /*  master for PL1LFCLG jobs (PLI-F compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    256K                job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARMC}     'LOAD,NODECK,OPT=2' compile step PARM
+//** /*    ${PARML}     'MAP,LIST'          linker  step PARM
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-256K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC PL1LFCLG,
+//      PARM.PL1L=${PARMC:-'LOAD,NODECK,OPT=2'},
+//      PARM.LKED=${PARML:-'MAP,LIST'}
+//PL1L.SYSLIN DD UNIT=SYSDA
+//PL1L.SYSIN DD *
+//** ##include ${DDSRC}
+/*
+//LKED.SYSLIB DD DSN=SYS1.PL1LIB,DISP=SHR
+//GO.STEPLIB DD DSN=SYS1.PL1LIB,DISP=SHR
+//GO.SYSIN DD *
+//** ##include ${DDDAT}
+/*
+//

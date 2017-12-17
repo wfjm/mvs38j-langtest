@@ -1,0 +1,23 @@
+//** /*  master for WATFIV jobs (FORTRAN one-step compile-execute)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    256K                job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARMC}     CHECK               compile step PARM (for $JOB)
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-256K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG  EXEC WATFIV
+//SYSIN DD *
+$JOB           ${JOB},T=${TIME:-(1,0)},${PARMC:-CHECK}
+//** ##include ${DDSRC}
+$ENTRY
+//** ##include ${DDDAT}
+$STOP
+/*
+//

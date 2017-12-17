@@ -1,0 +1,4 @@
+//** ##define  JOB    HEWO#COB
+//** ##define  DDSRC  ../codes/hewo_cob.cob
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_cob_clg.JESI

@@ -1,0 +1,5 @@
+//** ##define  JOB    SOEQ#JCC
+//** ##define  REGION 7000K
+//** ##define  DDSRC  ../codes/soeq_cc.c
+//** ##define  DDDAT  ../codes/soeq_cher.dat
+//** ##include ../jcl/job_jcc_clg.JESI

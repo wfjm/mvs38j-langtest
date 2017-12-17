@@ -1,0 +1,339 @@
+#!/usr/bin/perl -w
+# $Id: hercjis 965 2017-11-19 21:36:33Z mueller $
+#
+# Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+#
+# This program is free software; you may redistribute and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3, or at your option any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for complete details.
+#
+#  Revision History:
+# Date         Rev Version  Comment
+# 2017-11-19   965   1.2    add -M option, generate dependency info
+# 2017-11-11   960   1.1    use map to HERCJIS_* env vars; add ##rinclude
+# 2017-09-01   945   1.0    Initial version
+# 2017-07-30   932   0.1    First draft
+#
+
+use 5.14.0;                                 # require Perl 5.14 or higher
+use strict;                                 # require strict checking
+use FileHandle;
+use Socket;
+use IO::Socket::UNIX;
+use IO::Socket::INET;
+
+my %optdsc = ('-h' => 0,
+              '-f' => 0,
+              '-o' => 1,
+              '-a' => 1,
+              '-w' => 1,
+              '-v' => 0,
+              '-M' => 0);
+my %opt;
+
+my $defoport = '3505';
+my %defs;
+
+# setup signal handlers
+sub catch_pipe;
+$SIG{PIPE} = \&catch_pipe;
+
+# handle options (and set defaults)
+$opt{'-a'}  = "localhost:$defoport";
+getopts();
+
+# handle help
+if (defined $opt{'-h'}) { do_help();  exit 0; }
+
+# check that -f has no filenames and no -o option
+if (defined $opt{'-f'} && scalar @ARGV > 0) {
+  printf STDERR "hercjis-E no filenames allowed for -f, abort\n";
+  exit 1;
+}
+if (defined $opt{'-f'} && defined $opt{'-o'}) {
+  printf STDERR "hercjis-E option -o not compatible with -f, abort\n";
+  exit 1;
+}
+if (defined $opt{'-M'} && not defined $opt{'-o'}) {
+  printf STDERR "hercjis-E option -M requires that -o defined too, abort\n";
+  exit 1;
+}
+
+# setup '-' indicating stdin in case no files given
+push @ARGV,'-' unless scalar @ARGV > 0;
+
+# open connection to sockdev reader or file
+my $fh_out = open_out();
+
+#
+# now handle input files
+#
+
+foreach my $fname (@ARGV) {
+  # reset define hash
+  %defs = ();
+
+  # handle input file
+  my $irc = do_file($fname);
+  printf STDERR "hercjis-E: file '$fname' aborted\n" if $irc;
+}
+
+close_out();
+exit 0;
+
+#
+# -- catch_pipe: catcher for PIPE signal -------------------------------------
+#
+
+sub catch_pipe {
+  printf STDERR "hercjis-F write output socket failed, aborted\n";
+  exit 1;
+}
+
+#
+# -- getopts: handle options -------------------------------------------------
+#
+
+sub getopts {
+  while (scalar @ARGV) {
+    last unless ($ARGV[0] =~ m/^-/);
+    my $arg = shift @ARGV;
+    last if $arg eq '--';
+    my $dsc = $optdsc{$arg};
+    if (defined $dsc) {
+      if ($dsc > 0) {
+        if (scalar @ARGV == 0) {
+          printf STDERR "hercjis-E missing argument after '$arg', abort\n";
+          exit 1;
+        }
+        $opt{$arg} = shift @ARGV;
+      } else {
+        $opt{$arg} = 1;
+      }
+    } else {
+      printf STDERR "hercjis-E invalid option '$arg', abort\n";
+      exit 1;
+    }
+  }
+  return;
+}
+
+#
+# -- do_help: print help text ------------------------------------------------
+#
+
+sub do_help {
+  print "usage: hercjis [OPTIONS]... [FILE]...\n";
+  print "  -a [nam:]port  sockdev address, default localhost:$defoport\n";
+  print "  -o file        convert one deck, write to 'file'\n";
+  print "  -f             run as filter (read stdin, write stdout)\n";
+  print "  -v             verbose, print statistics\n";
+  print "  -M             output Makefile dependencies to STDOUT\n";
+  print "  -h             help text\n";
+  print "directives:\n";
+  print "  //** ##include  filename\n";
+  print "  //** ##rinclude filename\n";
+  print "  //** ##define   name value\n";
+  print "substitutions (shell style):\n";
+  print '  ${name}        fails if name not defined'."\n";
+  print '  ${name:=def}   if name undefined, use val, define name'."\n";
+  print '  ${name:-def}   if name undefined, use val, name stays undefined'."\n";
+  return;
+}
+
+#
+# -- open_out: open connection to sockdev reader or output -------------------
+#
+
+sub open_out {
+  return *STDOUT if defined $opt{'-f'};
+
+  if (defined $opt{'-o'}) {
+    if ($opt{'-o'} eq '-') {
+      return *STDOUT;
+    } else {
+      my $fh = FileHandle->new( $opt{'-o'}, '>');
+      return $fh if defined $fh;
+      printf STDERR "hercjis-E: failed to open '%s': %s\n", $opt{'-o'}, $!;
+    }
+
+  } else {
+    my $spec =  $opt{'-a'};
+    my $nwait = 12;
+    my $fh;
+    while ($nwait > 0) {
+      if ($spec =~ m{^\.{0,2}/}) {
+        $fh = IO::Socket::UNIX->new(Peer => $spec);
+      } else {
+        if ($spec !~ m/:/) {                # no : found
+          if ($spec =~ m/\d+/) {            # only port
+            $spec = 'localhost:' . $spec;
+          } else {                          # only node
+            $spec = $spec . ':' . $defoport;
+          }
+        }
+        $fh = IO::Socket::INET->new(PeerAddr => $spec);
+      }
+      if (defined $fh) {
+        $fh->autoflush(1);
+        return $fh;
+      }
+      printf STDERR "hercjis-I: failed to connect to '$spec', waiting...\n";
+      $nwait -= 1;
+      sleep 5.;
+    }
+    printf STDERR "hercjis-F: failed to connect to '$spec': $!, aborted\n";
+  }
+  exit 1;
+}
+
+#
+# -- close_out: close socket -------------------------------------------------
+#
+
+sub close_out {
+  return unless -S $fh_out;
+  # if socket, do shutdown for write
+  $fh_out->shutdown(1);
+  # and wait for server side close
+  my $rin = '';
+  vec($rin, fileno($fh_out),  1) = 1;
+  my $nwait = 12;
+  my $twait = 2.;
+  while (1) {
+    my $nfound = select(my $rout = $rin, undef, undef, $twait);
+    last if $nfound > 0;
+    $nwait -= 1;
+    if ($nwait == 0) {
+      printf STDERR "hercjis-E: timeout on output socket close, force close\n";
+      $fh_out->close();
+      last;
+    }
+    printf STDERR "hercjis-I: waiting on output socket close\n";
+    $twait = 5.;
+  }
+  # if -w given, add some cool down time
+  select(undef, undef, undef, $opt{-w}) if defined $opt{-w};
+  return;
+}
+
+#
+# -- do_file: handle input file ----------------------------------------------
+#
+
+sub do_file {
+  my ($fname) = @_;
+  my $irc = 0;
+  my $fh_in  = *STDIN;
+
+  if ($fname ne '-') {
+    $fname =~ s{/.*?/\.\./}{/}g;            # remove /nnn/../ parts
+    $fname =~ s{^\./}{};                    # drop leading ./
+    printf STDERR "hercjis-I: open  ifile '%s'\n",$fname if $opt{'-v'};
+    return if $fname eq '/dev/null';        # quit on null file
+    $fh_in = FileHandle->new($fname, '<');
+    if (not defined $fh_in) {
+      printf STDERR "hercjis-E: failed to open '%s': %s\n", $fname, $!;
+      return 1;
+    }
+    if ($opt{'-M'}) {
+      printf "%s : %s\n",$opt{'-o'},$fname;
+    }
+  }
+
+  while (<$fh_in>) {
+    chomp;
+    my $line = $_;
+
+    # drop hercjis comments starting with
+    #   //** /*......
+    #
+    next if $line =~ m|^//\*\* /\*|;
+
+    # handle substitutions
+    #   ${name}             will fail if name not defined
+    #   ${name:=val}        if name undefined, use val, define name
+    #   ${name:-val}        if name undefined, use val, name stays undefined
+    while ($line =~ /\$\{(\w+):([-=])(.*?)\}/) {       # ${name:[-=]val} seen
+      my $name = $1;
+      my $typ  = $2;
+      my $val  = $3;
+      my $lup  = do_lookup($name);
+      if (defined $lup) {
+	$line = $` . $lup . $';
+      } else {
+	$line = $` . $val . $';
+	$defs{$name} = $val if ($typ eq "=");
+      }
+    }
+
+    while ($line =~ /\$\{(\w*)\}/) {       # ${name} seen
+      my $name = $1;
+      my $lup  = do_lookup($name);
+      if (defined $lup) {
+	$line = $` . $lup . $';
+      } else {
+	print STDERR "hercjis-E: variable \"$name\" not defined\n";
+        $irc = 1;
+        last;
+      }
+    }
+    last if $irc;                           # quit if substitution failed
+
+    #
+    # handle 'pre-processor' lines
+    #   //** ##include  filename
+    #   //** ##rinclude filename
+    #   //** ##define   name value
+    #
+    if ($line =~ m|^//\*\*\s+\#\#(\w+)\s+(.*?)\s*$|) {
+      my $dir = $1;
+      my $val = $2;
+
+       if      ($dir eq 'include') {        # ##include --------------
+        my $irc = do_file($val);
+        return $irc if $irc;
+        next;
+
+      } elsif ($dir eq 'rinclude') {        # ##rinclude -------------
+        my $pref = ($fname =~ m{^(.*)/.*$}) ? $1 : '.';
+        my $irc = do_file("$pref/$val");
+        return $irc if $irc;
+        next;
+
+      } elsif ($dir eq 'define') {          # ##define ---------------
+        if ($val =~ m/^([a-zA-Z][a-zA-Z0-9]*)\s+(.+)/) {
+          $defs{$1} = $2;
+        } else {
+          printf STDERR "hercjis-E: bad ##define '$val', abort\n";
+          $irc = 1;
+          last;
+        }
+        next;
+      }
+    } # $line =~ //** ##...
+    print $fh_out $line,"\n" unless $opt{'-M'};
+  }
+  printf STDERR "hercjis-I: close ifile '%s'\n",$fname if $opt{'-v'};
+  $fh_in->close();
+  return $irc;
+}
+
+#
+# -- do_lookup: handle name lookup -------------------------------------------
+# - return local definition if available
+# - otherwise lookup of environment vars
+#   - if variable is $XXX --> lookup XXX
+#   - if variable is  XXX --> lookup HERCJIS_XXX
+#
+sub do_lookup {
+  my ($name) = @_;
+  return $defs{$name} if defined $defs{$name};
+  my $ename = (substr($name,0,1) eq '$') ? $name : 'HERCJIS_'.$name;
+  return $ENV{$ename};
+}

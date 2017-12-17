@@ -1,0 +1,7 @@
+//** ##define  JOB    SOEQ#ASM
+//** ##define  REGION 650K
+//** ##define  DDSRC  ../codes/soeq_asm.asm
+//** ##define  DDDAT  ../codes/soep_cprt.dat
+//** ##define  OUTLIM 100000
+//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
+//** ##include ../jcl/job_asm_clg.JESI

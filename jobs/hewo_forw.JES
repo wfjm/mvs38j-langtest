@@ -1,0 +1,4 @@
+//** ##define  JOB    HEWO#FOW
+//** ##define  DDSRC  ../codes/hewo_for.f
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_forw_clg.JESI

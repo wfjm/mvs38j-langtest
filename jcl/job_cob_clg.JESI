@@ -1,0 +1,24 @@
+//** /*  master for COBUFCLG jobs (COBOL compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    2048K               job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARML}     'MAP,LIST,LET'      linker step PARM
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+// REGION=${REGION:-2048K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC COBUCLG,
+//      PARM.LKED=${PARML:-'MAP,LIST,LET'}
+//COB.SYSIN DD *
+//** ##include ${DDSRC}
+/*
+//GO.SYSIN  DD * 
+//GO.SYSOUT DD SYSOUT=*
+//** ##include ${DDDAT}
+/*
+//

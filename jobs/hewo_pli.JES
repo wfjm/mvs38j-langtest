@@ -1,0 +1,4 @@
+//** ##define  JOB    HEWO#PLI
+//** ##define  DDSRC  ../codes/hewo_pli.pli
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_pli_clg.JESI

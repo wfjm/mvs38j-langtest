@@ -1,0 +1,25 @@
+//** /*  master for FORTHCLG jobs (FORTRAN-H compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    256K                job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARMC}     'OPT=2'             compile step PARM
+//** /*    ${PARML}     'MAP,LIST,LET'      linker  step PARM
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-256K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC FORTHCLG,
+//      PARM.FORT=${PARMC:-'OPT=2'},
+//      PARM.LKED=${PARML:-'MAP,LIST,LET'}
+//FORT.SYSIN DD *
+//** ##include ${DDSRC}
+/*
+//GO.SYSIN DD *
+//** ##include ${DDDAT}
+/*
+//

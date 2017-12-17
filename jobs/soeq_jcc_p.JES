@@ -1,0 +1,4 @@
+//** ##define  JOB    SOEQ#JCC
+//** ##define  DDSRC  ../codes/soeq_cc.c
+//** ##define  DDDAT  ../codes/soep_cprt.dat
+//** ##include ../jcl/job_jcc_clg.JESI

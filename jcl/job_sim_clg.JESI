@@ -1,0 +1,27 @@
+//** /*  master for SIMCLG jobs (SIMULA compile-load-go)
+//** /*  parameters:
+//** /*    Name         Default             Comment
+//** /*    ${JOB}                           job name
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
+//** /*    ${REGION}    1000K               job memory
+//** /*    ${TIME}      (1,0)               job time limit
+//** /*    ${PRTY}      8                   job priority
+//** /*    ${PARMC}     ''                  compile step PARM
+//** /*    ${PARML}     'MAP,LIST,LET'      linker  step PARM
+//** /*    ${PARMG}     'LINECNT=64'        go      step PARM
+//** /*
+//${JOB} JOB 'S322-0C4','WFJM',
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=${REGION:-1000K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC SIMCLG,
+//      PARM.SIM=${PARMC:-''},
+//      PARM.LKED=${PARML:-'MAP,LIST,LET'},
+//      PARM.GO=${PARMG:-'LINECNT=64'}
+//SIM.SYSIN DD *
+//** ##include ${DDSRC}
+/*
+//GO.SYSIN DD *
+//** ##include ${DDDAT}
+/*
+//

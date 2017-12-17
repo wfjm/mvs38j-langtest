@@ -1,0 +1,4 @@
+//** ##define  JOB    HEWO#PAS
+//** ##define  DDSRC  ../codes/hewo_pas.pas
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_pas_clg.JESI
