@@ -1,0 +1,5 @@
+//** ##define  JOB    SOEP#FOH
+//** ##define  REGION 6000K
+//** ##define  DDSRC  ../codes/soep_for.f
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##include ../jcl/job_forh_clg.JESI
