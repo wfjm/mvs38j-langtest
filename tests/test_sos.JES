@@ -1,0 +1,4 @@
+//** ##define  JOB    TSOS#ASM
+//** ##define  DDSRC  test_sos.asm
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_asm_clg.JESI
