@@ -1,0 +1,6 @@
+//** ##define  JOB    TOWH#PAS
+//** ##define  TIME   (10,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/towh_pas.pas
+//** ##define  DDDAT  ../codes/towh_cher.dat
+//** ##include ../jcl/job_pas_clg.JESI

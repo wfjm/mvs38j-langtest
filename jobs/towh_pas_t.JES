@@ -1,0 +1,4 @@
+//** ##define  JOB    TOWH#PAS
+//** ##define  DDSRC  ../codes/towh_pas.pas
+//** ##define  DDDAT  ../codes/towh_ctst.dat
+//** ##include ../jcl/job_pas_clg.JESI

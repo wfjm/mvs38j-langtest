@@ -1,0 +1,70 @@
+ /*      1         2         3         4         5         6         7*/--------
+ /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
+ /* $Id: towh_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /*
+ /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /*
+ /* This program is free software; you may redistribute and/or modify */
+ /* it under the terms of the GNU General Public License version 3.   */
+ /* See Licence.txt in distribition directory for further details.    */
+ /*                                                                   */
+ /*  Revision History:                                                */
+ /* Date         Rev Version  Comment                                 */
+ /* 2017-09-07   947   1.0    Initial version                         */
+ /* 2017-07-30   931   0.1    First draft                             */
+
+  TOWH: PROC OPTIONS(MAIN) REORDER;
+    DCL (NCALL,NMOVE)    BIN FIXED(31) INIT(0);
+    DCL (CURSTK,MAXSTK)  BIN FIXED(31) INIT(0);
+    DCL (MAXDSK,TRACE)   BIN FIXED(31) INIT(0);
+    DCL TOW(3)           BIN FIXED(31) INIT((3)0);
+    DCL NDSK             BIN FIXED(31);
+ 
+    DCL MOV ENTRY(BIN FIXED(31),BIN FIXED(31),BIN FIXED(31));
+  
+    GET EDIT(MAXDSK,TRACE) (F(5),F(5));
+ 
+    DO NDSK=2 TO MAXDSK;
+      NCALL  = 0;
+      NMOVE  = 0;
+      MAXSTK = 0;
+      CURSTK = 0;
+      TOW(1) = NDSK;
+      TOW(2) = 0;
+      TOW(3) = 0;
+      IF TRACE > 0 THEN PUT SKIP EDIT('STRT ndsk=',NDSK) (A,F(2));
+      CALL MOV(NDSK,1,3);
+      PUT SKIP EDIT('DONE ndsk=',NDSK, ':  maxstk=',MAXSTK,
+                    '  ncall=',NCALL, '  nmove=',NMOVE)
+                    (2(A,F(2)),2(A,F(10)));
+    END;
+ 
+    /* procedure MOV -----------------------------------------------*/
+    MOV: PROC(N,F,T) RECURSIVE;
+      DCL (N,F,T)  BIN FIXED(31);
+      DCL O BIN FIXED(31);
+      O = 6-(F+T);
+      CURSTK = CURSTK + 1;
+      NCALL  = NCALL  + 1;
+      MAXSTK = MAX(MAXSTK,CURSTK);
+      IF N = 1 THEN DO;
+        NMOVE  = NMOVE  + 1;
+        TOW(F) = TOW(F) - 1;
+        TOW(T) = TOW(T) + 1;
+        IF TRACE > 0 THEN PUT SKIP EDIT('mov-do: ',CURSTK,
+                                 ' :',N,F,T, ' :',TOW)
+                                 (A,F(2),2(A,3(X(1),F(2))));
+      END;
+      ELSE DO;
+        IF TRACE > 0 THEN PUT SKIP EDIT('mov-go: ',CURSTK,
+                                 ' :',N,F,T, ' :',TOW)
+                                 (A,F(2),2(A,3(X(1),F(2))));
+        CALL MOV(N-1,F,O);
+        CALL MOV(1,F,T);
+        CALL MOV(N-1,O,T);
+      END;
+      CURSTK = CURSTK - 1;
+    END MOV;
+ 
+  END TOWH;
+  

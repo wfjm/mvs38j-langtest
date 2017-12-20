@@ -1,0 +1,4 @@
+//** ##define  JOB    TOWH#FOW
+//** ##define  DDSRC  ../codes/towh_for.f
+//** ##define  DDDAT  ../codes/towh_ctst.dat
+//** ##include ../jcl/job_forw_clg.JESI

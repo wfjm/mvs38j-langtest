@@ -1,0 +1,4 @@
+//** ##define  JOB    TOWH#A60
+//** ##define  DDSRC  ../codes/towh_a60.a60
+//** ##define  DDDAT  ../codes/towh_ctst.dat
+//** ##include ../jcl/job_a60_clg.JESI

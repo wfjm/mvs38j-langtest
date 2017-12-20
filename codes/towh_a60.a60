@@ -1,0 +1,96 @@
+'BEGIN'
+'COMMENT'
+* $Id: towh_a60.a60 964 2017-11-19 08:47:46Z mueller $
+*
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*  
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+*  
+*   Revision History:
+*  Date         Rev Version  Comment
+*  2017-09-05   946   1.0    Initial version
+*;
+
+  'INTEGER' NCALL,NMOVE;
+  'INTEGER' CURSTK,MAXSTK;
+  'INTEGER' MAXDSK,TRACE;
+  'INTEGER' 'ARRAY' TOW[1:3];
+  'INTEGER' NDSK;
+
+  'PROCEDURE' TRC(TXT,N,F,T);
+    'STRING'  TXT;
+    'VALUE'   N,F,T;
+    'INTEGER' N,F,T;
+  'BEGIN'
+    OUTSTRING (1, TXT);
+    OUTINTEGER(1, NDSK);
+    OUTSTRING (1,'(' :')');
+    OUTINTEGER(1, N);
+    OUTINTEGER(1, F);
+    OUTINTEGER(1, T);
+    OUTSTRING (1,'(' :')');
+    OUTTARRAY (1, TOW);
+    SYSACT(1,14,1);
+  'END';
+
+  'PROCEDURE' MOV(N,F,T);
+    'VALUE'   N,F,T;
+    'INTEGER' N,F,T;
+  'BEGIN'
+    'INTEGER' O;
+    O := 6-(F+T);
+    CURSTK := CURSTK + 1;
+    NCALL  := NCALL  + 1;
+    'IF' CURSTK > MAXSTK 'THEN' MAXSTK := CURSTK;
+
+    'IF' N = 1 'THEN' 'BEGIN'
+      NMOVE  := NMOVE  + 1;
+      TOW[F] := TOW[F] - 1;
+      TOW[T] := TOW[T] + 1;
+      'IF' TRACE > 0 'THEN' TRC('('mov-do: ')',N,F,T);
+    'END'
+    'ELSE' 'BEGIN'
+      'IF' TRACE > 0 'THEN' TRC('('mov-go: ')',N,F,T);
+      MOV(N-1,F,O);
+      MOV(1,F,T);
+      MOV(N-1,O,T);
+    'END';
+
+    CURSTK := CURSTK - 1;
+  'END';
+
+  'COMMENT' set record lenth = 132 and page length = 62;
+  SYSACT(1,6,132);
+  SYSACT(1,8,64);
+
+  ININTEGER(0,MAXDSK);
+  ININTEGER(0,TRACE);
+
+  'FOR' NDSK := 2 'STEP' 1 'UNTIL' MAXDSK 'DO' 'BEGIN'
+     NCALL  := 0;
+     NMOVE  := 0;
+     MAXSTK := 0;
+     CURSTK := 0;
+     TOW[1] := NDSK;
+     TOW[2] := 0;
+     TOW[3] := 0;
+     'IF' TRACE > 0  'THEN' 'BEGIN'
+       OUTSTRING (1,'('STRT ndsk=')');
+       OUTINTEGER(1, NDSK);
+       SYSACT(1,14,1);
+     'END';
+     MOV(NDSK,1,3);
+     OUTSTRING (1,'('DONE ndsk=')');
+     OUTINTEGER(1, NDSK);
+     OUTSTRING (1,'(':  maxstk=')');
+     OUTINTEGER(1, MAXSTK);
+     OUTSTRING (1,'('   ncall=')');
+     OUTINTEGER(1, NCALL);
+     OUTSTRING (1,'('   nmove=')');
+     OUTINTEGER(1, NMOVE);
+     SYSACT(1,14,1);
+  'END';
+
+'END'

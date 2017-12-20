@@ -1,0 +1,6 @@
+//** ##define  JOB    TOWH#FOG
+//** ##define  TIME   (10,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/towh_for.f
+//** ##define  DDDAT  ../codes/towh_cher.dat
+//** ##include ../jcl/job_forg_clg.JESI
