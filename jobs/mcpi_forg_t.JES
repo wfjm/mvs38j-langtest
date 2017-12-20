@@ -1,0 +1,4 @@
+//** ##define  JOB    MCPI#FOG
+//** ##define  DDSRC  ../codes/mcpi_for.f
+//** ##define  DDDAT  ../codes/mcpi_ctst.dat
+//** ##include ../jcl/job_forg_clg.JESI

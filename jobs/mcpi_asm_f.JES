@@ -1,0 +1,7 @@
+//** ##define  JOB    MCPI#ASM
+//** ##define  TIME   (10,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/mcpi_asm.asm
+//** ##define  DDDAT  ../codes/mcpi_cher.dat
+//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
+//** ##include ../jcl/job_asm_clg.JESI

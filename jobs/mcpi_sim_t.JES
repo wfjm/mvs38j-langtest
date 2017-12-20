@@ -1,0 +1,4 @@
+//** ##define  JOB    MCPI#SIM
+//** ##define  DDSRC  ../codes/mcpi_sim.sim
+//** ##define  DDDAT  ../codes/mcpi_ctst.dat
+//** ##include ../jcl/job_sim_clg.JESI

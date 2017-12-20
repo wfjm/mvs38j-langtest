@@ -1,0 +1,115 @@
+'BEGIN'
+'COMMENT'
+* $Id: mcpi_a60.a60 964 2017-11-19 08:47:46Z mueller $
+*
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*  
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+*  
+*   Revision History:
+*  Date         Rev Version  Comment
+*  2017-09-17   951   1.0    Initial version
+*;
+
+  'REAL'    RR32,RDIV,PI;
+  'REAL'    RSEED,RLAST;
+  'BOOLEAN' RANINI;
+  'INTEGER' IDBGRR,IDBGRN,IDBGMC;
+  'INTEGER' I,NTRY,NHIT,NGO;
+  'REAL'    PIEST,PIERR;
+  'REAL'    RHIT,RTRY;
+  'REAL'    X,Y,R;
+  'REAL' 'ARRAY' RSHUF[0:127];
+
+  'REAL' 'PROCEDURE' RANRAW;
+  'BEGIN'
+    'REAL'    RFAC,RNEW;
+    RNEW := RSEED * 69069.0;
+    RFAC := RNEW / RR32;
+    RFAC := ENTIER(RFAC);
+    RNEW := RNEW - RFAC * RR32;
+    'IF' IDBGRR > 0 'THEN' 'BEGIN'
+      OUTSTRING (1,'('RR:')');
+      OUTREAL(1, RSEED);
+      OUTREAL(1, RNEW);
+      SYSACT(1,14,1);
+    'END';
+    RSEED  := RNEW;
+    RANRAW := RNEW;
+  'END';
+
+  'REAL' 'PROCEDURE' RANNUM;
+  'BEGIN'
+    'REAL'    RNEW;
+    'INTEGER' I;
+    'IF' 'NOT' RANINI 'THEN' 'BEGIN'
+      'FOR' I := 0 'STEP' 1 'UNTIL' 127 'DO' RSHUF[I] := RANRAW;
+      RANINI := 'TRUE';
+    'END';
+
+    I := ENTIER(RLAST/RDIV);
+    RLAST := RSHUF[I];
+    RSHUF[I] := RANRAW;
+    RNEW := RLAST / RR32;
+    'IF' IDBGRN > 0 'THEN' 'BEGIN'
+      OUTSTRING (1,'('RN:')');
+      OUTINTEGER(1, I);
+      OUTREAL(1, RLAST);
+      OUTREAL(1, RNEW);
+      SYSACT(1,14,1);
+    'END';
+    RANNUM := RNEW;
+  'END';
+
+  'COMMENT' setup constants;
+  RR32   := 4294967296.0;
+  RDIV   := 33554432.0;
+  PI     := 3.141592653589793;
+  RSEED  := 12345.0;
+  RANINI := 'FALSE';
+
+  'COMMENT' set record lenth = 132 and page length = 64;
+  SYSACT(1,6,132);
+  SYSACT(1,8,64);
+
+  ININTEGER(0,IDBGRR);
+  ININTEGER(0,IDBGRN);
+  ININTEGER(0,IDBGMC);
+
+  LOOP:
+    ININTEGER(0,NGO);
+    'IF' NGO = 0 'THEN' 'GOTO' DONE;
+    'FOR' I := 1 'STEP' 1 'UNTIL' NGO 'DO' 'BEGIN'
+      X := 2.0 * RANNUM - 1.0;
+      Y := 2.0 * RANNUM - 1.0;
+      R := X*X + Y*Y;
+      NTRY := NTRY + 1;
+      'IF' R <= 1.0 'THEN' NHIT := NHIT + 1;
+      'IF' IDBGMC > 0 'THEN' 'BEGIN'
+        OUTSTRING (1,'('MC:')');
+        OUTREAL(1, X);
+        OUTREAL(1, Y);
+        OUTREAL(1, R);
+        OUTINTEGER(1, NHIT);
+        SYSACT(1,14,1);
+      'END';
+    'END';
+
+    RTRY := NTRY;
+    RHIT := NHIT;
+    PIEST := 4.0 * (RHIT / RTRY);
+    PIERR := PIEST - PI;
+    OUTSTRING (1,'('PI:')');
+    OUTINTEGER(1, NTRY);
+    OUTINTEGER(1, NHIT);
+    OUTREAL(1, PIEST);
+    OUTREAL(1, PIERR);
+    OUTREAL(1, RLAST);
+    SYSACT(1,14,1);      
+  'GOTO' LOOP;
+
+  DONE:
+'END';
+

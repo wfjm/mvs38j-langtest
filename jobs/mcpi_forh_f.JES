@@ -1,0 +1,6 @@
+//** ##define  JOB    MCPI#FOH
+//** ##define  TIME   (1440)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/mcpi_for.f
+//** ##define  DDDAT  ../codes/mcpi_cher.dat
+//** ##include ../jcl/job_forh_clg.JESI

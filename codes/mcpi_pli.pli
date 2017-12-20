@@ -1,0 +1,104 @@
+ /*      1         2         3         4         5         6         7*/--------
+ /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
+ /* $Id: mcpi_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /*
+ /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /*
+ /* This program is free software; you may redistribute and/or modify */
+ /* it under the terms of the GNU General Public License version 3.   */
+ /* See Licence.txt in distribition directory for further details.    */
+ /*                                                                   */
+ /*  Revision History:                                                */
+ /* Date         Rev Version  Comment                                 */
+ /* 2017-09-07   947   1.0    Initial version                         */
+ /* 2017-07-30   931   0.1    First draft                             */
+
+  MCPI: PROC OPTIONS(MAIN) REORDER;
+    DCL RSEED        DEC FLOAT(16) INIT(12345.);
+    DCL RLAST        DEC FLOAT(16) INIT(0.);
+    DCL RSHUF(0:127) DEC FLOAT(16) INIT((128)0.);
+    DCL RR32         DEC FLOAT(16) INIT(4294967296.);
+    DCL RDIV         DEC FLOAT(16) INIT(33554432.);
+    DCL RANINI       BIN FIXED(31) INIT(0);
+    DCL (IDBGRR,IDBGRN,IDBGMC) BIN FIXED(31) INIT(0);
+ 
+    DCL RANRAW ENTRY RETURNS(DEC FLOAT(16));
+    DCL RANNUM ENTRY RETURNS(DEC FLOAT(16));
+ 
+    DCL (I,NTRY,NHIT,NGO)      BIN FIXED(31) INIT(0);
+    DCL (PIEST,PIERR)          DEC FLOAT(16);
+    DCL (RHIT,RTRY)            DEC FLOAT(16);
+    DCL (X,Y,R)                DEC FLOAT(16);
+    DCL PI    DEC FLOAT(16) INIT(3.141592653589793E0);
+ 
+    ON ENDFILE(SYSIN) GOTO DONE;
+    ON CONVERSION     GOTO ABORT;
+ 
+    GET EDIT(IDBGRR,IDBGRN,IDBGMC) (3(F(10)));
+ 
+    DO WHILE('1'B);
+      GET SKIP EDIT(NGO) (F(10));
+      IF NGO = 0 THEN GOTO DONE;
+ 
+      DO I=1 TO NGO;
+         X = 2.*RANNUM - 1.;
+         Y = 2.*RANNUM - 1.;
+         R = X*X + Y*Y;
+         NTRY = NTRY + 1;
+         IF R <= 1. THEN NHIT = NHIT + 1;
+         IF IDBGMC > 0 THEN PUT SKIP EDIT('MC: ',X,Y,R,NHIT)
+                                     (A,3(F(12,8),X(1)),F(12));
+      END;
+ 
+      RTRY = NTRY;
+      RHIT = NHIT;
+      
+      PIEST = 4.E0 * (RHIT / RTRY);
+      PIERR = PIEST - PI;
+      IF PIERR < 0. THEN PIERR = -PIERR;
+      PUT SKIP EDIT('PI: ',NTRY,NHIT,PIEST,PIERR,RLAST)
+               (A,2(F(12),X(1)),2(F(12,8),X(1)),F(12));
+    END;
+    GOTO DONE;
+    
+    ABORT: PUT SKIP EDIT('Conversion error, abort')(A);
+    DONE:;
+ 
+    /* procedure RANRAW --------------------------------------------*/
+    RANRAW: PROC RETURNS(DEC FLOAT(16));
+ 
+      DCL (RFAC,RNEW) DEC FLOAT(16);
+      DCL IFAC  BIN FIXED(31);
+ 
+      RNEW = RSEED * 69069.;
+      RFAC = RNEW / RR32;
+      IFAC = RFAC;
+      RFAC = IFAC;
+      RNEW = RNEW - RFAC * RR32;
+      IF IDBGRR > 0 THEN PUT SKIP EDIT('RR: ',RSEED,RNEW)
+                                  (A,F(12,0),X(1),F(12,0));
+      RSEED = RNEW;
+      RETURN(RNEW);
+    END RANRAW;
+ 
+    /* procedure RANNUM --------------------------------------------*/
+    RANNUM: PROC RETURNS(DEC FLOAT(16));
+      DCL I     BIN FIXED(31);
+      DCL RNEW  DEC FLOAT(16);
+ 
+      IF RANINI = 0 THEN DO;
+        DO I=0 TO 127;
+          RSHUF(I) = RANRAW;
+        END;
+        RANINI = 1;
+      END;
+      
+      I = RLAST/RDIV;
+      RLAST = RSHUF(I);
+      RSHUF(I) = RANRAW;
+      RNEW = RLAST/RR32;
+      IF IDBGRN > 0 THEN PUT SKIP EDIT('RN: ',I,RLAST,RNEW)
+                             (A,F(12),X(1),F(12,0),X(1),F(12,8));
+      RETURN(RNEW);
+    END RANNUM;
+  END MCPI;

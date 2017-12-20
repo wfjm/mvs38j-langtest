@@ -1,0 +1,111 @@
+COMMENT
+* 
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* 
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+* 
+*  Revision History:
+* Date         Rev Version  Comment
+* 2017-09-17   951   1.0    Initial version
+* 2017-09-08   949   0.1    First draft
+*;
+
+BEGIN
+   LONG REAL rr32;
+   LONG REAL rdiv;
+   LONG REAL pi;
+   LONG REAL rseed,rlast;
+   BOOLEAN ranini;
+   INTEGER idbgrr,idbgrn,idbgmc;
+   INTEGER i,ntry,nhit,ngo;
+   LONG REAL piest,pierr;
+   LONG REAL rhit,rtry;
+   LONG REAL x,y,r;
+   LONG REAL ARRAY rshuf(0:127);
+
+   LONG REAL PROCEDURE ranraw;
+   BEGIN
+      LONG REAL rfac,rnew;
+      rnew := rseed * 69069.0;
+      rfac := rnew / rr32;
+      rfac := Entier(rfac);
+      rnew := rnew - rfac * rr32;
+      IF idbgrr > 0 THEN BEGIN
+         OutText("RR: ");
+         OutFix(rseed,1,14);
+         OutFix(rnew,1,14);
+         OutImage;
+      END;
+      rseed := rnew;
+      ranraw := rnew;
+   END ** ranraw **;
+
+   LONG REAL PROCEDURE rannum;
+   BEGIN
+      LONG REAL rnew;
+      INTEGER i;
+      IF NOT ranini THEN BEGIN
+         FOR i := 0 STEP 1 UNTIL 127 DO rshuf(i) := ranraw;
+         ranini := TRUE;
+      END;
+      i := Entier(rlast/rdiv);
+      rlast := rshuf(i);
+      rshuf(i) := ranraw;
+      rnew := rlast/rr32;
+      IF idbgrn > 0 THEN BEGIN
+         OutText("RN: ");
+         OutInt(I,12);
+         OutFix(rlast,1,14);
+         OutFix(rnew,8,14);
+         OutImage;
+      END;
+      rannum := rnew;
+   END ** rannum **;
+
+   rr32   := 4294967296.0;
+   rdiv   := 33554432.0;
+   pi     := 3.141592653589793;
+   rseed  := 12345.0;
+   ranini := FALSE;
+
+   idbgrr := InInt;
+   idbgrn := InInt;
+   idbgmc := InInt;
+
+   WHILE TRUE DO BEGIN
+      ngo :=  InInt;
+      IF ngo = 0 THEN GOTO done;
+      FOR i := 1 STEP 1 UNTIL ngo DO BEGIN
+         x := 2.0 * rannum - 1.0;
+         y := 2.0 * rannum - 1.0;
+         r := x*x + y*y;
+         ntry := ntry + 1;
+         IF r <= 1.0 THEN nhit := nhit + 1;
+         IF idbgrr > 0 THEN BEGIN
+            OutText("MC: ");
+            OutFix(x,8,12);
+            OutFix(y,8,12);
+            OutFix(r,8,12);
+            OutInt(nhit,12);
+            OutImage;
+         END;
+      END;
+      rtry := ntry;
+      rhit := nhit;
+
+      piest := 4.0 * (rhit / rtry);
+      pierr := piest - pi;
+   
+      OutText("PI: ");
+      OutInt(ntry,12);
+      OutInt(nhit,12);
+      OutFix(piest,8,12);
+      OutFix(pierr,8,12);
+      OutFix(rlast,1,14);
+      OutImage;
+   END;
+
+   done:
+END;

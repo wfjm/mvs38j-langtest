@@ -1,0 +1,4 @@
+//** ##define  JOB    MCPI#PAS
+//** ##define  DDSRC  ../codes/mcpi_pas.pas
+//** ##define  DDDAT  ../codes/mcpi_ctst.dat
+//** ##include ../jcl/job_pas_clg.JESI

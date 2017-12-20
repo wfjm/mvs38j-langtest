@@ -1,0 +1,6 @@
+//** ##define  JOB    MCPI#GCC
+//** ##define  TIME   (10,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/mcpi_cc.c
+//** ##define  DDDAT  ../codes/mcpi_cher.dat
+//** ##include ../jcl/job_gcc_clg.JESI

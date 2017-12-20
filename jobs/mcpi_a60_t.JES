@@ -1,0 +1,5 @@
+//** ##define  JOB    MCPI#A60
+//** ##define  PARMC  'LONG'
+//** ##define  DDSRC  ../codes/mcpi_a60.a60
+//** ##define  DDDAT  ../codes/mcpi_ctst.dat
+//** ##include ../jcl/job_a60_clg.JESI

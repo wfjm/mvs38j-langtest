@@ -1,0 +1,6 @@
+//** ##define  JOB    MCPI#PAS
+//** ##define  TIME   (10,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/mcpi_pas.pas
+//** ##define  DDDAT  ../codes/mcpi_cher.dat
+//** ##include ../jcl/job_pas_clg.JESI

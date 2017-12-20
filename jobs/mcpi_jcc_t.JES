@@ -1,0 +1,4 @@
+//** ##define  JOB    MCPI#JCC
+//** ##define  DDSRC  ../codes/mcpi_cc.c
+//** ##define  DDDAT  ../codes/mcpi_ctst.dat
+//** ##include ../jcl/job_jcc_clg.JESI
