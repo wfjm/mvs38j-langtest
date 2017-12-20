@@ -1,0 +1,55 @@
+COMMENT
+* 
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* 
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+* 
+*  Revision History:
+* Date         Rev Version  Comment
+* 2017-09-08   949   1.0    Initial version
+*;
+
+BEGIN
+   INTEGER i,j,isin,icos;
+   REAL x,xrad,fsin,fcos;
+   CHARACTER ARRAY plot(1:81);
+
+   OutText("     x   sin(x)   cos(x)   ");
+   OutText("-1                -0.5                  0");
+   OutText("                 +0.5                 +1");
+   OutImage;
+   OutText("                           ");
+   OutText("+-------------------.-------------------:");
+   OutText("-------------------.-------------------+");
+   OutImage;
+   
+   FOR i := 0 STEP 1 UNTIL 60 DO BEGIN
+      x := 6.0 * i;
+      xrad := x/57.2957795131;
+      fsin := sin(xrad);
+      fcos := cos(xrad);
+      FOR j := 1 STEP 1 UNTIL 81 DO plot(j) := ' ';
+      plot( 1) := '+';
+      plot(21) := '.';
+      plot(41) := ':';
+      plot(61) := '.';
+      plot(81) := '+';
+      isin := Entier(41.5 + 40.0 * fsin);
+      icos := Entier(41.5 + 40.0 * fcos);
+      plot(isin) := '*';
+      plot(icos) := '#';
+      OutFix(x,0,6);
+      OutFix(fsin,5,9);
+      OutFix(fcos,5,9);
+      OutText("   ");
+      FOR j := 1 STEP 1 UNTIL 81 DO OutChar(plot(j));
+      OutImage;
+   END;            
+   OutText("                           ");
+   OutText("+-------------------.-------------------:");
+   OutText("-------------------.-------------------+");
+   OutImage;
+   OutImage;
+END;

@@ -1,0 +1,4 @@
+//** ##define  JOB    SINE#FOH
+//** ##define  DDSRC  ../codes/sine_for.f
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_forh_clg.JESI

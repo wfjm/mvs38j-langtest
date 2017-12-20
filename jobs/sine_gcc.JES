@@ -1,0 +1,4 @@
+//** ##define  JOB    SINE#GCC
+//** ##define  DDSRC  ../codes/sine_cc.c
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_gcc_clg.JESI

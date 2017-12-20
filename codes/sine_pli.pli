@@ -1,0 +1,54 @@
+ /*      1         2         3         4         5         6         7*/--------
+ /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
+ /* $Id: sine_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /*
+ /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /*
+ /* This program is free software; you may redistribute and/or modify */
+ /* it under the terms of the GNU General Public License version 3.   */
+ /* See Licence.txt in distribition directory for further details.    */
+ /*                                                                   */
+ /*  Revision History:                                                */
+ /* Date         Rev Version  Comment                                 */
+ /* 2017-09-07   947   1.0    Initial version                         */
+ /* 2017-07-30   931   0.1    First draft                             */
+
+  SINE: PROC OPTIONS(MAIN) REORDER;
+    DCL (I,ISIN,ICOS) BIN FIXED(31);
+    DCL (X,XRAD,FSIN,FCOS) DEC FLOAT(6);
+    DCL PLOT CHAR(81);
+ 
+    PUT SKIP EDIT('     x   sin(x)   cos(x)   ',
+                  '-1                -0.5                  0',
+                  '                 +0.5                 +1')
+                  (A,A,A);
+    PUT SKIP EDIT('                           ',
+                  '+-------------------.-------------------:',
+                  '-------------------.-------------------+')
+                  (A,A,A);
+ 
+    DO I=0 TO 60;
+      X = 6. * I;
+      XRAD = X/57.2957795131;
+      FSIN = SIN(XRAD);
+      FCOS = COS(XRAD);
+      PLOT = ' ';
+      SUBSTR(PLOT, 1,1) = '+';
+      SUBSTR(PLOT,21,1) = '.';
+      SUBSTR(PLOT,41,1) = ':';
+      SUBSTR(PLOT,61,1) = '.';
+      SUBSTR(PLOT,81,1) = '+';
+      ISIN = 41.5 + 40. * FSIN;
+      ICOS = 41.5 + 40. * FCOS;
+      SUBSTR(PLOT,ISIN,1) = '*';
+      SUBSTR(PLOT,ICOS,1) = '#';
+      PUT SKIP EDIT (X,FSIN,FCOS,PLOT)
+        (F(6,0),X(1),F(8,5),X(1),F(8,5),X(3),A);
+    END;
+    
+    PUT SKIP EDIT('                           ',
+                  '+-------------------.-------------------:',
+                  '-------------------.-------------------+')
+                  (A,A,A);
+ 
+  END SINE;

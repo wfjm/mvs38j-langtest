@@ -1,0 +1,4 @@
+//** ##define  JOB    SINE#A60
+//** ##define  DDSRC  ../codes/sine_a60.a60
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_a60_clg.JESI

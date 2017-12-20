@@ -1,0 +1,4 @@
+//** ##define  JOB    SINE#PLI
+//** ##define  DDSRC  ../codes/sine_pli.pli
+//** ##define  DDDAT  /dev/null
+//** ##include ../jcl/job_pli_clg.JESI

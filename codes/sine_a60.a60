@@ -1,0 +1,69 @@
+'BEGIN'
+'COMMENT'
+* $Id: sine_a60.a60 964 2017-11-19 08:47:46Z mueller $
+*
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*  
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+*  
+*   Revision History:
+*  Date         Rev Version  Comment
+*  2017-09-05   946   1.0    Initial version
+*;
+
+  'INTEGER' I,J,ISIN,ICOS;
+  'REAL'    X,XRAD,FSIN,FCOS;
+  'INTEGER' 'ARRAY' PLOT[1:81];
+
+  'COMMENT' set record lenth = 132 and page length = 64;
+  SYSACT(1,6,132);
+  SYSACT(1,8,64);
+  
+  OUTSTRING (1,'('          x   sin(x)        cos(x)         ')');
+  OUTSTRING (1,'('-1                -0.5                  0')');
+  OUTSTRING (1,'('                 +0.5                 +1')');
+  SYSACT(1,14,1);
+  OUTSTRING (1,'('                                           ')');
+  OUTSTRING (1,'('+-------------------.-------------------:')');
+  OUTSTRING (1,'('-------------------.-------------------+')');
+  SYSACT(1,14,1);
+
+  'FOR' I := 0 'STEP' 1 'UNTIL' 60 'DO' 'BEGIN'
+    X := 6.0 * I;
+    XRAD := X/57.2957;
+    FSIN := SIN(XRAD);
+    FCOS := COS(XRAD);
+    OUTINTEGER(1,6*I);
+    OUTREAL(1,FSIN);
+    OUTREAL(1,FCOS);
+
+    'COMMENT' printer plot symbols: 1=+ 2=. 3=: 4=* 5=# 0=blank;
+    'FOR' J := 1 'STEP' 1 'UNTIL' 81 'DO' PLOT[J] := 0;
+    PLOT[ 1] := 1;
+    PLOT[21] := 2;
+    PLOT[41] := 3;
+    PLOT[61] := 2;
+    PLOT[81] := 1;
+    ISIN := ENTIER(41.5 + 40.0 * FSIN);
+    ICOS := ENTIER(41.5 + 40.0 * FCOS);
+    PLOT[ISIN] := 4;
+    PLOT[ICOS] := 5;
+    'FOR' J := 1 'STEP' 1 'UNTIL' 81 'DO' 'BEGIN'
+      'IF'        PLOT[J] = 1 'THEN' OUTSTRING (1,'('+')')
+      'ELSE' 'IF' PLOT[J] = 2 'THEN' OUTSTRING (1,'('.')')
+      'ELSE' 'IF' PLOT[J] = 3 'THEN' OUTSTRING (1,'(':')')
+      'ELSE' 'IF' PLOT[J] = 4 'THEN' OUTSTRING (1,'('*')')
+      'ELSE' 'IF' PLOT[J] = 5 'THEN' OUTSTRING (1,'('#')')
+      'ELSE'                         OUTSTRING (1,'(' ')');
+    'END';
+    SYSACT(1,14,1);
+  'END';
+  
+  OUTSTRING (1,'('                                           ')');
+  OUTSTRING (1,'('+-------------------.-------------------:')');
+  OUTSTRING (1,'('-------------------.-------------------+')');
+  SYSACT(1,14,1);
+
+'END'
