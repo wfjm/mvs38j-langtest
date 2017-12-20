@@ -1,0 +1,4 @@
+//** ##define  JOB    SOEP#PAS
+//** ##define  DDSRC  ../codes/soep_pas.pas
+//** ##define  DDDAT  ../codes/soep_c60k.dat
+//** ##include ../jcl/job_pas_clg.JESI

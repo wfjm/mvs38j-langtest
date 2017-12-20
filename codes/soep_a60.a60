@@ -1,0 +1,95 @@
+'BEGIN'
+'COMMENT'
+* $Id: soep_a60.a60 965 2017-11-19 21:36:33Z mueller $
+*
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*  
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+*  
+*   Revision History:
+*  Date         Rev Version  Comment
+*  2017-09-17   951   1.0    Initial version
+*  2017-09-05   946   0.1    First draft
+*;
+
+  'INTEGER' NMAX,PRNT,IMAX;
+  'INTEGER' I,N,N2,IMIN;
+  'INTEGER' NP,IL,NL;
+
+  'COMMENT' set record lenth = 132 and page length = 64;
+  SYSACT(1,6,132);
+  SYSACT(1,8,64);
+ 
+  ININTEGER(0,NMAX);
+  ININTEGER(0,PRNT);
+
+  'IF' NMAX <= 10   'THEN' 'BEGIN'
+    OUTSTRING (1,'('nmax must be >= 10, abort')');
+    'GOTO' DONE;
+  'END';
+
+  IMAX := (NMAX-1)/2;
+
+  'BEGIN'
+    'BOOLEAN' 'ARRAY' PRIME[0:IMAX];
+    'FOR' I := 0 'STEP' 1 'UNTIL' IMAX 'DO' PRIME[I] := 'TRUE';
+  
+    'FOR' N := 3 'STEP' 2 'UNTIL' NMAX 'DO' 'BEGIN'
+      'IF' 'NOT' PRIME[(N-1)/2]  'THEN' 'GOTO' NSIEVE;
+      N2 := N * N;
+      'IF' N2 > NMAX  'THEN' 'GOTO' ESIEVE;
+      IMIN := (N2-1)/2;
+      'FOR' I := IMIN 'STEP' N 'UNTIL' IMAX 'DO' PRIME[I] := 'FALSE';
+      NSIEVE:;
+    'END';
+    ESIEVE:
+
+    'IF' PRNT > 0  'THEN' 'BEGIN'
+      OUTSTRING (1,'('List of Primes up to ')');
+      OUTINTEGER(1, NMAX);
+      SYSACT(1,14,1);
+      OUTINTEGER(1, 2);
+      NP := 1;
+      'FOR' I := 1 'STEP' 1 'UNTIL' IMAX 'DO' 'BEGIN'
+        'IF' PRIME[I] 'THEN' 'BEGIN'
+          OUTINTEGER(1, 1+2*I);
+          NP := NP + 1;
+          'IF' NP = 10 'THEN' 'BEGIN'
+            SYSACT(1,14,1);
+            NP := 0;
+          'END';
+        'END';
+      'END';
+      'IF' NP > 0 'THEN' SYSACT(1,14,1);
+    'END';
+  
+    IL :=  4;
+    NL := 10;
+    NP :=  1;
+    'FOR' I := 1 'STEP' 1 'UNTIL' IMAX 'DO' 'BEGIN'
+      'IF' PRIME[I] 'THEN' NP := NP+ 1;
+      'IF' I = IL 'THEN' 'BEGIN'
+        NL := 2*IL + 2;
+        OUTSTRING (1,'('pi(')');
+        OUTINTEGER(1, NL);
+        OUTSTRING (1,'('):')');
+        OUTINTEGER(1, NP);
+        SYSACT(1,14,1);
+        IL := 10*(IL+1)-1;
+      'END';
+    'END';
+  
+    'IF' NL < NMAX 'THEN' 'BEGIN'
+      OUTSTRING (1,'('pi(')');
+      OUTINTEGER(1, NMAX);
+      OUTSTRING (1,'('):')');
+      OUTINTEGER(1, NP);
+      SYSACT(1,14,1);
+    'END';
+    
+  'END';
+
+  DONE:
+'END'

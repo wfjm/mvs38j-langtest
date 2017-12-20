@@ -1,0 +1,92 @@
+ /*      1         2         3         4         5         6         7*/--------
+ /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
+ /* $Id: soep_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /*
+ /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /*
+ /* This program is free software; you may redistribute and/or modify */
+ /* it under the terms of the GNU General Public License version 3.   */
+ /* See Licence.txt in distribition directory for further details.    */
+ /*                                                                   */
+ /*  Revision History:                                                */
+ /* Date         Rev Version  Comment                                 */
+ /* 2017-09-17   951   1.0    Initial version                         */
+ /* 2017-09-01   945   0.1    First draft                             */
+
+  SOEP: PROC OPTIONS(MAIN) REORDER;
+    DCL (NMAX,PRNT,IMAX)  BIN FIXED(31) INIT(0);
+    DCL (I,N,N2,IMIN)     BIN FIXED(31) INIT(0);
+    DCL (NP,IL,NL)        BIN FIXED(31) INIT(0);
+    /* in PL/I(F) V5.5 array bounds are BIN(15) ! limit to 30000 */  
+    DCL PRIME(30000)    BIT(1);
+
+    ON ENDFILE(SYSIN) BEGIN;
+       PUT SKIP EDIT('Unexpected EOF, abort')(A);
+       GOTO DONE;
+    END;
+    ON CONVERSION     BEGIN;
+       PUT SKIP EDIT('Conversion error, abort')(A);
+       GOTO DONE;
+    END;
+    
+    GET EDIT(NMAX,PRNT) (F(10),F(10));
+
+    /*IF NMAX < 10 | NMAX  > 60000 THEN DO;*/
+    IF NMAX  > 60000 THEN DO;
+      PUT SKIP EDIT('nmax out of range (10...60000), abort') (A);
+      GOTO DONE;
+    END;
+
+    IMAX = (NMAX-1)/2;
+
+    DO I=1 TO IMAX;
+      PRIME(I) = '1'B;
+    END;
+
+    DO N=3 TO NMAX BY 2;
+      IF PRIME((N-1)/2) THEN DO;
+        N2 = N*N;
+        IF N2 > NMAX THEN GOTO END_SIEVE;
+        IMIN = (N2-1)/2;
+        DO I=IMIN TO IMAX BY N;
+          PRIME(I) = '0'B;
+        END;
+      END;
+    END;
+    END_SIEVE:;
+
+    IF PRNT > 0 THEN DO;
+      PUT SKIP EDIT('List of Primes up to ',NMAX) (A,F(8));
+      PUT SKIP EDIT(' ',2) (A,F(7));
+      NP = 1;
+      DO I=1 TO IMAX;
+        IF PRIME(I) THEN DO;
+          PUT EDIT(' ',1+2*I) (A,F(7));
+          NP = NP + 1;
+          IF NP = 10 THEN DO;
+            PUT SKIP;
+            NP = 0;
+          END;
+        END;
+      END;
+      IF NP > 0 THEN PUT SKIP;
+    END;
+
+    IL =  4;
+    NL = 10;
+    NP =  1;
+    DO I=1 TO IMAX;
+      IF PRIME(I) THEN NP = NP + 1;
+      IF I = IL THEN DO;
+        NL = 2*IL + 2;
+        PUT SKIP EDIT('pi(',NL,'): ',NP) (A,F(8),A,F(8));
+        IL = 10*(IL+1)-1;
+      END;
+    END;
+
+    IF NL < NMAX THEN PUT SKIP EDIT('pi(',NMAX,'): ',NP)
+                                   (A,F(8),A,F(8));
+
+    DONE:;
+  
+  END SOEP;

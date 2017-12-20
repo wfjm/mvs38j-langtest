@@ -1,0 +1,4 @@
+//** ##define  JOB    SOEP#ASM
+//** ##define  DDSRC  ../codes/soep_asm.asm
+//** ##define  DDDAT  ../codes/soep_ctst.dat
+//** ##include ../jcl/job_asm_clg.JESI

@@ -1,0 +1,6 @@
+//** ##define  JOB    SOEP#ASM
+//** ##define  REGION 6000K
+//** ##define  DDSRC  ../codes/soep_asm.asm
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
+//** ##include ../jcl/job_asm_clg.JESI

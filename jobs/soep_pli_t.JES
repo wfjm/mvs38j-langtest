@@ -1,0 +1,4 @@
+//** ##define  JOB    SOEP#PLI
+//** ##define  DDSRC  ../codes/soep_pli.pli
+//** ##define  DDDAT  ../codes/soep_c60k.dat
+//** ##include ../jcl/job_pli_clg.JESI
