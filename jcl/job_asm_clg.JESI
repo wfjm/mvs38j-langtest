@@ -16,6 +16,12 @@
 //** /*    ${DMPLIM}    '2000'              go      step SYSUDUMP limit
 //** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
 //** /*
+//** /* Notes:
+//** /*  1. COND is overridden such that jobs abort when ASM end with RC >= 8.
+//** /*     Assembler codes with RC>=8 are faulty and usually ABEND anyway.
+//** /*  2. the SYSUT* must be increased via ${SYSUT*SPA} for very large
+//** /*     modules (>=15000 lines of code (including macro generated)).
+//** /*
 //${JOB} JOB 'S322-0C4','WFJM',
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
 //      REGION=${REGION:-128K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
@@ -23,7 +29,9 @@
 //      MAC1='SYS2.MACLIB',
 //      PARM.ASM=${PARMC:-'NODECK,LOAD'},
 //      PARM.LKED=${PARML:-'MAP,LIST,LET,NCAL'},
-//      PARM.GO=${PARMG:-''}
+//      COND.LKED=(8,LE,ASM),
+//      PARM.GO=${PARMG:-''},
+//      COND.GO=((8,LE,ASM),(4,LT,LKED))
 //ASM.SYSUT1 DD DSN=&&SYSUT1,UNIT=SYSDA,SPACE=${SYSUT1SPA:-(1700,(600,100))}
 //ASM.SYSUT2 DD DSN=&&SYSUT2,UNIT=SYSDA,SPACE=${SYSUT2SPA:-(1700,(300,50))}
 //ASM.SYSUT3 DD DSN=&&SYSUT3,UNIT=SYSDA,SPACE=${SYSUT2SPA:-(1700,(300,50))}
