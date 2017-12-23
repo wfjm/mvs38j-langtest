@@ -1,45 +1,73 @@
-# w11: PDP 11/70 CPU and SoC
+# mvs38j-langtest: MVS 3.8J Compiler and Language Tests
 
 ### Overview
-The project contains the VHDL code for a **complete DEC PDP-11 system**:
-a PDP-11/70 CPU with memory management unit, but without floating point unit,
-a complete set of mass storage peripherals
-(RK11/RK05, RL11/RL02, RK70/RP06, TM11/TU10)
-and a basic set of UNIBUS peripherals
-(DL11, LP11, PC11),
-and last but not least a cache and memory controllers for SRAM and PSRAM.
-The design is **FPGA proven**, runs currently on
-Digilent Arty, Basys3, CmodA7, Nexys4, Nexys3, Nexys2 and S3board boards
-and boots 5th Edition UNIX and 2.11BSD UNIX. 
+The project contains example codes for many of the languages available
+on the MVS 3.8J turnkey systems. Several test cases have been implemented
+with equivalent logic in the available languages.
+JES2 jobs are provided to 'compile-link-go' the codes with the available
+compilers (in some cases several for one language). Test jobs, which
+generate detailed output for verification, as well as benchmark jobs,
+which consume a significant amount of CPU time, are provided.
 
-For more information look into:
-- w11 project [home page](https://wfjm.github.io/home/w11/)
-  and [blog](https://wfjm.github.io/blogs/w11/)
-- [change log](doc/CHANGELOG.md)
-  and [installation notes](doc/INSTALL.md)
-- guides to build bit files and test benches
-  with [Xilinx Vivado](doc/README_buildsystem_Vivado.md.html)
-  and [Xilinx ISE](doc/README_buildsystem_ISE.md.html)
-- guides to [run test benches](doc/w11a_tb_guide.md)
-  and to [boot operating systems](doc/w11a_os_guide.md)
-- known issues [general](doc/README_known_issues.md)
-  and [w11a CPU](doc/w11a_known_issues.md)
+### The Cases
+The test cases are choosen to test different aspects of languages and
+are identified by a 4 character case ID:
 
-A short description of the directory layout
-[is provided separately](https://wfjm.github.io/home/w11/impl/dirlayout.html),
-the top level directories are
+| Case ID | Description | Objective |
+| :-----: | ----------- | --------- |
+| [hewo](codes/README_hewo.md) | The classical **'Hello Word'** | Get **minimal program** producing output |
+| [sine](codes/README_sine.md) | Line **printer plot** of sine and cosine | Test **basic text & character handling** |
+| [soep](codes/README_soep.md) | Sieve of Erastosthenes **prime search** (byte) | Test **integer array handling** and **formatted output** |
+| [soeq](codes/README_soeq.md) | Sieve of Erastosthenes **prime search (bit)** | Test **bit handling** |
+| [towh](codes/README_towh.md) | **Tower of Hanio** solver | Test **recursive function calls** |
+| [mcpi](codes/README_mcpi.md) | **Monte Carlo** estimate of pi | Test **floating point arithmetic** |
+
+The cases were implemented with essentially the same basic logic in all
+langauges so that one can compare the code quality of the compilers.
+The algorithms should also be short and simple, so that an assembler
+implementation is feasible. Beyond that the pick of cases is highly
+biased by the background of the author, see '_Author's Note_' section
+in each of the READMEs.
+
+The [tk4-](http://wotho.ethz.ch/tk4-/) system kindly provided by Juergen
+Winkelmann contains a nice selection of compilers.
+For further reference each compiler is identified by 3 or 4 character
+compiler ID.
+The links in the table point to the 'compile-link-go' JCL templates in
+the [jcl](jcl) directory:
+
+| Language  | Compiler ID | Description |
+| --------- | :---------: | ----------- |
+| Algol 60  | [a60](jcl/job_a60_clg.JESI) | IBM Algol 60: 360S-AL-531 LEVEL 2.1 |
+| Assembler | [asm](jcl/job_asm_clg.JESI) | IBM Assembler Level F (370) |
+| C         | [gcc](jcl/job_gcc_clg.JESI) | MVSGCC, a 370 port of gcc |
+| C         | [jcc](jcl/job_jcc_clg.JESI) | early version of Dignus System/C |
+| Cobol     | [cob](jcl/job_cob_clg.JESI) | IBM Cobol CB545 V2 LVL78 01MAY72 |
+| Fortran-4 | [forg](jcl/job_forg_clg.JESI) | IBM FORTRAN IV G LEVEL  21 |
+| Fortran-4 | [forh](jcl/job_forh_clg.JESI) | IBM FORTRAN H LEVEL 21.8 |
+| Fortran-4 | [forw](jcl/job_forw_clg.JESI) | WATFIV Compiler JAN 1976 V1L5 |
+| Pascal    | [pas](jcl/job_pas_clg.JESI) | Stanford PASCAL, Version of Oct.-79 |
+| PL/I      | [pli](jcl/job_pli_clg.JESI) | IBM PL/I COMPILER (F) VERSION 5.5 |
+| Simula    | [sim](jcl/job_sim_clg.JESI) | SIMULA 67 (VERS 12.00) |
+
+### The Codes
+The test cases were, if possible, implemented in these languages.
+The matrix of available Language-Case combinations is shown in the
+[README](codes/README.md) of the [codes](codes) directory.
+
+### The Jobs
+For each Language-Case combination one or several batch jobs are provided,
+a sumary of the available jobs is shown in the
+[README](jobs/README.md) of the [jobs](jobs) directory.
+
+### Directory organization
+The project files are organized in directories as
 
 | Directory | Content |
 | --------- | ------- |
-| [doc](doc)     | documentation |
-| [rtl](rtl)     | HDL sources (mostly vhdl) |
-| [tools](tools) | many tools |
-
-### Note on freecores/w11
-The [freecores team](http://freecores.github.io/) created in 2014 a
-copy of almost all OpenCores cores in Github under
-[freecores](https://github.com/freecores). This created
-[freecores/w11](https://github.com/freecores/w11)
-which is 
-[*outdated* and *not maintained*](https://github.com/freecores/w11/issues/1).
-***Only [wfjm/w11](https://github.com/wfjm/w11) is maintained***.
+| [bin](bin)     | some helper scripts |
+| [clib](clib)   | assembler code sniplets  |
+| [codes](codes) | the codes |
+| [jcl](jcl)     | JCL job templates |
+| [jobs](jobs)   | the jobs |
+| [tests](tests) | some test programs |
