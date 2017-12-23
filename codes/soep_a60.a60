@@ -1,6 +1,6 @@
 'BEGIN'
 'COMMENT'
-* $Id: soep_a60.a60 965 2017-11-19 21:36:33Z mueller $
+* $Id: soep_a60.a60 972 2017-12-23 20:55:41Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *  
@@ -10,6 +10,8 @@
 *  
 *   Revision History:
 *  Date         Rev Version  Comment
+*  2017-12-23   972   1.1    change (n-1)/2 --> n'/'2
+*                            use integer '/' divide
 *  2017-09-17   951   1.0    Initial version
 *  2017-09-05   946   0.1    First draft
 *;
@@ -30,17 +32,17 @@
     'GOTO' DONE;
   'END';
 
-  IMAX := (NMAX-1)/2;
+  IMAX := (NMAX-1)'/'2;
 
   'BEGIN'
     'BOOLEAN' 'ARRAY' PRIME[0:IMAX];
     'FOR' I := 0 'STEP' 1 'UNTIL' IMAX 'DO' PRIME[I] := 'TRUE';
   
     'FOR' N := 3 'STEP' 2 'UNTIL' NMAX 'DO' 'BEGIN'
-      'IF' 'NOT' PRIME[(N-1)/2]  'THEN' 'GOTO' NSIEVE;
+      'IF' 'NOT' PRIME[N'/'2]  'THEN' 'GOTO' NSIEVE;
       N2 := N * N;
       'IF' N2 > NMAX  'THEN' 'GOTO' ESIEVE;
-      IMIN := (N2-1)/2;
+      IMIN := N2'/'2;
       'FOR' I := IMIN 'STEP' N 'UNTIL' IMAX 'DO' PRIME[I] := 'FALSE';
       NSIEVE:;
     'END';
