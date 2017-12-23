@@ -1,4 +1,4 @@
-/* $Id: soeq_cc.c 966 2017-11-26 19:46:49Z mueller $ */
+/* $Id: soeq_cc.c 972 2017-12-23 20:55:41Z mueller $ */
 /*
 /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
 /*
@@ -8,6 +8,7 @@
 /*                                                                   */
 /*  Revision History:                                                */
 /* Date         Rev Version  Comment                                 */
+/* 2017-12-23   972   1.1.1  change (n-1)/2 --> n/2                  */
 /* 2017-11-20   966   1.1    add LOOKUP,STATISTICS ifdefs            */
 /* 2017-11-17   962   1.0    Initial version                         */
 /* 2017-10-15   956   0.1    First draft                             */
@@ -73,10 +74,10 @@ int main()
   for (p=prime; p<=pmax;) *p++ = 0xff;
 
   for (n=3; n<=nmsqrt; n+=2) {
-    i = (n-1)/2;
+    i = n/2;
     if ((prime[i>>3] & TSTMASK(i&0x7)) == 0) continue;
     SCOUNT(StatOloop);
-    for (i=(n*n-1)/2; i<=bimax ; i+=n) {
+    for (i=(n*n)/2; i<=bimax ; i+=n) {
       prime[i>>3] &= CLRMASK(i&0x7);
       SCOUNT(StatIloop);
     }

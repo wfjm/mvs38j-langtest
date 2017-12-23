@@ -1,4 +1,4 @@
-(* $Id: soep_pas.pas 964 2017-11-19 08:47:46Z mueller $ *)
+(* $Id: soep_pas.pas 972 2017-12-23 20:55:41Z mueller $ *)
 (*
 (* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*
@@ -8,7 +8,8 @@
 (*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)
-(* 2017-09-07   948   0.1    Initial version                         *)
+(* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  *)
+(* 2017-09-07   948   1.0    Initial version                         *)
 
 program soep(input,output);
 label
@@ -34,10 +35,10 @@ begin
 
    n    := 3;
    while n <= nmax do begin
-      if sieve[(n-1) div 2] then begin
+      if sieve[n div 2] then begin
          n2 := n*n;
          if n2 > nmax then goto 999;
-         i := (n2-1) div 2;
+         i := n2 div 2;
          while i <= imax do begin
             sieve[i] := FALSE;
             i := i + n;

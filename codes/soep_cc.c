@@ -1,4 +1,4 @@
-/* $Id: soep_cc.c 964 2017-11-19 08:47:46Z mueller $ */
+/* $Id: soep_cc.c 972 2017-12-23 20:55:41Z mueller $ */
 /*
 /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
 /*
@@ -8,6 +8,7 @@
 /*                                                                   */
 /*  Revision History:                                                */
 /* Date         Rev Version  Comment                                 */
+/* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  */
 /* 2017-10-15   956   1.0    Initial version                         */
 /* 2017-08-17   941   0.1    First draft                             */
 
@@ -45,8 +46,8 @@ int main()
   for (p=prime; p<=pmax;) *p++ = 1;
 
   for (n=3; n<=nmsqrt; n+=2) {    
-    if (prime[(n-1)/2] == 0) continue;
-    for (p=&prime[(n*n-1)/2]; p<=pmax; p+=n) *p = 0;
+    if (prime[n/2] == 0) continue;
+    for (p=&prime[(n*n)/2]; p<=pmax; p+=n) *p = 0;
   }
 
   if (prnt) {

@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: soeq_asm.asm 965 2017-11-19 21:36:33Z mueller $
+* $Id: soeq_asm.asm 972 2017-12-23 20:55:41Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
 * 2017-11-19   965   1.1    no XR in inner loop, bit reversed prime[]
 * 2017-11-18   963   1.0    Initial version
 *
@@ -141,9 +142,9 @@ NMSQRTOK EQU   *
 *
 *   equivalent C code:
 *     for (n=3; n<=nmsqrt; n+=2) {
-*       i = (n-1)/2;
+*       i = n/2;
 *       if ((prime[i>>3] & (0x80>>(i&0x7))) == 0) continue;
-*       for (i=(n*n-1)/2; i<=bimax ; i+=n) {
+*       for (i=(n*n)/2; i<=bimax ; i+=n) {
 *         prime[i>>3] &= (0xff7f>>(i&0x7);     '!!pseudo code !!'
 *       }
 *     }
@@ -157,8 +158,7 @@ NMSQRTOK EQU   *
          L     R11,=X'FFFFFF7F'   R11:=0xffffff7f
 *
 SIEVO    LR    R2,R6              R2:=n
-         BCTR  R2,0               R2:=n-1
-         SRA   R2,1               R2:=(n-1)/2
+         SRA   R2,1               R2:=n/2
          LR    R15,R2             i
          NR    R15,R10            i&0x07
          LR    R1,R8              0x80
@@ -171,9 +171,7 @@ SIEVO    LR    R2,R6              R2:=n
          LR    R1,R6              R1:=n
          MR    R0,R6              R1:=n*n (lower half, enough)
          LR    R3,R1              R3:=n*n too
-*
-         BCTR  R3,0               R3:=n*n-1
-         SRA   R3,1               R3:=(n*n-1)/2
+         SRA   R3,1               R3:=(n*n)/2
 *
 SIEVI    LR    R2,R3              i
          NR    R2,R10             i&0x7

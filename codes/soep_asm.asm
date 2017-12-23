@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: soep_asm.asm 964 2017-11-19 08:47:46Z mueller $
+* $Id: soep_asm.asm 972 2017-12-23 20:55:41Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
 * 2017-11-12   961   1.0    Initial version
 * 2017-10-03   954   0.1    First draft
 *
@@ -157,9 +158,8 @@ NMSQRTOK EQU   *
          LR    R7,R9                         R7:=&prime
          A     R7,IMAX            inner lim: R7:=&prime[imax]
 SIEVO    LR    R2,R6              R2:=n
-         BCTR  R2,0               R2:=n-1
-         SRA   R2,1               R2:=(n-1)/2
-         AR    R2,R9              R2:=&prime[(n-1)/2]
+         SRA   R2,1               R2:=n/2
+         AR    R2,R9              R2:=&prime[n/2]
          CLI   0(R2),X'00'        test prime candidate
          BE    SIEVOC             if = not, continue outer loop
 *
@@ -167,8 +167,7 @@ SIEVO    LR    R2,R6              R2:=n
          MR    R0,R6              R1:=n*n (lower half, enough)
          LR    R3,R1              R3:=n*n too
 *
-         BCTR  R3,0               R3:=n*n-1
-         SRA   R3,1               R3:=(n*n-1)/2
+         SRA   R3,1               R3:=(n*n)/2
          AR    R3,R9              R3:=&prime[(n*n-1)/2]
 *
 SIEVI    MVI   0(R3),X'00'        *p=0

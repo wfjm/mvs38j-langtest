@@ -1,6 +1,6 @@
 C        1         2         3         4         5         6         712--------
 C2345*78901234567890123456789012345678901234567890123456789012345678901234567890
-C $Id: soep_for.f 964 2017-11-19 08:47:46Z mueller $
+C $Id: soep_for.f 972 2017-12-23 20:55:41Z mueller $
 C
 C Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 C
@@ -10,6 +10,7 @@ C See Licence.txt in distribition directory for further details.
 C
 C  Revision History:
 C Date         Rev Version  Comment
+C 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
 C 2017-09-17   951   1.0    Initial version
 C 2017-08-26   942   0.1    First draft
 C
@@ -30,10 +31,10 @@ C
  100  CONTINUE
 C
       DO 300 N=3,NMAX,2
-        IF (.NOT. PRIME((N-1)/2)) GOTO 300
+        IF (.NOT. PRIME(N/2)) GOTO 300
         N2 = N*N
         IF (N2 .GT. NMAX) GOTO 301
-        IMIN = (N2-1)/2
+        IMIN = N2/2
         DO 200 I=IMIN,IMAX,N
           PRIME(I) = .FALSE.
  200    CONTINUE

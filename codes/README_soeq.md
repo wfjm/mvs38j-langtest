@@ -25,9 +25,9 @@ example an algorithm core in C like
     const unsigned char clrmask[] = {0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};
     ...
     for (n=3; n<=nmsqrt; n+=2) {
-      i = (n-1)/2;
+      i = n/2;
       if ((prime[i>>3] & tstmsk[i&0x7]) == 0) continue;
-      for (i=(n*n-1)/2; i<=bimax ; i+=n) prime[i>>3] &= clrmsk[i&0x7];
+      for (i=(n*n)/2; i<=bimax ; i+=n) prime[i>>3] &= clrmsk[i&0x7];
     }
 ```
 

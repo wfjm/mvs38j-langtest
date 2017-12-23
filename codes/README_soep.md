@@ -55,8 +55,8 @@ This basic form can be refined by
 The core of the algorithm is just 4 lines in C (with nmsqrt = sqrt(nmax)):
 ``` c
     for (n=3; n<=nmsqrt; n+=2) {    
-      if (prime[(n-1)/2] == 0) continue;
-      for (p=&prime[(n*n-1)/2]; p<=pmax; p+=n) *p = 0;
+      if (prime[n/2] == 0) continue;
+      for (p=&prime[(n*n)/2]; p<=pmax; p+=n) *p = 0;
     }
 ```
 
