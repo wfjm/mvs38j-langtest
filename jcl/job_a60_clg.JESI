@@ -7,7 +7,7 @@
 //** /*    ${REGION}    1024K               job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
-//** /*    ${PARMC}     ''                  compile step PARM (not working)
+//** /*    ${PARMC}     ''                  compile step PARM
 //** /*    ${PARML}     'MAP,LIST,LET'      linker  step PARM
 //** /*    ${PARMG}     ''                  go      step PARM
 //** /*
