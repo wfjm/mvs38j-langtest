@@ -9,6 +9,7 @@
 //** /*    ${PRTY}      8                   job priority
 //** /*    ${PARMC}     '-o'                    compile  step PARM
 //** /*    ${PARML}     'NCAL,MAP,LIST,NORENT'  linker  step PARM
+//** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
 //** /*
 //${JOB} JOB 'S322-0C4','WFJM',
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
@@ -19,6 +20,8 @@
 //COMPILE.SYSIN DD DATA,DLM='/@'
 //** ##include ${DDSRC}
 /@
+//GO.STDOUT DD SYSOUT=*,OUTLIM=${OUTLIM:-5000}
+//GO.STDERR DD SYSOUT=*,OUTLIM=${OUTLIM:-5000}
 //GO.SYSIN DD *
 //** ##include ${DDDAT}
 /*

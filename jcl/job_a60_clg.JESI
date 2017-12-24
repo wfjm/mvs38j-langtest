@@ -10,6 +10,7 @@
 //** /*    ${PARMC}     ''                  compile step PARM
 //** /*    ${PARML}     'MAP,LIST,LET'      linker  step PARM
 //** /*    ${PARMG}     ''                  go      step PARM
+//** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
 //** /*
 //${JOB} JOB 'S322-0C4','WFJM',
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
@@ -21,6 +22,7 @@
 //ALGOL.SYSIN DD *
 //** ##include ${DDSRC}
 /*
+//GO.ALGLDD01 DD SYSOUT=*,OUTLIM=${OUTLIM:-5000}
 //GO.SYSIN DD *
 //** ##include ${DDDAT}
 /*

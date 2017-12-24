@@ -2,4 +2,5 @@
 //** ##define  REGION 6000K
 //** ##define  DDSRC  ../codes/soep_for.f
 //** ##define  DDDAT  ../codes/soep_cprt.dat
+//** ##define  OUTLIM 100000
 //** ##include ../jcl/job_forh_clg.JESI

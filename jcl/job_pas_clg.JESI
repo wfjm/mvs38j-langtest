@@ -7,6 +7,7 @@
 //** /*    ${REGION}    256K                job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
 //** /*
 //${JOB} JOB 'S322-0C4','WFJM',
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
@@ -15,6 +16,7 @@
 //COMPILE.SYSIN DD *
 //** ##include ${DDSRC}
 /*
+//GO.OUTPUT DD SYSOUT=*,OUTLIM=${OUTLIM:-5000}
 //GO.SYSIN DD *
 //** ##include ${DDDAT}
 /*
