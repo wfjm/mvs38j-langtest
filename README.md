@@ -56,9 +56,14 @@ The matrix of available Language-Case combinations is shown in the
 [README](codes/README.md) of the [codes](codes) directory.
 
 ### The Jobs
-For each Language-Case combination one or several batch jobs are provided,
-a sumary of the available jobs is shown in the
-[README](jobs/README.md) of the [jobs](jobs) directory.
+For each Language-Case combination one or several batch jobs are provided
+in the [jobs](jobs) directory. See
+[README](jobs/README.md) for the matrix of available
+[Case - Job Type](jobs/README.md#user-content-types) combinations
+and for the matrix of available
+[Compiler-Case](jobs/README.md#user-content-jobs) combinations,
+which also a includes the list of known issues.
+
 
 ### Directory organization
 The project files are organized in directories as

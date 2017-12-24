@@ -1,4 +1,10 @@
-### Overview
+### Table of content
+
+- [Overview](#user-content-overview)
+- [Available Job Types](#user-content-types)
+- [Available Jobs](#user-content-jobs)
+
+### Overview <a name="overview"></a>
 
 Each case in implemented in different languages, and for some cases
 several job types (like test job, benchmark job) are provided.
@@ -16,7 +22,7 @@ The `.JES` are short and contain
 - name of jcl template file (type `.JESI`, from [jcl](../jcl) directory)
 - if required, special job parameters used by the template
 
-### Available Job Types
+### Available Job Types <a name="types"></a>
 For some test cases several job types are provided
 
 | Case ID | Job Type | Decription |
@@ -36,14 +42,34 @@ For some test cases several job types are provided
 
 For details follow the link in the Case ID column and consult the "Jobs" section.
 
-### Known issues
-- `mcpi_jcc_*.JES` fail on [tk4-](http://wotho.ethz.ch/tk4-/) update 08 due
-  to a compiler bug.
+### Available Jobs <a name="jobs"></a>
+The available Compiler-Case combinations are
+
+| Language  | Compiler ID | [hewo](../codes/README_hewo.md) | [sine](../codes/README_sine.md) | [soep](../codes/README_soep.md) | [soeq](../codes/README_soeq.md) | [towh](../codes/README_towh.md) | [mcpi](../codes/README_mcpi.md) |
+| --------- | :---------: | :--- | :--- | :--- | :--- | :--- | :--- |
+| Algol 60  | [a60](../jcl/job_a60_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f **N02** |
+| Assembler | [asm](../jcl/job_asm_clg.JESI)   | yes  | --   | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
+| C         | [gcc](../jcl/job_gcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
+| C         | [jcc](../jcl/job_jcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f **N01** |
+| Cobol     | [cob](../jcl/job_cob_clg.JESI)   | yes  | --   | --          | --          | --      | --             |
+| Fortran-4 | [forg](../jcl/job_forg_clg.JESI) | yes  | yes  | --          | --          | _t, _f  | _t, _f         |
+| Fortran-4 | [forh](../jcl/job_forh_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| Fortran-4 | [forw](../jcl/job_forw_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| Pascal    | [pas](../jcl/job_pas_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| PL/I      | [pli](../jcl/job_pli_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | --          | --          | _t, _f  | _t, _f         |
+
+#### Known issues
+- **N01:** `mcpi_jcc_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)
+  update 08 due to a compiler bug.
   JCC generates a wrong constant, which screws up the random number sequence.
   The code compiles and executes, but the results are wrong.
-- `mcpi_a60_*.JES` fail on [tk4-](http://wotho.ethz.ch/tk4-/) update 08 due
-  to a compiler bug.
+  The bug is reported to the maintainer.
+- **N02:** `mcpi_a60_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)
+  update 08 due to a compiler bug.
   The code requires double precision floating point, which in IBM Algol 60
   must be selected with a compiler option. Due to a bug in the compiler this
   option is not recognized, simgle precision code generate, which is does not
   give proper results.
+  The bug is reported to the maintainer, a fixed version of the compiler is
+  available and will ship with tk4- update 09.
