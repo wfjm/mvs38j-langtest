@@ -1,0 +1,5 @@
+//** ##define  JOB    SOEP#SIM
+//** ##define  REGION 6000K
+//** ##define  DDSRC  ../codes/soep_sim.sim
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##include ../jcl/job_sim_clg.JESI

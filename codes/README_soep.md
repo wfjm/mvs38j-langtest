@@ -74,21 +74,36 @@ See typical [test run](soep_ctst.dat) or
 [print benchmark run](soep_cprt.dat) input files.
 
 ### Language and Compiler Notes <a name="langcomp"></a>
-The sieve array is dynamically allocated in all languages which support this.
+The sieve array is dynamically allocated whenever feasible.
 
 #### Algol 60 - [soep_a60.a60](soep_a60.a60)
 The IBM Algol compiler generates a new stack frame for each `'BEGIN'`, even
 when no new variables are declared. That's why `'GOTO'` is used in the inner
 loop, that gives a substantial speed improvement. A somewhat sobering finding.
 
-#### Fortran 4 - [soep_for.f](soep_for.f)
-Fortran introduced dynamic memory allocation only with
-[Fortran 90](https://en.wikipedia.org/wiki/Fortran#Fortran_90),
-so the sieve array is statically allocated.
-
 #### PL/I - [soep_pli.pli](soep_pli.pli)
 The PL/I compiler available with MVS3.8J restricts array bounds to
 16 bit integer values. That limits the sieve array to 30000.
+
+#### Simula - [soep_sim.sim](soep_sim.sim)
+Due to compiler bug in SIMULA 67 (VERS 12.00) the obvious implementation
+of the inner loop as
+```
+    FOR i:= n2 // 2 STEP n UNTIL imax DO prime(i) := FALSE;
+```
+
+crashes with a `FIXED POINT OVFL` run time error. Closer investigation show
+that this happens in the initialization of the `FOR` loop. Replacing the
+`FOR` loop with the equivalent `WHILE` loop
+```
+    i := n2 // 2;
+    WHILE i <= imax DO BEGIN
+      prime(i) := FALSE;
+      i:= i +  n;
+    END;
+```
+
+works around this issue.
 
 ### Jobs <a name="jobs"></a>
 The [jobs](../jobs) directory contains three types of jobs for `soep` named

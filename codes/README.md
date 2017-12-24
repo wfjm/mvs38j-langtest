@@ -10,7 +10,7 @@ The available Language-Case combinations are
 | Fortran-4 | [for](hewo_for.f)   | [for](sine_for.f)   | [for](soep_for.f)   | --                  | [for](towh_for.f)   | [for](mcpi_for.f)   |
 | Pascal    | [pas](hewo_pas.pas) | [pas](sine_pas.pas) | [pas](soep_pas.pas) | maybe               | [pas](towh_pas.pas) | [pas](mcpi_pas.pas) |
 | PL/I      | [pli](hewo_pli.pli) | [pli](sine_pli.pli) | [pli](soep_pli.pli) | todo                | [pli](towh_pli.pli) | [pli](mcpi_pli.pli) |
-| Simula    | [sim](hewo_sim.sim) | [sim](sine_sim.sim) | todo                | --                  | [sim](towh_sim.sim) | [sim](mcpi_sim.sim) |
+| Simula    | [sim](hewo_sim.sim) | [sim](sine_sim.sim) | [sim](soep_sim.sim) | --                  | [sim](towh_sim.sim) | [sim](mcpi_sim.sim) |
 
 The jobs are in the [jobs](../jobs) directory, see
 [README](../jobs/README.md) for the

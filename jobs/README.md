@@ -57,7 +57,7 @@ The available Compiler-Case combinations are
 | Fortran-4 | [forw](../jcl/job_forw_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | Pascal    | [pas](../jcl/job_pas_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | PL/I      | [pli](../jcl/job_pli_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
-| Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | --          | --          | _t, _f  | _t, _f         |
+| Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 
 #### Known issues
 - **N01:** `mcpi_jcc_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)

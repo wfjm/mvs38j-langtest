@@ -1,0 +1,99 @@
+COMMENT
+* 
+* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* 
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+* 
+*  Revision History:
+* Date         Rev Version  Comment
+* 2017-12-24   973   1.1    use WHILE not FOR to avoid compiler bug 
+* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
+* 2017-09-17   951   1.0    Initial version
+* 2017-09-08   949   0.1    First draft
+*
+* Note on SIMULA 67 (VERS 12.00) complier bug workaround
+* - an inner loop codes as
+*     FOR i:= n2 // 2 STEP n UNTIL imax DO prime(i) := FALSE
+*   fails with 'FIXED POINT OVFL at line' of the FOR loop.
+* - The equivalent WHILE loop used below works.
+*;
+
+BEGIN
+   INTEGER nmax,prnt,imax;
+   INTEGER i,n,n2,imin;
+   INTEGER np,il,nl;
+   BOOLEAN ARRAY prime(1:5000000);
+
+   nmax := InInt;
+   prnt := InInt;
+
+   IF nmax < 10 OR nmax > 10000000 THEN BEGIN
+      OutText("nmax out of range (10...10000000), abort");
+      GOTO done;
+   END;
+
+   imax := (nmax-1) // 2;
+   FOR i := 1 STEP 1 UNTIL imax DO prime(i) := TRUE;
+
+   FOR n := 3 STEP 2 UNTIL nmax DO BEGIN
+      IF prime(n//2) THEN BEGIN
+         n2 := n*n;
+         IF n2 > nmax THEN GOTO esieve;
+         i := n2 // 2;
+         WHILE i <= imax DO BEGIN
+            prime(i) := FALSE;
+            i:= i +  n;
+         END;
+      END;
+   END;
+   esieve:
+
+   IF prnt > 0 THEN BEGIN
+      OutText("List of Primes up to ");
+      OutInt(nmax,8);
+      OutImage;
+      OutInt(2,8);
+      np := 1;
+      FOR i := 1 STEP 1 UNTIL imax DO BEGIN
+         IF prime(i) THEN BEGIN
+            OutInt(1+2*i,8);
+            np := np + 1;
+            IF np = 10 THEN BEGIN
+               OutImage;
+               np := 0;
+            END;
+         END;
+      END;
+      IF np > 0 THEN OutImage;
+   END;
+      
+   il :=  4;
+   nl := 10;
+   np :=  1;
+   
+   FOR i := 1 STEP 1 UNTIL imax DO BEGIN
+      IF prime(i) THEN np := np + 1;
+      IF i = il THEN BEGIN
+         nl := 2*il + 2;
+         OutText("pi(");
+         OutInt(nl,8);
+         OutText(")=");
+         OutInt(np,8);
+         OutImage;
+        il := 10*(il+1)-1;
+      END;
+   END;
+   
+   IF nl < nmax THEN BEGIN
+      OutText("pi(");
+      OutInt(nmax,8);
+      OutText(")=");
+      OutInt(np,8);
+      OutImage;
+   END;
+
+   done:
+   OutImage;
+END;
