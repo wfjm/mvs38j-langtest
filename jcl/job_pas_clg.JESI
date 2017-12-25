@@ -4,15 +4,22 @@
 //** /*    ${JOB}                           job name
 //** /*    ${DDSRC}                         source file
 //** /*    ${DDDAT}                         data file
-//** /*    ${REGION}    256K                job memory
+//** /*    ${REGION}    1024K               job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${GOTIME}    3600                go      step time limit
+//** /*    ${GOSTACK}   512k                go      step stack size
 //** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
+//** /*
+//** /* Notes:
+//** /*  1. execution time normally controller via TIME, only if more
+//** /*     than one hour wanted GOTIME must be increasted too.
 //** /*
 //${JOB} JOB 'S322-0C4','WFJM',
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
-//      REGION=${REGION:-256K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
-//CLG EXEC PASCLG
+//      REGION=${REGION:-1024K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//CLG EXEC PASCLG,GOTIME=${GOTIME:-3600},GOREG=${REGION:-1024K},
+//      GOPARM='/STACK=${GOSTACK:-512k}'
 //COMPILE.SYSIN DD *
 //** ##include ${DDSRC}
 /*

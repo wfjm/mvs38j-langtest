@@ -1,4 +1,4 @@
-(* $Id: soep_pas.pas 972 2017-12-23 20:55:41Z mueller $ *)
+(* $Id: soep_pas.pas 974 2017-12-25 15:13:08Z mueller $ *)
 (*
 (* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*
@@ -8,6 +8,7 @@
 (*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)
+(* 2017-12-25   974   1.1    5M sieve array                          *)
 (* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  *)
 (* 2017-09-07   948   1.0    Initial version                         *)
 
@@ -18,15 +19,15 @@ var
    nmax,prnt,imax : integer;
    i,n,n2,imin    : integer;
    np,il,nl       : integer;
-   sieve          : ARRAY[1 .. 30000] of boolean;
+   sieve          : ARRAY[1 .. 5000000] of boolean;
    
 begin
       
    read(nmax);
    read(prnt);
 
-   if (nmax < 10) or (nmax > 60000) then begin
-      writeln(' ', 'nmax out of range (10...60000), abort');
+   if (nmax < 10) or (nmax > 10000000) then begin
+      writeln(' ', 'nmax out of range (10...10000000), abort');
       exit(8);
    end;
    

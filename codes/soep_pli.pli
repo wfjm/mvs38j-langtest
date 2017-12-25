@@ -1,6 +1,6 @@
  /*      1         2         3         4         5         6         7*/--------
  /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
- /* $Id: soep_pli.pli 972 2017-12-23 20:55:41Z mueller $ */
+ /* $Id: soep_pli.pli 974 2017-12-25 15:13:08Z mueller $ */
  /*
  /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
  /*
@@ -10,6 +10,7 @@
  /*                                                                   */
  /*  Revision History:                                                */
  /* Date         Rev Version  Comment                                 */
+ /* 2017-12-25   974   1.1    use 2-dim PRIME array                   */
  /* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  */
  /* 2017-09-17   951   1.0    Initial version                         */
  /* 2017-09-01   945   0.1    First draft                             */
@@ -18,8 +19,11 @@
     DCL (NMAX,PRNT,IMAX)  BIN FIXED(31) INIT(0);
     DCL (I,N,N2,IMIN)     BIN FIXED(31) INIT(0);
     DCL (NP,IL,NL)        BIN FIXED(31) INIT(0);
-    /* in PL/I(F) V5.5 array bounds are BIN(15) ! limit to 30000 */  
-    DCL PRIME(30000)    BIT(1);
+    /* in PL/I(F) V5.5 array bounds are BIN(15) ! limited to 32k !!   */
+    /* so go for a 2-dimensional array; 4883*1024 = 5000192;          */
+    /* use 0 as lower bound to make index calculations easy:          */
+    /*   PRIME(I) turns into PRIME(I/1024,MOD(I,1024))                */
+    DCL PRIME(0:4882,0:1023)  BIT(1);
 
     ON ENDFILE(SYSIN) BEGIN;
        PUT SKIP EDIT('Unexpected EOF, abort')(A);
@@ -32,25 +36,26 @@
     
     GET EDIT(NMAX,PRNT) (F(10),F(10));
 
-    /*IF NMAX < 10 | NMAX  > 60000 THEN DO;*/
-    IF NMAX  > 60000 THEN DO;
-      PUT SKIP EDIT('nmax out of range (10...60000), abort') (A);
+    /*IF NMAX < 10 | NMAX  > 10000000 THEN DO;*/
+    IF NMAX  > 10000000 THEN DO;
+      PUT SKIP EDIT('nmax out of range (10...10000000), abort') (A);
       GOTO DONE;
     END;
 
     IMAX = (NMAX-1)/2;
 
     DO I=1 TO IMAX;
-      PRIME(I) = '1'B;
+      PRIME(I/1024,MOD(I,1024)) = '1'B;
     END;
 
     DO N=3 TO NMAX BY 2;
-      IF PRIME(N/2) THEN DO;
+      I  = N/2;
+      IF PRIME(I/1024,MOD(I,1024)) THEN DO;
         N2 = N*N;
         IF N2 > NMAX THEN GOTO END_SIEVE;
         IMIN = N2/2;
         DO I=IMIN TO IMAX BY N;
-          PRIME(I) = '0'B;
+          PRIME(I/1024,MOD(I,1024)) = '0'B;
         END;
       END;
     END;
@@ -61,7 +66,7 @@
       PUT SKIP EDIT(' ',2) (A,F(7));
       NP = 1;
       DO I=1 TO IMAX;
-        IF PRIME(I) THEN DO;
+        IF PRIME(I/1024,MOD(I,1024)) THEN DO;
           PUT EDIT(' ',1+2*I) (A,F(7));
           NP = NP + 1;
           IF NP = 10 THEN DO;
@@ -77,7 +82,7 @@
     NL = 10;
     NP =  1;
     DO I=1 TO IMAX;
-      IF PRIME(I) THEN NP = NP + 1;
+      IF PRIME(I/1024,MOD(I,1024)) THEN NP = NP + 1;
       IF I = IL THEN DO;
         NL = 2*IL + 2;
         PUT SKIP EDIT('pi(',NL,'): ',NP) (A,F(8),A,F(8));

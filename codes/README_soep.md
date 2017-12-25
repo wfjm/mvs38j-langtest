@@ -83,7 +83,20 @@ loop, that gives a substantial speed improvement. A somewhat sobering finding.
 
 #### PL/I - [soep_pli.pli](soep_pli.pli)
 The PL/I compiler available with MVS3.8J restricts array bounds to
-16 bit integer values. That limits the sieve array to 30000.
+16 bit integer values. To avoid this 64k storage limitation the `PRIME`
+array is two-dimensional. The dimensions are chosen such that the index
+calculation can be efficiently done (`MOD` is inlined by the compiler):
+```
+    DCL PRIME(0:4882,0:1023)  BIT(1);
+    ...
+    DO I=IMIN TO IMAX BY N;
+      PRIME(I/1024,MOD(I,1024)) = '1'B;
+    END;
+```
+
+Of course it costs CPU cycles to first split up the index into two
+components, just combine them a few instructions later to calculate
+the effective address. As result the `seop` PL/I code is rather slow.
 
 #### Simula - [soep_sim.sim](soep_sim.sim)
 Due to compiler bug in SIMULA 67 (VERS 12.00) the obvious implementation

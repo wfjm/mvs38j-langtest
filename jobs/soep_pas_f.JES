@@ -2,5 +2,5 @@
 //** ##define  REGION  6500K
 //** ##define  GOSTACK 5500K
 //** ##define  DDSRC  ../codes/soep_pas.pas
-//** ##define  DDDAT  ../codes/soep_ctst.dat
+//** ##define  DDDAT  ../codes/soep_cher.dat
 //** ##include ../jcl/job_pas_clg.JESI
