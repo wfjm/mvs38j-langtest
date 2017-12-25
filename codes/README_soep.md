@@ -76,11 +76,6 @@ See typical [test run](soep_ctst.dat) or
 ### Language and Compiler Notes <a name="langcomp"></a>
 The sieve array is dynamically allocated whenever feasible.
 
-#### Algol 60 - [soep_a60.a60](soep_a60.a60)
-The IBM Algol compiler generates a new stack frame for each `'BEGIN'`, even
-when no new variables are declared. That's why `'GOTO'` is used in the inner
-loop, that gives a substantial speed improvement. A somewhat sobering finding.
-
 #### PL/I - [soep_pli.pli](soep_pli.pli)
 The PL/I compiler available with MVS3.8J restricts array bounds to
 16 bit integer values. To avoid this 64k storage limitation the `PRIME`

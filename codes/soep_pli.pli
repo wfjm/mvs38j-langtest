@@ -1,6 +1,6 @@
  /*      1         2         3         4         5         6         7*/--------
  /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
- /* $Id: soep_pli.pli 974 2017-12-25 15:13:08Z mueller $ */
+ /* $Id: soep_pli.pli 975 2017-12-25 19:22:43Z mueller $ */
  /*
  /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
  /*
@@ -10,6 +10,7 @@
  /*                                                                   */
  /*  Revision History:                                                */
  /* Date         Rev Version  Comment                                 */
+ /* 2017-12-25   975   1.2    use sqrt(nmax) as outer loop end        */
  /* 2017-12-25   974   1.1    use 2-dim PRIME array                   */
  /* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  */
  /* 2017-09-17   951   1.0    Initial version                         */
@@ -17,7 +18,8 @@
 
   SOEP: PROC OPTIONS(MAIN) REORDER;
     DCL (NMAX,PRNT,IMAX)  BIN FIXED(31) INIT(0);
-    DCL (I,N,N2,IMIN)     BIN FIXED(31) INIT(0);
+    DCL (NMSQRT)          BIN FIXED(31) INIT(0);
+    DCL (I,N,IMIN)        BIN FIXED(31) INIT(0);
     DCL (NP,IL,NL)        BIN FIXED(31) INIT(0);
     /* in PL/I(F) V5.5 array bounds are BIN(15) ! limited to 32k !!   */
     /* so go for a 2-dimensional array; 4883*1024 = 5000192;          */
@@ -42,24 +44,22 @@
       GOTO DONE;
     END;
 
+    NMSQRT = FLOOR(SQRT(NMAX));
     IMAX = (NMAX-1)/2;
 
     DO I=1 TO IMAX;
       PRIME(I/1024,MOD(I,1024)) = '1'B;
     END;
 
-    DO N=3 TO NMAX BY 2;
+    DO N=3 TO NMSQRT BY 2;
       I  = N/2;
       IF PRIME(I/1024,MOD(I,1024)) THEN DO;
-        N2 = N*N;
-        IF N2 > NMAX THEN GOTO END_SIEVE;
-        IMIN = N2/2;
+        IMIN = N*N/2;
         DO I=IMIN TO IMAX BY N;
           PRIME(I/1024,MOD(I,1024)) = '0'B;
         END;
       END;
     END;
-    END_SIEVE:;
 
     IF PRNT > 0 THEN DO;
       PUT SKIP EDIT('List of Primes up to ',NMAX) (A,F(8));

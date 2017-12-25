@@ -8,6 +8,7 @@ COMMENT
 * 
 *  Revision History:
 * Date         Rev Version  Comment
+* 2017-12-25   975   1.2    use sqrt(nmax) as outer loop end
 * 2017-12-24   973   1.1    use WHILE not FOR to avoid compiler bug 
 * 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
 * 2017-09-17   951   1.0    Initial version
@@ -21,8 +22,8 @@ COMMENT
 *;
 
 BEGIN
-   INTEGER nmax,prnt,imax;
-   INTEGER i,n,n2,imin;
+   INTEGER nmax,prnt,imax,nmsqrt;
+   INTEGER i,n,imin;
    INTEGER np,il,nl;
    BOOLEAN ARRAY prime(1:5000000);
 
@@ -34,21 +35,19 @@ BEGIN
       GOTO done;
    END;
 
+   nmsqrt := Entier(Sqrt(nmax));
    imax := (nmax-1) // 2;
    FOR i := 1 STEP 1 UNTIL imax DO prime(i) := TRUE;
 
-   FOR n := 3 STEP 2 UNTIL nmax DO BEGIN
+   FOR n := 3 STEP 2 UNTIL nmsqrt DO BEGIN
       IF prime(n//2) THEN BEGIN
-         n2 := n*n;
-         IF n2 > nmax THEN GOTO esieve;
-         i := n2 // 2;
+         i := (n*n) // 2;
          WHILE i <= imax DO BEGIN
             prime(i) := FALSE;
             i:= i +  n;
          END;
       END;
    END;
-   esieve:
 
    IF prnt > 0 THEN BEGIN
       OutText("List of Primes up to ");

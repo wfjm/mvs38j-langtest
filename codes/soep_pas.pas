@@ -1,4 +1,4 @@
-(* $Id: soep_pas.pas 974 2017-12-25 15:13:08Z mueller $ *)
+(* $Id: soep_pas.pas 975 2017-12-25 19:22:43Z mueller $ *)
 (*
 (* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*
@@ -8,17 +8,18 @@
 (*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)
+(* 2017-12-25   975   1.2    use sqrt(nmax) as outer loop end        *)
 (* 2017-12-25   974   1.1    5M sieve array                          *)
 (* 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2                  *)
 (* 2017-09-07   948   1.0    Initial version                         *)
 
 program soep(input,output);
-label
-   999;
 var
    nmax,prnt,imax : integer;
-   i,n,n2,imin    : integer;
+   nmsqrt         : integer;
+   i,n,imin       : integer;
    np,il,nl       : integer;
+   rnmax          : real;
    sieve          : ARRAY[1 .. 5000000] of boolean;
    
 begin
@@ -30,16 +31,16 @@ begin
       writeln(' ', 'nmax out of range (10...10000000), abort');
       exit(8);
    end;
-   
+
+   rnmax  := nmax;
+   nmsqrt := trunc(sqrt(nmax));
    imax := (nmax-1) div 2;
    for i := 1 to imax do sieve[i] := TRUE;
 
    n    := 3;
-   while n <= nmax do begin
+   while n <= nmsqrt do begin
       if sieve[n div 2] then begin
-         n2 := n*n;
-         if n2 > nmax then goto 999;
-         i := n2 div 2;
+         i := (n*n) div 2;
          while i <= imax do begin
             sieve[i] := FALSE;
             i := i + n;
@@ -47,7 +48,6 @@ begin
       end;
       n := n + 2;
    end;
-   999:
    
    if prnt > 0 then begin
       writeln(' ', 'List of Primes up to ', nmax:8);
