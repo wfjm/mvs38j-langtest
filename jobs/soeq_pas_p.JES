@@ -1,0 +1,7 @@
+//** ##define  JOB    SOEQ#PAS
+//** ##define  REGION  7500K
+//** ##define  GOSTACK 6500K
+//** ##define  DDSRC  ../codes/soeq_pas.pas
+//** ##define  DDDAT  ../codes/soep_cprt.dat
+//** ##define  OUTLIM 100000
+//** ##include ../jcl/job_pas_clg.JESI

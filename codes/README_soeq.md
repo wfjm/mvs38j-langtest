@@ -15,9 +15,24 @@ implemented using one bit per odd number. This allows the jobs to target
 the primes up to 1.E8, resulting in a 6.25 MByte sieve array size.
 
 ### Algorithm <a name="algorithm"></a>
-In the available languages bit handling is done by logical operations
-on data types like `char` in C. The most straight forward implementation
-uses bit masks for testing and clearing a bit in the sieve array.
+The basic algorithm is as described under
+[soep](README.md#user-content-algorithm).
+Only the special considerations for a _'one bit per sieve array element'_
+implementation are covered in the
+[Language and Compiler Notes](#user-content-langcomp).
+
+### Input File <a name="ifile"></a>
+Same input file format as [soep](README_soep.md#user-content-ifile).
+
+### Language and Compiler Notes <a name="langcomp"></a>
+This can be only be implemented efficiently in languages which directly
+support bit handling.
+
+#### C - [soeq_cc.c](soeq_cc.c)
+The bit handling is done by logical operations on data types like
+`unsigned char` in C.
+The most straight forward implementation uses bit masks for testing and
+clearing a bit in the sieve array.
 Mapping the numbers to bits from right (LSB) to left (MSB) gives for
 example an algorithm core in C like
 ``` c
@@ -40,17 +55,16 @@ The bit masks can be implemented as short lookup tables, like `tstmsk` and
 It depends on compiler and the hardware whether a memory lookup or a
 few integer instructions are faster.
 
-### Input File <a name="ifile"></a>
-Same input file format as [soep](README_soep.md#user-content-ifile).
-
-### Language and Compiler Notes <a name="langcomp"></a>
-This can be only be implemented efficiently in languages which directly
-support bit handling.
+The code supports both lookup and in-line style for the bit masks. This
+controlled by the `LOOKUP` preprocessor symbol. Default is using in-line.
 
 #### Assembler - [soeq_asm.asm](soeq_asm.asm)
-The code uses on-the-fly calculation of the bits masks. Here a right (MSB)
-to left (MSB) mapping is used, this reversal of bit order allows to generate
-the `clrmsk` by right shifting `X'FF7F' in a register which is 32 bit anyway.
+The code uses on-the-fly calculation of the bits masks, conceptually
+similar to the C implementation described above.
+
+Here a right (MSB) to left (MSB) mapping is used, this reversal of bit
+order allows to generate the `clrmsk` by right shifting `X'FF7F' in a
+register which is 32 bit anyway.
 This leads to a very compact inner loop
 ```
     SIEVI    LR    R2,R3              i
@@ -67,9 +81,39 @@ This leads to a very compact inner loop
 
 See also [Author's Note](#user-content-anote).
 
-#### C - [soeq_cc.c](soeq_cc.c)
-The code supports both lookup and in-line style for the bit masks. This
-controlled by the `LOOKUP` preprocessor symbol. Default is using in-line.
+#### PL/I - [soeq_pli.pli](soeq_pli.pli)
+PL/I offers, as only language available on [tk4-](http://wotho.ethz.ch/tk4-/),
+direct handling of bits. An array of `BIT(1)` is implemented as a packed
+bit array.
+Therefore the byte version [soep_pli.pli](soep_pli.pli) and the bit version
+[soeq_pli.pli](soeq_pli.pli) just differ by the base type of the sieve
+array and minor adoptions due to this type change.
+
+The PL/I compiler available with MVS3.8J restricts array bounds to
+16 bit integer values. To avoid this 64k storage limitation the `PRIME`
+array is two-dimensional. In addition, the compiler restricts the size of
+aggregates to 2 MByte or 16 Mbits. The dimensions are chosen such that the
+index calculation can be efficiently done (`MOD` is inlined by the compiler):
+```
+    DCL PRIME(0:15625,0:1023)  BIT(1);
+    ...
+    DO I=IMIN TO IMAX BY N;
+      PRIME(I/1024,MOD(I,1024)) = '1'B;
+    END;
+```
+The access the `BIT(1)` array is implemented via run-time library
+function calls, inspection of the generated assembler code shows
+```
+      PRIME(...) = '1'B;    --> IHEIOAT
+      PRIME(...) = '0'B;    --> IHEBSKA
+      IF (PRIME(...))       --> IHEBSD0
+```
+The extra code for index splitting and the rather indirect way the
+`BIT(1)` is accessed cost a lot of CPU cycles.
+As result the `seoq` PL/I code is rather slow.
+
+Due to the 2 MByte total array size limitation the PL/I jobs can only search
+for the first 32000000 primes, instead of 100000000 as usual.
 
 ### Jobs <a name="jobs"></a>
 The [jobs](../jobs) directory contains three types of jobs for `soeq` named

@@ -58,11 +58,12 @@ The matrix of available Language-Case combinations is shown in the
 ### The Jobs
 For each Language-Case combination one or several batch jobs are provided
 in the [jobs](jobs) directory. See
-[README](jobs/README.md) for the matrix of available
-[Case - Job Type](jobs/README.md#user-content-types) combinations
-and for the matrix of available
-[Compiler-Case](jobs/README.md#user-content-jobs) combinations,
-which also a includes the list of known issues.
+[README](jobs/README.md) for the 
+[Case - Job Type table](jobs/README.md#user-content-types) explaining
+all available jobs types and the 
+[Compiler-Case matrix](jobs/README.md#user-content-jobs) listing all
+available jobs. The later also includes a list of
+[known issues](jobs/README.md#user-content-issues).
 
 
 ### Directory organization

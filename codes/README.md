@@ -8,14 +8,16 @@ The available Language-Case combinations are
 | C         |  [cc](hewo_cc.c)    |  [cc](sine_cc.c)    |  [cc](soep_cc.c)    |  [cc](soeq_cc.c)    |  [cc](towh_cc.c)    |  [cc](mcpi_cc.c)    |
 | COBOL     | [cob](hewo_cob.cob) | --                  | todo                | --                  | --                  | todo                |
 | Fortran-4 | [for](hewo_for.f)   | [for](sine_for.f)   | [for](soep_for.f)   | --                  | [for](towh_for.f)   | [for](mcpi_for.f)   |
-| Pascal    | [pas](hewo_pas.pas) | [pas](sine_pas.pas) | [pas](soep_pas.pas) | maybe               | [pas](towh_pas.pas) | [pas](mcpi_pas.pas) |
-| PL/I      | [pli](hewo_pli.pli) | [pli](sine_pli.pli) | [pli](soep_pli.pli) | todo                | [pli](towh_pli.pli) | [pli](mcpi_pli.pli) |
+| Pascal    | [pas](hewo_pas.pas) | [pas](sine_pas.pas) | [pas](soep_pas.pas) | [pas](soeq_pas.pas) | [pas](towh_pas.pas) | [pas](mcpi_pas.pas) |
+| PL/I      | [pli](hewo_pli.pli) | [pli](sine_pli.pli) | [pli](soep_pli.pli) | [pli](soeq_pli.pli) | [pli](towh_pli.pli) | [pli](mcpi_pli.pli) |
 | Simula    | [sim](hewo_sim.sim) | [sim](sine_sim.sim) | [sim](soep_sim.sim) | --                  | [sim](towh_sim.sim) | [sim](mcpi_sim.sim) |
 
 The jobs are in the [jobs](../jobs) directory, see
 [README](../jobs/README.md) for the
-[Case - Job Type matrix](../jobs/README.md#user-content-types)
+[Case - Job Type table](../jobs/README.md#user-content-types)
 and the
 [Compiler - Case maxtrix](../jobs/README.md#user-content-jobs)
-which also a includes the list of known issues.
+which also a includes a list of
+[known issues](../jobs/README.md#user-content-issues).
+
 

@@ -20,7 +20,7 @@ number, using the data types
 - `char` in C
 - `LOGICAL*1` in Fortran
 - `boolean` in Pascal
-- `BIT(1)` in PL/I
+- `CHAR(1)` in PL/I
 - `CHARACTER` in Simula
 
 Since the maximal user memory available in MVS 3.8J is about 9 MByte the
@@ -77,21 +77,28 @@ See typical [test run](soep_ctst.dat) or
 The sieve array is dynamically allocated whenever feasible.
 
 #### PL/I - [soep_pli.pli](soep_pli.pli)
+This PL/I version uses intentionally `CHAR(1)` as base type for the sieve array.
+For a version using `BIT(1)` see [soeq_pli.pli](soeq_pli.pli)
+in the [soeq](README_soeq.md) section.
 The PL/I compiler available with MVS3.8J restricts array bounds to
 16 bit integer values. To avoid this 64k storage limitation the `PRIME`
-array is two-dimensional. The dimensions are chosen such that the index
+array is two-dimensional. In addition, the compiler restricts the size of
+aggregates to 2 MByte. The dimensions are chosen such that the index
 calculation can be efficiently done (`MOD` is inlined by the compiler):
 ```
-    DCL PRIME(0:4882,0:1023)  BIT(1);
+    DCL PRIME(0:1953,0:1023)  CHAR(1);
     ...
     DO I=IMIN TO IMAX BY N;
-      PRIME(I/1024,MOD(I,1024)) = '1'B;
+      PRIME(I/1024,MOD(I,1024)) = '1';
     END;
 ```
 
 Of course it costs CPU cycles to first split up the index into two
 components, just combine them a few instructions later to calculate
 the effective address. As result the `seop` PL/I code is rather slow.
+
+Due to the 2 MByte total array size limitation the PL/I jobs can only search
+for the first 4000000 primes, instead of 10000000 as usual.
 
 #### Simula - [soep_sim.sim](soep_sim.sim)
 Due to compiler bug in SIMULA 67 (VERS 12.00) the obvious implementation

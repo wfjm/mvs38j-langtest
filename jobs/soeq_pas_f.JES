@@ -1,0 +1,8 @@
+//** ##define  JOB    SOEQ#PAS
+//** ##define  REGION  7500K
+//** ##define  GOSTACK 6500K
+//** ##define  TIME   (5,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/soeq_pas.pas
+//** ##define  DDDAT  ../codes/soeq_cher.dat
+//** ##include ../jcl/job_pas_clg.JESI
