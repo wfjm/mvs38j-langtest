@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: hercjis 965 2017-11-19 21:36:33Z mueller $
+# $Id: hercjis 977 2017-12-27 12:46:21Z mueller $
 #
 # Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 #
@@ -14,6 +14,7 @@
 #
 #  Revision History:
 # Date         Rev Version  Comment
+# 2017-12-27   977   1.3    add -c option for $CLASS definition shortcut
 # 2017-11-19   965   1.2    add -M option, generate dependency info
 # 2017-11-11   960   1.1    use map to HERCJIS_* env vars; add ##rinclude
 # 2017-09-01   945   1.0    Initial version
@@ -32,6 +33,7 @@ my %optdsc = ('-h' => 0,
               '-o' => 1,
               '-a' => 1,
               '-w' => 1,
+              '-c' => 1,
               '-v' => 0,
               '-M' => 0);
 my %opt;
@@ -131,13 +133,15 @@ sub do_help {
   print "usage: hercjis [OPTIONS]... [FILE]...\n";
   print "  -a [nam:]port  sockdev address, default localhost:$defoport\n";
   print "  -o file        convert one deck, write to 'file'\n";
+  print "  -c x           use x as substitution for \${CLASS}\n";
   print "  -f             run as filter (read stdin, write stdout)\n";
   print "  -v             verbose, print statistics\n";
   print "  -M             output Makefile dependencies to STDOUT\n";
+  print "  -w ns          wait ns seconds after command\n";
   print "  -h             help text\n";
   print "directives:\n";
-  print "  //** ##include  filename\n";
-  print "  //** ##rinclude filename\n";
+  print "  //** ##include  fname       ;fnames relative to CWD \n";
+  print "  //** ##rinclude fname       ;fnames relative to including file\n";
   print "  //** ##define   name value\n";
   print "substitutions (shell style):\n";
   print '  ${name}        fails if name not defined'."\n";
@@ -331,9 +335,15 @@ sub do_file {
 #   - if variable is $XXX --> lookup XXX
 #   - if variable is  XXX --> lookup HERCJIS_XXX
 #
+# - the -c option is equivalent to setting the HERCJIS_CLASS environment, like
+#     HERCJIS_CLASS=C hercjis *_asm_t.JES
+#     hercjis -c C *_asm_t.JES
+#   Note: In case HERCJIS_CLASS and -c defined, the -c has precedence
+#
 sub do_lookup {
   my ($name) = @_;
   return $defs{$name} if defined $defs{$name};
+  return $opt{-c} if $name eq 'CLASS' && defined $opt{-c};
   my $ename = (substr($name,0,1) eq '$') ? $name : 'HERCJIS_'.$name;
   return $ENV{$ename};
 }
