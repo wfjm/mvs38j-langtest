@@ -2,11 +2,14 @@
 //** /*  parameters:
 //** /*    Name         Default             Comment
 //** /*    ${JOB}                           job name
-//** /*    ${DDSRC}                         source file
-//** /*    ${DDDAT}                         data file
+//** /*    ${CLASS}     A                   job class
+//** /*    ${MSGCLASS}  A                   message class
+//** /*    ${MSGLEVEL}  (1,1)               message level
 //** /*    ${REGION}    1024K               job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${DDSRC}                         source file
+//** /*    ${DDDAT}                         data file
 //** /*    ${GOTIME}    3600                go      step time limit
 //** /*    ${GOSTACK}   512k                go      step stack size
 //** /*    ${OUTLIM}    '5000'              go      step SYSPRINT limit
@@ -16,7 +19,7 @@
 //** /*     than one hour wanted GOTIME must be increasted too.
 //** /*
 //${JOB} JOB 'S322-0C4','WFJM',
-//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      CLASS=${CLASS:-A},MSGCLASS=${MSGCLASS:-A},MSGLEVEL=${MSGLEVEL:-(1,1)},
 //      REGION=${REGION:-1024K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
 //CLG EXEC PASCLG,GOTIME=${GOTIME:-3600},GOREG=${REGION:-1024K},
 //      GOPARM='/STACK=${GOSTACK:-512k}'
