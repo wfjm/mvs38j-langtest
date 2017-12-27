@@ -1,4 +1,4 @@
-(* $Id: soep_pas.pas 975 2017-12-25 19:22:43Z mueller $ *)
+(* $Id: soeq_pas.pas 977 2017-12-27 12:46:21Z mueller $ *)
 (*
 (* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*
@@ -6,8 +6,18 @@
 (* it under the terms of the GNU General Public License version 3.   *)
 (* See Licence.txt in distribition directory for further details.    *)
 (*                                                                   *)
+(* Remarks:                                                          *)
+(* - The MVS Compiler uses 8 bytes to represent a set, sets are      *)
+(*   limited to 64 members. seoq uses therefore sets with 64 members.*)
+(* - the '<=' operator is slightly faster than the 'in' operator.    *)
+(* - the set '*' operator is slightly faster than the '-' operator.  *)
+(* - all this leads to a slightly different implementation than the  *)
+(*   one scetched in 'Pascal User Manual and Report. 2nd Edition',   *)
+(*   published 1975 by Springer.                                     *)
+(*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)
+(* 2017-12-27   977   1.1    use '<=' and '*' instead of 'in' and '-'*)
 (* 2017-12-26   976   1.0    Initial version (derived from soeq_pas) *)
 
 program soep(input,output);
@@ -29,19 +39,20 @@ var
    np,il,nl       : integer;
    rnmax          : real;
    sieve          : ARRAY[0 .. 781250] of bset;
-   bval           : ARRAY[0 .. 63 ] of bits;
-   bmsk           : ARRAY[0 .. 63 ] of bset;
+   btst           : ARRAY[0 .. 63 ] of bset;
+   bclr           : ARRAY[0 .. 63 ] of bset;
    b              : bits;
    ball           : bset;
 begin
 
+   ball := [b00 .. b63];
    b    := b00;
-   bval[0] :=  b;
-   bmsk[0] := [b];
+   btst[0] := [b];
+   bclr[0] := ball - [b];
    for i := 1 to 63 do begin
       b := succ(b);
-      bval[i] :=  b;
-      bmsk[i] := [b];
+      btst[i] := [b];
+      bclr[i] := ball - [b];
    end;
    
    read(nmax);
@@ -56,17 +67,16 @@ begin
    nmsqrt := trunc(sqrt(nmax));
    imax   := (nmax-1) div 2;
    wimax  := (imax+63) div 64;
-   ball   := [b00 .. b63];
    for i := 0 to wimax do sieve[i] := ball;
 
    n := 3;
    while n <= nmsqrt do begin
       i := n div 2;
-      if bval[i mod 64] in sieve[i div 64] then begin
+      if btst[i mod 64] <= sieve[i div 64] then begin
          i := (n*n) div 2;
          while i <= imax do begin
             iw := i div 64;
-            sieve[iw] := sieve[iw] - bmsk[i mod 64];
+            sieve[iw] := sieve[iw] * bclr[i mod 64];
             i := i + n;
          end;
       end;
@@ -78,7 +88,7 @@ begin
       write(2:8);
       np := 1;
       for i := 1 to imax do begin
-         if bval[i mod 64] in sieve[i div 64] then begin
+         if btst[i mod 64] <= sieve[i div 64] then begin
             write(1+2*i:8);
             np := np + 1;
             if np = 10 then begin
@@ -94,7 +104,7 @@ begin
    nl := 10;
    np :=  1;
    for i := 1 to imax do begin
-      if bval[i mod 64] in sieve[i div 64] then np := np + 1;
+      if btst[i mod 64] <= sieve[i div 64] then np := np + 1;
       if i = il then begin
          nl := 2*il + 2;
          writeln(' ', 'pi(', nl:9, '): ', np:9);

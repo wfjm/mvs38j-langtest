@@ -81,6 +81,30 @@ This leads to a very compact inner loop
 
 See also [Author's Note](#user-content-anote).
 
+#### Pascal - [soeq_pas.pas](soeq_pas.pas)
+Pascal offers handling of sets. Because the sieve algorithm works on the set
+of natural numbers it's tempting to use Pascal sets. The book
+_'Pascal User Manual and Report, 2nd Edition'_, published in 1975 by Springer,
+has indeed on page 53 a prime search algorithm only based on sets.
+
+Early Pascal implementations often used a fixed size bit pattern to
+represent sets, with some natural word size. The CDC6600 compiler used
+60 bits, the Stanford compiler for MVS a double word with 64 bits.
+
+That makes it natural to implement the sieve as an array of sets. There
+is even an example of this variant in the 2nd Edition book.
+
+Some benchmarking revealed that set operations are relatively expensive,
+despite their apparent simplicity with fixed underlying set size.
+Further benchmarking showed that for sets operators
+- `<=`  is faster than `in`
+- `*`  is faster than `-`
+
+The actual
+[Pascal implementation](soeq_pas.pas) differs therefore from the sketch given
+in the 2nd Edition book, and is in fact in spirit quite similar to the
+[C implementation](soeq_cc.c).
+
 #### PL/I - [soeq_pli.pli](soeq_pli.pli)
 PL/I offers, as only language available on [tk4-](http://wotho.ethz.ch/tk4-/),
 direct handling of bits. An array of `BIT(1)` is implemented as a packed

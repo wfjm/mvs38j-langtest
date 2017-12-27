@@ -52,8 +52,8 @@ the [jcl](jcl) directory:
 
 ### The Codes
 The test cases were, if possible, implemented in these languages.
-The matrix of available Language-Case combinations is shown in the
-[README](codes/README.md) of the [codes](codes) directory.
+The [Language-Case matrix](codes/README.md) with all Language - Case
+combinations is shown in the README of the [codes](codes) directory.
 
 ### The Jobs
 For each Language-Case combination one or several batch jobs are provided
