@@ -12,6 +12,9 @@ The available Language-Case combinations are
 | PL/I      | [pli](hewo_pli.pli) | [pli](sine_pli.pli) | [pli](soep_pli.pli) | [pli](soeq_pli.pli) | [pli](towh_pli.pli) | [pli](mcpi_pli.pli) |
 | Simula    | [sim](hewo_sim.sim) | [sim](sine_sim.sim) | [sim](soep_sim.sim) | --                  | [sim](towh_sim.sim) | [sim](mcpi_sim.sim) |
 
+The links in the header row point to the description of the test case,
+the links in the table body to the individual source codes.
+
 The jobs are in the [jobs](../jobs) directory, see
 [README](../jobs/README.md) for the
 [Case - Job Type table](../jobs/README.md#user-content-types)

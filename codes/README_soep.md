@@ -7,6 +7,7 @@
 - [Input File](#user-content-ifile)
 - [Language and Compiler Notes](#user-content-langcomp)
 - [Jobs](#user-content-jobs)
+- [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
 ### Description <a name="description"></a>
@@ -142,6 +143,48 @@ Usually `soep_*_t.JES` is used for a verification check.
 `soep_*_p.JES` prints 664579 numbers, which generates about 66000 lines
 or 53 to 85 MByte of output. The CPU time will be dominated by the print
 part, this is therefore essentially a _formatted output_ benchmark.
+
+### Benchmarks <a name="benchmarks"></a>
+An initial round of benchmark tests was done in December 2017
+- on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
+- using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
+- staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
+- using `CLASS=C` jobs, thus only one test job running at a time
+
+The key result is the GO-step time of the `soep_*_f` type jobs for different
+compilers. The table is sorted from fastest to slowest results and shows
+in the last column the time normalized to the fastest case (asm):
+
+| [Compiler ID](../README_comp.md) | 4M search | 10M search | */asm |
+| :--: | ----------: | ----------: | ----: |
+|  asm | 00:00:00,17 | 00:00:00,43 |  1.00 |
+| forh | 00:00:00,26 | 00:00:00,64 |  1.49 |
+|  gcc | 00:00:00,30 | 00:00:00,75 |  1.74 |
+|  jcc | 00:00:00,41 | 00:00:01,02 |  2.37 |
+|  pas | 00:00:00,91 | 00:00:02,15 |  5.00 |
+| forg | 00:00:00,90 | 00:00:02,25 |  5.23 |
+|  sim | 00:00:01,40 | 00:00:03,44 |  8.00 |
+|  pli | 00:00:01,54 |         n/a |  9.06 |
+|  a60 | 00:00:01,85 | 00:00:04,62 | 10.74 |
+| forw | 00:00:03,55 | 00:00:08,88 | 20.65 |
+
+A nice by-product is a measurement of the formatted output provided by
+the run-time systems. Simply done by subtracting from the `soep_*_p`
+job times the `soep_*_f` job times, again sort from fastest to slowest
+_'print an integer'_ performance:
+
+| [Compiler ID](../README_comp.md) | nmax | #prime | `_f` job time | `_p` job time |  dt | time/int |
+| :--: | --: | -----: | ----------: | ----------: | -------: | -------: |
+|  asm | 10M | 664579 | 00:00:00,43 | 00:00:01,38 |   0.95 s |  1.42 us |
+|  pas | 10M | 664579 | 00:00:02,15 | 00:00:04,11 |   1.96 s |  2.95 us |
+| forh | 10M | 664579 | 00:00:00,64 | 00:00:03,04 |   2.40 s |  3.61 us |
+|  sim | 10M | 664579 | 00:00:03,44 | 00:00:06,17 |   2.73 s |  4.11 us |
+| forg | 10M | 664579 | 00:00:02,25 | 00:00:05,10 |   2.85 s |  4.29 us |
+| forw | 10M | 664579 | 00:00:08,88 | 00:00:12,17 |   3.29 s |  4.95 us |
+|  a60 | 10M | 664579 | 00:00:04,62 | 00:00:09,44 |   4.82 s |  7.25 us |
+|  pli |  4M | 283146 | 00:00:01,41 | 00:00:04,88 |   3.47 s | 12.26 us |
+|  jcc | 10M | 664579 | 00:00:01,02 | 00:00:13,32 |  12.30 s | 18.51 us |
+|  gcc | 10M | 664579 | 00:00:00,75 | 00:00:18,05 |  17.30 s | 26.01 us |
 
 ### Author's Note <a name="anote"></a>
 Having prime search as test case was inspired by the collection of such

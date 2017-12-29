@@ -7,6 +7,7 @@
 - [Input File](#user-content-ifile)
 - [Language and Compiler Notes](#user-content-langcomp)
 - [Jobs](#user-content-jobs)
+- [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
 ### Description <a name="description"></a>
@@ -93,13 +94,23 @@ See typical [test run](mcpi_ctst.dat) or
 
 ### Language and Compiler Notes <a name="langcomp"></a>
 
-#### Algol 60 - [mcpi_cc.c](mcpi_cc.c)
+#### Assembler - [mcpi_asm.asm](mcpi_asm.asm)
+The assembler implementation also uses double floating point arithmetic
+to generate the random numbers, so the code is still well comparable to
+the high level language implementations.
+However, the generation of the shuffle index and the modulo arithmetic
+utilize optimizations which are only possible in assembler.
+
+#### Algol 60 - [mcpi_a60.a60](mcpi_a60.a60)
 The compiler in the version coming with [tk4-](http://wotho.ethz.ch/tk4-/)
 update 08 has a bug in the compiler option handling.
 The code requires double precision floating point, which in IBM Algol 60
-must be selected with a compiler option. Due to a bug in the compiler this
-option is not recognized, single precision code generate, which is does not
-give proper results.
+must be selected with the compiler option `LONG`. Due to a bug in the
+compiler this option is not recognized, single precision code is generated,
+which is does not give proper results.
+
+**Note:** _A fix is available from the maintainer, can be installed in tk4-.
+Only with this fix one gets correct results for `mcpi_a60.c`.
   
 #### C - [mcpi_cc.c](mcpi_cc.c)
 `JCC` in the version coming with [tk4-](http://wotho.ethz.ch/tk4-/) update 08
@@ -132,6 +143,7 @@ Usually `mcpi_*_t.JES` is used for a verification check and should produce
     
 `mcpi_*_f.JES` should in general output the equivalent of
 
+              ntry      nhit       pi-est       pi-err        seed
     PI:        100        77   3.08000000   0.06159265  3559066133
     PI:        300       239   3.18666667   0.04507401  3212561425
     PI:       1000       800   3.20000000   0.05840735  3843976237
@@ -144,6 +156,29 @@ Usually `mcpi_*_t.JES` is used for a verification check and should produce
     PI:    3000000   2355459   3.14061200   0.00098065    11667865
     
 where the highest statistics point depends on the language.
+
+### Benchmarks <a name="benchmarks"></a>
+An initial round of benchmark tests was done in December 2017
+- on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
+- using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
+- staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
+- using `CLASS=C` jobs, thus only one test job running at a time
+
+The key result is the GO-step time of the `mcpi_*_f` type jobs for different
+compilers. The table is sorted from fastest to slowest results and shows
+in the last column the time normalized to the fastest case (asm):
+
+| [Compiler ID](../README_comp.md) | job time | */asm |
+| :--: | ----------: | ----: |
+|  asm | 00:00:04,02 |  1.00 |
+|  gcc | 00:00:07,40 |  1.84 |
+|  pas | 00:00:09,93 |  2.47 |
+| forh | 00:00:10,86 |  2.70 |
+| forg | 00:00:13,08 |  3.25 |
+|  pli | 00:00:19,69 |  4.89 |
+|  sim | 00:00:36,83 |  9.16 |
+| forw | 00:00:41,35 | 10.29 |
+|  a60 | 00:03:33,66 | 53.15 |
 
 ### Author's Note <a name="anote"></a>
 I got exposed to large scale

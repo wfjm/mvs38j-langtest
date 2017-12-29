@@ -1,6 +1,6 @@
 # mvs38j-langtest: MVS 3.8J Compiler and Language Tests
 
-### Overview
+### Overview <a name="overview"></a>
 The project contains example codes for many of the languages available
 on the MVS 3.8J turnkey systems. Several test cases have been implemented
 with equivalent logic in the available languages.
@@ -9,7 +9,7 @@ compilers (in some cases several for one language). Test jobs, which
 generate detailed output for verification, as well as benchmark jobs,
 which consume a significant amount of CPU time, are provided.
 
-### The Cases
+### The Cases <a name="cases"></a>
 The test cases are choosen to test different aspects of languages and
 are identified by a 4 character case ID:
 
@@ -23,39 +23,37 @@ are identified by a 4 character case ID:
 | [mcpi](codes/README_mcpi.md) | **Monte Carlo** estimate of pi | Test **floating point arithmetic** |
 
 The cases were implemented with essentially the same basic logic in all
-langauges so that one can compare the code quality of the compilers.
+languages so that one can compare the code quality of the compilers.
 The algorithms should also be short and simple, so that an assembler
-implementation is feasible. Beyond that the pick of cases is highly
-biased by the background of the author, see '_Author's Note_' section
-in each of the READMEs.
+implementation is feasible. The links in the Case-Id column point to a
+description of the test case.
+The pick of cases is highly biased by the background of the author,
+see '_Author's Note_' section in each of the READMEs.
 
-The [tk4-](http://wotho.ethz.ch/tk4-/) system kindly provided by Juergen
-Winkelmann contains a nice selection of compilers.
-For further reference each compiler is identified by 3 or 4 character
-compiler ID.
-The links in the table point to the 'compile-link-go' JCL templates in
-the [jcl](jcl) directory:
+### The Compilers and Languages <a name="compilers"></a>
+The [tk4-](http://wotho.ethz.ch/tk4-/) system contains a nice selection of
+languages and compilers which are for further reference identified by
+a 3 or 4 character compiler ID.
 
-| Language  | Compiler ID | Description |
-| --------- | :---------: | ----------- |
-| Algol 60  | [a60](jcl/job_a60_clg.JESI) | IBM Algol 60: 360S-AL-531 LEVEL 2.1 |
-| Assembler | [asm](jcl/job_asm_clg.JESI) | IBM Assembler Level F (370) |
-| C         | [gcc](jcl/job_gcc_clg.JESI) | MVSGCC, a 370 port of gcc |
-| C         | [jcc](jcl/job_jcc_clg.JESI) | early version of Dignus System/C |
-| Cobol     | [cob](jcl/job_cob_clg.JESI) | IBM Cobol CB545 V2 LVL78 01MAY72 |
-| Fortran-4 | [forg](jcl/job_forg_clg.JESI) | IBM FORTRAN IV G LEVEL  21 |
-| Fortran-4 | [forh](jcl/job_forh_clg.JESI) | IBM FORTRAN H LEVEL 21.8 |
-| Fortran-4 | [forw](jcl/job_forw_clg.JESI) | WATFIV Compiler JAN 1976 V1L5 |
-| Pascal    | [pas](jcl/job_pas_clg.JESI) | Stanford PASCAL, Version of Oct.-79 |
-| PL/I      | [pli](jcl/job_pli_clg.JESI) | IBM PL/I COMPILER (F) VERSION 5.5 |
-| Simula    | [sim](jcl/job_sim_clg.JESI) | SIMULA 67 (VERS 12.00) |
+| Language  | Compiler IDs |
+| --------- | ------------ |
+| Algol 60  | a60              |
+| Assembler | asm              |
+| C         | gcc, jcc         |
+| Cobol     | cob              |
+| FORTRAN-4 | forg, forh, forw |
+| Pascal    | pas              |
+| PL/I      | pli              |
+| Simula    | sim              |
 
-### The Codes
+Consult the [Compiler README](README_comp.md) for more information.
+
+### The Codes <a name="codes"></a>
 The test cases were, if possible, implemented in these languages.
 The [Language-Case matrix](codes/README.md) with all Language - Case
 combinations is shown in the README of the [codes](codes) directory.
 
-### The Jobs
+### The Jobs <a name="jobs"></a>
 For each Language-Case combination one or several batch jobs are provided
 in the [jobs](jobs) directory. See
 [README](jobs/README.md) for the 

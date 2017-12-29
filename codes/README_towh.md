@@ -7,6 +7,7 @@
 - [Input File](#user-content-ifile)
 - [Language and Compiler Notes](#user-content-langcomp)
 - [Jobs](#user-content-jobs)
+- [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
 ### Description <a name="description"></a>
@@ -116,7 +117,29 @@ Usually `towh_*_t.JES` is used for a verification check and should produce
     DONE ndsk=  21:  maxstk=  21  ncall=   3145726  nmove=   2097151
     DONE ndsk=  22:  maxstk=  22  ncall=   6291454  nmove=   4194303
 
-where the largest problem solved depends on the language.
+### Benchmarks <a name="benchmarks"></a>
+An initial round of benchmark tests was done in December 2017
+- on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
+- using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
+- staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
+- using `CLASS=C` jobs, thus only one test job running at a time
+
+The key result is the GO-step time of the `towh_*_f` type jobs for different
+compilers. The table is sorted from fastest to slowest results and shows
+in the last column the time normalized to the fastest case (asm):
+
+| [Compiler ID](../README_comp.md) | job time | */asm |
+| :--: | ----------: | ----: |
+|  asm | 00:00:05,28 |  1.00 |
+|  pas | 00:00:07,43 |  1.41 |
+|  gcc | 00:00:08,69 |  1.64 |
+|  jcc | 00:00:09,28 |  1.76 |
+| forh | 00:00:09,30 |  1.76 |
+| forg | 00:00:16,38 |  3.10 |
+|  sim | 00:00:34,29 |  6.49 |
+|  pli | 00:00:56,07 | 10.62 |
+| forw | 00:01:30,67 | 17.17 |
+|  a60 | 00:04:21,28 | 49.48 |
 
 ### Author's Note <a name="anote"></a>
 

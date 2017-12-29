@@ -7,6 +7,7 @@
 - [Input File](#user-content-ifile)
 - [Language and Compiler Notes](#user-content-langcomp)
 - [Jobs](#user-content-jobs)
+- [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
 ### Description <a name="description"></a>
@@ -159,6 +160,38 @@ The `soeq_*_f.JES` should in output the equivalent of
     pi(   1000000):      78498
     pi(  10000000):     664579
     pi( 100000000):    5761455
+
+### Benchmarks <a name="benchmarks"></a>
+An initial round of benchmark tests was done in December 2017
+- on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
+- using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
+- staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
+- using `CLASS=C` jobs, thus only one test job running at a time
+
+The key result is the GO-step time of the `soeq_*_f` type jobs, as packaged
+for a 100M search, and modified for 32M, 10M and 4M, for different
+compilers. The table is sorted from fastest to slowest results and shows
+in the last column the time normalized to the fastest case (asm):
+
+| [Compiler ID](../README_comp.md) |   4M search |  10M search |  32M search | 100M search | */asm |
+| :--: | ----------: | ----------: | ----------: | ----------: | ----: |
+|  asm | 00:00:00,32 | 00:00:00,80 | 00:00:02,67 | 00:00:08,57 |  1.00 |
+|  gcc | 00:00:00,52 | 00:00:01,34 | 00:00:04,30 | 00:00:13,80 |  1.61 |
+|  jcc | 00:00:00,72 | 00:00:01,85 | 00:00:06,01 | 00:00:19,39 |  2.26 |
+|  pas | 00:00:01,62 | 00:00:04,03 | 00:00:12,97 | 00:00:41,58 |  4.85 |
+|  pas | 00:00:03,25 | 00:00:08,16 | 00:00:26,39 | 00:01:24,24 |  9.83 |
+|  pli | 00:00:06,09 | 00:00:15,53 | 00:00:50,51 |         n/a | 18.92 |
+
+It's interesting to compare for the 4M and 10M searches the times for
+the simpler [soep](README_soep.md#user-content-benchmarks) algorithm
+
+| [Compiler ID](../README_comp.md) | 4M soeq | 4M seop | 10M soeq | 10M soep | seoq/soep |
+| :--: | ----------: | ----------: | ----------: | ----------: | ---: |
+|  asm | 00:00:00,32 | 00:00:00,17 | 00:00:00,80 | 00:00:00,43 | 1.86 |
+|  gcc | 00:00:00,52 | 00:00:00,30 | 00:00:01,34 | 00:00:00,75 | 1.79 |
+|  jcc | 00:00:00,72 | 00:00:00,41 | 00:00:01,85 | 00:00:01,02 | 1.81 |
+|  pas | 00:00:01,62 | 00:00:00,91 | 00:00:04,03 | 00:00:02,15 | 1.87 |
+|  pli | 00:00:06,09 | 00:00:01,54 | 00:00:15,53 |         n/a | 3.95 |
 
 ### Author's Note <a name="anote"></a>
 The assembler code [soeq_asm.asm](soeq_asm.asm) was much inspired by
