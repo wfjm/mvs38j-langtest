@@ -1,6 +1,6 @@
 C        1         2         3         4         5         6         712--------
 C2345*78901234567890123456789012345678901234567890123456789012345678901234567890
-C $Id: mcpi_for.f 964 2017-11-19 08:47:46Z mueller $
+C $Id: mcpi_for.f 978 2017-12-28 21:32:18Z mueller $
 C
 C Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 C
@@ -10,6 +10,7 @@ C See Licence.txt in distribition directory for further details.
 C
 C  Revision History:
 C Date         Rev Version  Comment
+C 2017-12-28   978   1.1    use inverse to avoid divide by constant
 C 2017-08-12   938   1.0    Initial version
 C 2017-07-30   931   0.1    First draft
 C
@@ -20,18 +21,18 @@ C however gfortran -std=legacy wants:   'type*precision FUNCTION name (args)
       REAL FUNCTION RANRAW*8 (DUMMY)
 C
       COMMON /DBG/IDBGRR,IDBGRN,IDBGMC
+      COMMON /RANFAC/RR32,RR32I,RDIV,RDIVI
       COMMON /RAN/RLAST,RSEED,RSHUF(128),RANINI
+      REAL*8 RR32,RR32I,RDIV,RDIVI
       REAL*8 RLAST,RSEED,RSHUF
       LOGICAL RANINI
 C
       REAL*8 DUMMY
-      REAL*8 RR32
       REAL*8 RFAC,RNEW
       INTEGER IFAC
-      DATA RR32  /4294967296.D0/
 C
       RNEW = RSEED * 69069.D0
-      RFAC = RNEW / RR32
+      RFAC = RNEW * RR32I
       IFAC = RFAC
       RFAC = IFAC
       RNEW = RNEW - RFAC * RR32
@@ -48,16 +49,15 @@ C
       REAL FUNCTION RANNUM*8 (DUMMY)
 C
       COMMON /DBG/IDBGRR,IDBGRN,IDBGMC
+      COMMON /RANFAC/RR32,RR32I,RDIV,RDIVI
       COMMON /RAN/RLAST,RSEED,RSHUF(128),RANINI
+      REAL*8 RR32,RR32I,RDIV,RDIVI
       REAL*8 RLAST,RSEED,RSHUF
       LOGICAL RANINI
 C
       REAL*8 DUMMY
-      REAL*8 RR32,RDIV
       REAL*8 RANRAW
       INTEGER I
-      DATA RR32  /4294967296.D0/
-      DATA RDIV  /33554432.D0/
 C
       IF (RANINI) GOTO 1000
       DO 100 I=1,128
@@ -66,10 +66,10 @@ C
       RANINI = .TRUE.
  1000 CONTINUE
 C     
-      I = RLAST/RDIV
+      I = RLAST * RDIVI
       RLAST = RSHUF(I+1)
       RSHUF(I+1) = RANRAW(DUMMY)
-      RANNUM = RLAST/RR32
+      RANNUM = RLAST * RR32I
       IF (IDBGRN .NE. 0) WRITE(6,9000) I,RLAST,RANNUM
       RETURN
 C
@@ -79,7 +79,9 @@ C
 C --- main program ---------------------------------------------------
 C     PROGRAM MCPI
       COMMON /DBG/IDBGRR,IDBGRN,IDBGMC
+      COMMON /RANFAC/RR32,RR32I,RDIV,RDIVI
       COMMON /RAN/RLAST,RSEED,RSHUF(128),RANINI
+      REAL*8 RR32,RR32I,RDIV,RDIVI
       REAL*8 RLAST,RSEED,RSHUF
       LOGICAL RANINI
 C
@@ -94,11 +96,19 @@ C
       DATA NTRY /0/
       DATA NHIT /0/
 C
+      RR32   = 4294967296.D0
+      RR32I  = 1./RR32
+      RDIV   = 33554432.D0
+      RDIVI  = 1./RDIV
+C
       RSEED  = 12345.D0
       RLAST  = 0.D0
       RANINI = .FALSE.
 C
       READ(5,9000,ERR=910,END=900) IDBGRR,IDBGRN,IDBGMC
+C
+      IF (IDBGRR.EQ.0 .AND. IDBGRN.EQ.0 .AND. IDBGMC.EQ.0)
+     X  WRITE(6,9005)
 C
  100  READ(5,9010,ERR=910,END=900) NGO
       IF (NGO .LE. 0) GOTO 900
@@ -128,6 +138,8 @@ C
       STOP
 C
  9000 FORMAT(3I10)
+ 9005 FORMAT(1X,'            ntry         nhit       pi-est',
+     X          '       pi-err        seed')
  9010 FORMAT(I10)
  9020 FORMAT(1X,'PI: ',I12,1X,I12,1X,F12.8,1X,F12.8,1X,F12.0)
  9030 FORMAT(1X,'MC: ',F12.8,1X,F12.8,1X,F12.8,1X,I12)

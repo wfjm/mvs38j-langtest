@@ -1,6 +1,6 @@
 'BEGIN'
 'COMMENT'
-* $Id: mcpi_a60.a60 964 2017-11-19 08:47:46Z mueller $
+* $Id: mcpi_a60.a60 978 2017-12-28 21:32:18Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *  
@@ -10,10 +10,11 @@
 *  
 *   Revision History:
 *  Date         Rev Version  Comment
+*  2017-12-28   978   1.1    use inverse to avoid divide by constant
 *  2017-09-17   951   1.0    Initial version
 *;
 
-  'REAL'    RR32,RDIV,PI;
+  'REAL'    RR32,RDIV,PI,RR32I,RDIVI;
   'REAL'    RSEED,RLAST;
   'BOOLEAN' RANINI;
   'INTEGER' IDBGRR,IDBGRN,IDBGMC;
@@ -27,7 +28,7 @@
   'BEGIN'
     'REAL'    RFAC,RNEW;
     RNEW := RSEED * 69069.0;
-    RFAC := RNEW / RR32;
+    RFAC := RNEW * RR32I;
     RFAC := ENTIER(RFAC);
     RNEW := RNEW - RFAC * RR32;
     'IF' IDBGRR > 0 'THEN' 'BEGIN'
@@ -49,10 +50,10 @@
       RANINI := 'TRUE';
     'END';
 
-    I := ENTIER(RLAST/RDIV);
+    I := ENTIER(RLAST*RDIVI);
     RLAST := RSHUF[I];
     RSHUF[I] := RANRAW;
-    RNEW := RLAST / RR32;
+    RNEW := RLAST * RR32I;
     'IF' IDBGRN > 0 'THEN' 'BEGIN'
       OUTSTRING (1,'('RN:')');
       OUTINTEGER(1, I);
@@ -67,6 +68,8 @@
   RR32   := 4294967296.0;
   RDIV   := 33554432.0;
   PI     := 3.141592653589793;
+  RR32I  := 1.0/RR32;
+  RDIVI  := 1.0/RDIV;
   RSEED  := 12345.0;
   RANINI := 'FALSE';
 
@@ -77,6 +80,13 @@
   ININTEGER(0,IDBGRR);
   ININTEGER(0,IDBGRN);
   ININTEGER(0,IDBGMC);
+
+  'IF' IDBGRR = 0 'AND' IDBGRN = 0 'AND' IDBGMC = 0 'THEN' 'BEGIN'
+    OUTSTRING (1,'('          ntry         nhit')');
+    OUTSTRING (1,'('              pi-est                  pi-err')');
+    OUTSTRING (1,'('                    seed')');
+    SYSACT(1,14,1);
+  'END';
 
   LOOP:
     ININTEGER(0,NGO);

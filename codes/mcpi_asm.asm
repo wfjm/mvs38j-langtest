@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: mcpi_asm.asm 964 2017-11-19 08:47:46Z mueller $
+* $Id: mcpi_asm.asm 978 2017-12-28 21:32:18Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2017-12-28   978   1.1    use inverse to avoid divide by constant
 * 2017-11-12   961   1.0    Initial version
 * 2017-10-10   955   0.1    First draft
 *
@@ -50,6 +51,13 @@ OOPENOK  OPEN  (SYSIN,INPUT)      open SYSIN
          B     EXIT               quit with RC=12
 IOPENOK  EQU   *
 *
+         LD    FR0,=D'1.'
+         LDR   FR2,FR0
+         DD    FR0,RR32
+         STD   FR0,RR32I          RR32I = 1./RR32
+         DD    FR2,RDIV
+         STD   FR2,RDIVI          RDIVI = 1./RDIVI
+*
 * read debug flags ----------------------------------------------------
 *
          BAL   R14,IGETLINE       read input line
@@ -60,6 +68,19 @@ IOPENOK  EQU   *
          BAL   R14,IINT10         get PRNT
          STC   R1,IDBGMC
          MVI   IEOFOK,X'01'       expect EOF from now on
+*
+         CLI   IDBGRR,X'00'       if any trace skip header print
+         BNE   NOHDPRT
+         CLI   IDBGRN,X'00'
+         BNE   NOHDPRT
+         CLI   IDBGMC,X'00'
+         BNE   NOHDPRT
+         L     R1,MSGHD1
+         BAL   R14,OTEXT
+         L     R1,MSGHD2
+         BAL   R14,OTEXT
+         BAL   R14,OPUTLINE       write header
+NOHDPRT  EQU   *
 *
 * main body -----------------------------------------------------------
 *
@@ -172,7 +193,7 @@ RANNUML  BAL   R9,RANRAW          get raw
 *
 RANNUMGO L     R6,=A(RSHUF)       pointer to rshuf
          LD    FR0,RLAST
-         DD    FR0,RDIV           rlast/rdiv
+         MD    FR0,RDIVI          rlast*rdivi
          AW    FR0,ODNZERO        denormalize
          STD   FR0,RFAC1            
          L     R7,RFAC1+4         i = int(rlast/rdiv)
@@ -183,7 +204,7 @@ RANNUMGO L     R6,=A(RSHUF)       pointer to rshuf
          BAL   R9,RANRAW          get new random number
          STD   FR0,0(R7,R6)       rshuf[i] = ranraw()
          LD    FR0,RLAST
-         DD    FR0,RR32           rlast/rr32
+         MD    FR0,RR32I          rlast*rr32i
          CLI   IDBGRN,X'00'       RN trace ?
          BE    RANNUMNT
 *
@@ -203,12 +224,6 @@ RANNUMNT EQU   *
 *
          BR    R8
 *
-         DS    0F
-TEST00   DS    F                  HACK
-TEST01   DS    F                  HACK
-TEST02   DS    F                  HACK
-TEST03   DS    F                  HACK
-*
 * RANRAW --------------------------------------------------------------
 *   uses   all float regs
 *   uses   R0,R1,R14,R15
@@ -218,7 +233,7 @@ RANRAW   LD    FR0,RSEED
          MD    FR0,RFACTOR        rnew1 = rseed * 69069.
          LDR   FR6,FR0            save rnew1
          LDR   FR2,FR0
-         DD    FR2,RR32           rfac = rnew1 / rr32
+         MD    FR2,RR32I          rfac = rnew1 * rr32i
          AW    FR2,ODNZERO        rfac = trunc(rfac)
          LDR   FR4,FR2            save ifac (as denorm rfac)
          MD    FR2,RR32           rfac * rr32
@@ -270,6 +285,8 @@ RSEED    DC    D'12345.'
 RLAST    DC    D'0.'
 RR32     DC    D'4294967296.'     is 4*1024*1024*1024
 RDIV     DC    D'33554432.'       is rr32 / 128
+RR32I    DS    D
+RDIVI    DS    D
 RNEW     DS    D
 RNEW1    DS    D
 RFAC     DS    D
@@ -285,6 +302,8 @@ R        DS    D
 *
 * message strings
 *
+MSGHD1   OTXTDSC C'          ntry      nhit       pi-est'
+MSGHD2   OTXTDSC C'       pi-err        seed'
 MSGMC    OTXTDSC C'MC: '
 MSGPI    OTXTDSC C'PI: '
 MSGRR    OTXTDSC C'RR: '

@@ -1,6 +1,6 @@
  /*      1         2         3         4         5         6         7*/--------
  /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
- /* $Id: mcpi_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /* $Id: mcpi_pli.pli 978 2017-12-28 21:32:18Z mueller $ */
  /*
  /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
  /*
@@ -10,6 +10,7 @@
  /*                                                                   */
  /*  Revision History:                                                */
  /* Date         Rev Version  Comment                                 */
+ /* 2017-12-28   978   1.1    use inverse to avoid divide by constant */
  /* 2017-09-07   947   1.0    Initial version                         */
  /* 2017-07-30   931   0.1    First draft                             */
 
@@ -28,14 +29,22 @@
     DCL (I,NTRY,NHIT,NGO)      BIN FIXED(31) INIT(0);
     DCL (PIEST,PIERR)          DEC FLOAT(16);
     DCL (RHIT,RTRY)            DEC FLOAT(16);
+    DCL (RR32I,RDIVI)          DEC FLOAT(16);
     DCL (X,Y,R)                DEC FLOAT(16);
     DCL PI    DEC FLOAT(16) INIT(3.141592653589793E0);
  
     ON ENDFILE(SYSIN) GOTO DONE;
     ON CONVERSION     GOTO ABORT;
- 
+
+    RR32I = 1./RR32;
+    RDIVI = 1./RDIV;
+
     GET EDIT(IDBGRR,IDBGRN,IDBGMC) (3(F(10)));
- 
+
+    IF IDBGRR=0 & IDBGRN=0 & IDBGMC=0 THEN
+       PUT SKIP EDIT('            ntry         nhit       pi-est',
+                '       pi-err         seed')(A,A);
+
     DO WHILE('1'B);
       GET SKIP EDIT(NGO) (F(10));
       IF NGO = 0 THEN GOTO DONE;
@@ -71,7 +80,7 @@
       DCL IFAC  BIN FIXED(31);
  
       RNEW = RSEED * 69069.;
-      RFAC = RNEW / RR32;
+      RFAC = RNEW * RR32I;
       IFAC = RFAC;
       RFAC = IFAC;
       RNEW = RNEW - RFAC * RR32;
@@ -93,10 +102,10 @@
         RANINI = 1;
       END;
       
-      I = RLAST/RDIV;
+      I = RLAST * RDIVI;
       RLAST = RSHUF(I);
       RSHUF(I) = RANRAW;
-      RNEW = RLAST/RR32;
+      RNEW = RLAST * RR32I;
       IF IDBGRN > 0 THEN PUT SKIP EDIT('RN: ',I,RLAST,RNEW)
                              (A,F(12),X(1),F(12,0),X(1),F(12,8));
       RETURN(RNEW);

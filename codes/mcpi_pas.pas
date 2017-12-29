@@ -1,4 +1,4 @@
-(* $Id: mcpi_pas.pas 964 2017-11-19 08:47:46Z mueller $ *)
+(* $Id: mcpi_pas.pas 978 2017-12-28 21:32:18Z mueller $ *)
 (*
 (* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*
@@ -8,6 +8,7 @@
 (*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)
+(* 2017-12-28   978   1.1    use inverse to avoid divide by constant *)
 (* 2017-09-17   951   1.0    Initial version                         *)
 (* 2017-09-07   948   0.1    First draft                             *)
 
@@ -24,6 +25,7 @@ var
    piest,pierr          : real;
    rhit,rtry            : real;
    x,y,r                : real;
+   rr32i,rdivi          : real;
    rshuf                : ARRAY[0 .. 127] of real;
    
 function ranraw(dummy :real) : real; 
@@ -31,7 +33,7 @@ var
    rfac,rnew : real;
 begin
    rnew := rseed * 69069.0;
-   rfac := rnew / rr32;
+   rfac := rnew * rr32i;
    rfac := trunc(rfac);
    rnew := rnew - rfac * rr32;
    if idbgrr > 0 then writeln(' ','RR: ',rseed:14:1,rnew:14:1);
@@ -49,10 +51,10 @@ begin
       ranini := TRUE;
    end;
 
-   i := trunc(rlast/rdiv);
+   i := trunc(rlast*rdivi);
    rlast := rshuf[i];
    rshuf[i] := ranraw(0.0);
-   rnew := rlast/rr32;
+   rnew := rlast * rr32i;
    if idbgrn > 0 then writeln(' ','RN: ',i:12,rlast:14:1,rnew:14:8);
    rannum := rnew;
 end;
@@ -60,11 +62,18 @@ end;
 begin
    rseed  := 12345.0;
    ranini := FALSE;
+
+   rr32i  := 1.0/rr32;
+   rdivi  := 1.0/rdiv;
    
    read(idbgrr);
    read(idbgrn);
    read(idbgmc);
 
+   if (idbgrr=0) and (idbgrn=0) and (idbgmc=0) then
+      writeln(' ','            ntry        nhit      pi-est',
+              '      pi-err        seed');
+   
    while TRUE do begin
       read(ngo);
       if ngo = 0 then exit(0);
