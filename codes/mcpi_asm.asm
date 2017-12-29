@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: mcpi_asm.asm 978 2017-12-28 21:32:18Z mueller $
+* $Id: mcpi_asm.asm 979 2017-12-29 18:40:40Z mueller $
 *
 * Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2017-12-29   979   1.2    some more code optimizations
 * 2017-12-28   978   1.1    use inverse to avoid divide by constant
 * 2017-11-12   961   1.0    Initial version
 * 2017-10-10   955   0.1    First draft
@@ -55,8 +56,6 @@ IOPENOK  EQU   *
          LDR   FR2,FR0
          DD    FR0,RR32
          STD   FR0,RR32I          RR32I = 1./RR32
-         DD    FR2,RDIV
-         STD   FR2,RDIVI          RDIVI = 1./RDIVI
 *
 * read debug flags ----------------------------------------------------
 *
@@ -193,12 +192,11 @@ RANNUML  BAL   R9,RANRAW          get raw
 *
 RANNUMGO L     R6,=A(RSHUF)       pointer to rshuf
          LD    FR0,RLAST
-         MD    FR0,RDIVI          rlast*rdivi
          AW    FR0,ODNZERO        denormalize
          STD   FR0,RFAC1            
-         L     R7,RFAC1+4         i = int(rlast/rdiv)
-         N     R7,=X'0000007F'    paranoia
-         SLA   R7,3
+         L     R7,RFAC1+4         int(rlast)
+         SRL   R7,25              int(rlast/rdiv)
+         SLA   R7,3               convert index to offset
          LD    FR0,0(R7,R6)       rshuf[i]
          STD   FR0,RLAST          rlast = rshuf[i]
          BAL   R9,RANRAW          get new random number
@@ -211,7 +209,8 @@ RANNUMGO L     R6,=A(RSHUF)       pointer to rshuf
          STD   FR0,RNEW           save rnew
          L     R1,MSGRN
          BAL   R14,OTEXT          print "RN: "
-         L     R1,RFAC1+4
+         LR    R1,R7
+         SRA   R1,3               convert back to index
          BAL   R14,OINT10         print i
          LD    FR0,RLAST
          BAL   R14,OFIX1200       print rlast
@@ -232,12 +231,12 @@ RANNUMNT EQU   *
 RANRAW   LD    FR0,RSEED           
          MD    FR0,RFACTOR        rnew1 = rseed * 69069.
          LDR   FR6,FR0            save rnew1
-         LDR   FR2,FR0
-         MD    FR2,RR32I          rfac = rnew1 * rr32i
-         AW    FR2,ODNZERO        rfac = trunc(rfac)
-         LDR   FR4,FR2            save ifac (as denorm rfac)
-         MD    FR2,RR32           rfac * rr32
-         SDR   FR0,FR2            rnew = rnew1 - rfac * rr32
+         LDR   FR2,FR0            rmsb = rnew1
+         AW    FR2,ODNZERO        denormalize
+         STD   FR2,RFAC1          save
+         XR    R1,R1              R1:=0
+         ST    R1,RFAC1+4         clear lower 32 bits of rmsb
+         SD    FR0,RFAC1          rnew = rnew1 modulo 2^32 !!
          STD   FR0,RNEW
          CLI   IDBGRR,X'00'       RR trace ?
          BE    RANRAWNT
@@ -284,9 +283,7 @@ RFACTOR  DC    D'69069.'
 RSEED    DC    D'12345.'
 RLAST    DC    D'0.'
 RR32     DC    D'4294967296.'     is 4*1024*1024*1024
-RDIV     DC    D'33554432.'       is rr32 / 128
 RR32I    DS    D
-RDIVI    DS    D
 RNEW     DS    D
 RNEW1    DS    D
 RFAC     DS    D
