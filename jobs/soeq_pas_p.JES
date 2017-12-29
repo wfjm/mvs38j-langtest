@@ -4,4 +4,5 @@
 //** ##define  DDSRC  ../codes/soeq_pas.pas
 //** ##define  DDDAT  ../codes/soep_cprt.dat
 //** ##define  OUTLIM 100000
+//** ##define  COOPT  'M+,D-'
 //** ##include ../jcl/job_pas_clg.JESI

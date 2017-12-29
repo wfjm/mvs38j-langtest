@@ -3,4 +3,5 @@
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/towh_sim.sim
 //** ##define  DDDAT  ../codes/towh_cher.dat
+//** ##define  PARMC  NOSUBCHK
 //** ##include ../jcl/job_sim_clg.JESI

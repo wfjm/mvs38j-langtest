@@ -2,4 +2,5 @@
 //** ##define  REGION 6000K
 //** ##define  DDSRC  ../codes/soep_sim.sim
 //** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  PARMC  NOSUBCHK
 //** ##include ../jcl/job_sim_clg.JESI

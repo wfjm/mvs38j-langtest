@@ -3,4 +3,5 @@
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/towh_pas.pas
 //** ##define  DDDAT  ../codes/towh_cher.dat
+//** ##define  COOPT  'M+,D-'
 //** ##include ../jcl/job_pas_clg.JESI

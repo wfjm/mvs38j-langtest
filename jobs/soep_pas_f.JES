@@ -3,4 +3,5 @@
 //** ##define  GOSTACK 5500K
 //** ##define  DDSRC  ../codes/soep_pas.pas
 //** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  COOPT  'M+,D-'
 //** ##include ../jcl/job_pas_clg.JESI

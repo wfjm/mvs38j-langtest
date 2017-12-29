@@ -3,5 +3,6 @@
 //** ##define  GOSTACK 5500K
 //** ##define  DDSRC  ../codes/soep_pas.pas
 //** ##define  DDDAT  ../codes/soep_cprt.dat
+//** ##define  COOPT  'M+,D-'
 //** ##define  OUTLIM 100000
 //** ##include ../jcl/job_pas_clg.JESI

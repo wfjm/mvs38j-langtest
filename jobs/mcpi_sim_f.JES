@@ -3,4 +3,5 @@
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/mcpi_sim.sim
 //** ##define  DDDAT  ../codes/mcpi_cher.dat
+//** ##define  PARMC  NOSUBCHK
 //** ##include ../jcl/job_sim_clg.JESI
