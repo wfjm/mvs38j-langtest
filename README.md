@@ -10,15 +10,15 @@ generate detailed output for verification, as well as benchmark jobs,
 which consume a significant amount of CPU time, are provided.
 
 ### The Cases <a name="cases"></a>
-The test cases are choosen to test different aspects of languages and
+The test cases are chosen to test different aspects of languages and
 are identified by a 4 character case ID:
 
 | Case ID | Description | Objective |
 | :-----: | ----------- | --------- |
 | [hewo](codes/README_hewo.md) | The classical **'Hello Word'** | Get **minimal program** producing output |
 | [sine](codes/README_sine.md) | Line **printer plot** of sine and cosine | Test **basic text & character handling** |
-| [soep](codes/README_soep.md) | Sieve of Erastosthenes **prime search** (byte) | Test **integer array handling** and **formatted output** |
-| [soeq](codes/README_soeq.md) | Sieve of Erastosthenes **prime search (bit)** | Test **bit handling** |
+| [soep](codes/README_soep.md) | Sieve of Eratosthenes **prime search** (byte) | Test **integer array handling** and **formatted output** |
+| [soeq](codes/README_soeq.md) | Sieve of Eratosthenes **prime search (bit)** | Test **bit handling** |
 | [towh](codes/README_towh.md) | **Tower of Hanoi** solver | Test **recursive function calls** |
 | [mcpi](codes/README_mcpi.md) | **Monte Carlo** estimate of pi | Test **floating point arithmetic** |
 
@@ -72,7 +72,7 @@ The project files are organized in directories as
 | Directory | Content |
 | --------- | ------- |
 | [bin](bin)     | some helper scripts |
-| [clib](clib)   | assembler code sniplets  |
+| [clib](clib)   | assembler code sniplets |
 | [codes](codes) | the codes |
 | [jcl](jcl)     | JCL job templates |
 | [jobs](jobs)   | the jobs |
