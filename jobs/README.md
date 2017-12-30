@@ -53,7 +53,7 @@ The available Compiler-Case combinations are
 | C         | [gcc](../jcl/job_gcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | C         | [jcc](../jcl/job_jcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f **N01** |
 | Cobol     | [cob](../jcl/job_cob_clg.JESI)   | yes  | --   | --          | --          | --      | --             |
-| Fortran-4 | [forg](../jcl/job_forg_clg.JESI) | yes  | yes  | --          | --          | _t, _f  | _t, _f         |
+| Fortran-4 | [forg](../jcl/job_forg_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | Fortran-4 | [forh](../jcl/job_forh_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | Fortran-4 | [forw](../jcl/job_forw_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | Pascal    | [pas](../jcl/job_pas_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
