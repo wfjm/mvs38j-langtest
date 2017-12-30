@@ -14,7 +14,7 @@ in some intelligent form. The _sine_ codes plot a graph showing sin(x) and
 cos(x) for the angles from 0 to 360 degree in steps of 5 degrees.
 
 In the early 70's not all languages had decent support for handling text.
-Fortran 4 or Algol 60 were targeted for handling numeric problems, and
+FORTRAN 4 or Algol 60 were targeted for handling numeric problems, and
 doing text handling with them was a bit tricky. 
 
 ### Language and Compiler Notes <a name="langcomp"></a>
@@ -26,8 +26,8 @@ Printing a very small number with `%8.5f` can produce output like
 `0.0000000000004`, thus more than 5 after digit characters. This
 disrupts the nice formatting. `JCC` works correctly.
 
-#### Fortran 4 - [sine_for.f](sine_for.f)
-Fortran 4 has only very rudimentary support for handling of characters.
+#### FORTRAN 4 - [sine_for.f](sine_for.f)
+FORTRAN 4 has only very rudimentary support for handling of characters.
 That's what the code tricks around with `'A'` formats and Hollerith constants
 like `/1H*/` in `DATA` statements, ancient features not needed in Fortran 77
 and later.

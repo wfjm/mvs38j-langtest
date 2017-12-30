@@ -4,6 +4,8 @@
 - [Available Job Types](#user-content-types)
 - [Available Jobs](#user-content-jobs)
   - [Known Issues](#user-content-issues)
+- [Howto create JCL](#user-content-getjcl)
+- [Howto submit directly](#user-content-submit)
 
 ### Overview <a name="overview"></a>
 
@@ -15,8 +17,8 @@ This leads to a fairly large number of case-language-type combinations where
 - the basic JCL structure is only langauage, but not case or type specific
 
 The final jcl for a job is therefore dynamically created by the tool
-hercjis
-based descriptor files with the file type `.JES` stored this directory.
+`hercjis` (in [bin](../bin) directory)
+based on descriptor files with the file type `.JES` stored this directory.
 The `.JES` are short and contain
 - name of source code (from [codes](../codes) directory)
 - name of input data file (from [codes](../codes) directory)
@@ -41,7 +43,9 @@ For some test cases several job types are provided
 | [mcpi](../codes/README_mcpi.md) | mcpi_*_t.JES | test job (verification) |
 |                              | mcpi_*_f.JES | benchmark job |
 
-For details follow the link in the Case ID column and consult the "Jobs" section.
+For details follow the link in the Case ID column and consult the
+"Jobs" section. See also the [benchmark summary](../README_bench.md) for an
+overview table of benchmark results and a compiler ranking.
 
 ### Available Jobs <a name="jobs"></a>
 The available Compiler-Case combinations are
@@ -52,10 +56,10 @@ The available Compiler-Case combinations are
 | Assembler | [asm](../jcl/job_asm_clg.JESI)   | yes  | --   | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | C         | [gcc](../jcl/job_gcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | C         | [jcc](../jcl/job_jcc_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f **N01** |
-| Cobol     | [cob](../jcl/job_cob_clg.JESI)   | yes  | --   | --          | --          | --      | --             |
-| Fortran-4 | [forg](../jcl/job_forg_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
-| Fortran-4 | [forh](../jcl/job_forh_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
-| Fortran-4 | [forw](../jcl/job_forw_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| COBOL     | [cob](../jcl/job_cob_clg.JESI)   | yes  | --   | --          | --          | --      | --             |
+| FORTRAN-4 | [forg](../jcl/job_forg_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| FORTRAN-4 | [forh](../jcl/job_forh_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+| FORTRAN-4 | [forw](../jcl/job_forw_clg.JESI) | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 | Pascal    | [pas](../jcl/job_pas_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | PL/I      | [pli](../jcl/job_pli_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
@@ -74,3 +78,37 @@ The available Compiler-Case combinations are
   give proper results.
   The bug is reported to the maintainer, a fixed version of the compiler is
   available and will ship with tk4- update 09.
+
+### Howto create JCL <a name="getjcl"></a>
+When `hercjis` is called with the `-o` option it will write the generated
+job to the file given after the `-o` option, like
+```
+   hercjis -o hewo_asm.jcl  hewo_asm.JES
+```
+The generated `.jcl` file can now be submitted with any available tool.
+Converting all `.JES` files is easiest done with `make`.
+A [Makefile](Makefile) is provided which allows to convert a single
+file or all files if `make` is called with no target or `all` as target.
+To convert all `.JES` into `.jcl` simply
+- ensure that `bin/hercjis` is in the search path (e.g. set `$PATH` properly)
+- type `make`
+
+### Howto submit directly <a name="submit"></a>
+When `hercjis` is called without `-o` option it will send the job to a
+`sockdev` reader on port 3505. To use this most direct way to submit a job
+- setup hercules with `devinit 00c 3505 sockdev ascii trunc eof`
+- ensure that `bin/hercjis` is in the search path (e.g. set `$PATH` properly)
+- submit with `hercjis <file>.JES`
+
+Since `hercjis` accepts multiple input files whole job trains can be submitted,
+for example all simple and test jobs with
+```
+   hercjis hewo*.JES sine*.JES *_t.JES
+```
+
+For benchmarking it is often better to ensure that only one job is active
+at a time. On tk4- `CLASS=C` jobs have only a single initiator, so
+```
+   hercjis -c C *_f.JES
+```
+will submit all benchmark jobs and run them sequentially.

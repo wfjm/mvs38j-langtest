@@ -180,6 +180,9 @@ in the last column the time normalized to the fastest case (asm):
 | forw | 00:00:41,35 | 10.29 |
 |  a60 | 00:03:33,66 | 53.15 |
 
+See also the [benchmark summary](../README_bench.md) for an overview
+table and a compiler ranking.
+
 ### Author's Note <a name="anote"></a>
 I got exposed to large scale
 [Monte Carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method)

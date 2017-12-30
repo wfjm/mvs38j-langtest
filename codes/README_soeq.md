@@ -179,8 +179,10 @@ in the last column the time normalized to the fastest case (asm):
 |  gcc | 00:00:00,52 | 00:00:01,34 | 00:00:04,30 | 00:00:13,80 |  1.61 |
 |  jcc | 00:00:00,72 | 00:00:01,85 | 00:00:06,01 | 00:00:19,39 |  2.26 |
 |  pas | 00:00:01,62 | 00:00:04,03 | 00:00:12,97 | 00:00:41,58 |  4.85 |
-|  pas | 00:00:03,25 | 00:00:08,16 | 00:00:26,39 | 00:01:24,24 |  9.83 |
 |  pli | 00:00:06,09 | 00:00:15,53 | 00:00:50,51 |         n/a | 18.92 |
+
+See also the [benchmark summary](../README_bench.md) for an overview
+table and a compiler ranking.
 
 It's interesting to compare for the 4M and 10M searches the times for
 the simpler [soep](README_soep.md#user-content-benchmarks) algorithm

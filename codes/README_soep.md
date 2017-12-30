@@ -19,7 +19,7 @@ of primes for each decade. The sieve is implemented using one byte per odd
 number, using the data types
 - `BOOLEAN` in Algol 60
 - `char` in C
-- `LOGICAL*1` in Fortran
+- `LOGICAL*1` in FORTRAN
 - `boolean` in Pascal
 - `CHAR(1)` in PL/I
 - `CHARACTER` in Simula
@@ -167,6 +167,9 @@ in the last column the time normalized to the fastest case (asm):
 |  pli | 00:00:01,54 |         n/a |  9.06 |
 |  a60 | 00:00:01,85 | 00:00:04,62 | 10.74 |
 | forw | 00:00:03,55 | 00:00:08,88 | 20.65 |
+
+See also the [benchmark summary](../README_bench.md) for an overview
+table and a compiler ranking.
 
 A nice by-product is a measurement of the formatted output provided by
 the run-time systems. Simply done by subtracting from the `soep_*_p`

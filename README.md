@@ -19,7 +19,7 @@ are identified by a 4 character case ID:
 | [sine](codes/README_sine.md) | Line **printer plot** of sine and cosine | Test **basic text & character handling** |
 | [soep](codes/README_soep.md) | Sieve of Erastosthenes **prime search** (byte) | Test **integer array handling** and **formatted output** |
 | [soeq](codes/README_soeq.md) | Sieve of Erastosthenes **prime search (bit)** | Test **bit handling** |
-| [towh](codes/README_towh.md) | **Tower of Hanio** solver | Test **recursive function calls** |
+| [towh](codes/README_towh.md) | **Tower of Hanoi** solver | Test **recursive function calls** |
 | [mcpi](codes/README_mcpi.md) | **Monte Carlo** estimate of pi | Test **floating point arithmetic** |
 
 The cases were implemented with essentially the same basic logic in all
@@ -40,13 +40,16 @@ a 3 or 4 character compiler ID.
 | Algol 60  | a60              |
 | Assembler | asm              |
 | C         | gcc, jcc         |
-| Cobol     | cob              |
+| COBOL     | cob              |
 | FORTRAN-4 | forg, forh, forw |
 | Pascal    | pas              |
 | PL/I      | pli              |
 | Simula    | sim              |
 
-Consult the [Compiler README](README_comp.md) for more information.
+Consult the [Compiler README](README_comp.md) for more information on the
+compilers and the options used, and the
+[benchmark summary](README_bench.md) for an overview of some
+benchmark runs and a compiler ranking.
 
 ### The Codes <a name="codes"></a>
 The test cases were, if possible, implemented in these languages.
@@ -62,7 +65,6 @@ all available jobs types and the
 [Compiler-Case matrix](jobs/README.md#user-content-jobs) listing all
 available jobs. The later also includes a list of
 [known issues](jobs/README.md#user-content-issues).
-
 
 ### Directory organization
 The project files are organized in directories as

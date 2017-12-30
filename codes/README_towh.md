@@ -1,4 +1,4 @@
-## towh - Tower of Hanio solver
+## towh - Tower of Hanoi solver
 
 ### Table of content
 
@@ -61,7 +61,7 @@ See typical [test run](towh_ctst.dat) or
 
 ### Language and Compiler Notes <a name="langcomp"></a>
 
-#### Fortran 4 - [towh_for.f](towh_for.f)
+#### FORTRAN 4 - [towh_for.f](towh_for.f)
 Fortran introduced recursive calls only with
 [Fortran 90](https://en.wikipedia.org/wiki/Fortran#Fortran_90),
 so the Fortran implementation simulates the call nexting with a set
@@ -140,6 +140,9 @@ in the last column the time normalized to the fastest case (asm):
 |  pli | 00:00:56,07 | 10.62 |
 | forw | 00:01:30,67 | 17.17 |
 |  a60 | 00:04:21,28 | 49.48 |
+
+See also the [benchmark summary](../README_bench.md) for an overview
+table and a compiler ranking.
 
 ### Author's Note <a name="anote"></a>
 
