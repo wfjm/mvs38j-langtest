@@ -1,8 +1,8 @@
  /*      1         2         3         4         5         6         7*/--------
  /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
- /* $Id: towh_pli.pli 964 2017-11-19 08:47:46Z mueller $ */
+ /* $Id: towh_pli.pli 981 2018-01-02 13:30:49Z mueller $ */
  /*
- /* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /* Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
  /*
  /* This program is free software; you may redistribute and/or modify */
  /* it under the terms of the GNU General Public License version 3.   */
@@ -10,6 +10,7 @@
  /*                                                                   */
  /*  Revision History:                                                */
  /* Date         Rev Version  Comment                                 */
+ /* 2018-01-02   981   1.0    add ON units for ENDFILE and CONVERSION */
  /* 2017-09-07   947   1.0    Initial version                         */
  /* 2017-07-30   931   0.1    First draft                             */
 
@@ -22,6 +23,15 @@
  
     DCL MOV ENTRY(BIN FIXED(31),BIN FIXED(31),BIN FIXED(31));
   
+    ON ENDFILE(SYSIN) BEGIN;
+       PUT SKIP EDIT('Unexpected EOF, abort')(A);
+       GOTO DONE;
+    END;
+    ON CONVERSION     BEGIN;
+       PUT SKIP EDIT('Conversion error, abort')(A);
+       GOTO DONE;
+    END;
+
     GET EDIT(MAXDSK,TRACE) (F(5),F(5));
  
     DO NDSK=2 TO MAXDSK;
@@ -38,7 +48,8 @@
                     '  ncall=',NCALL, '  nmove=',NMOVE)
                     (2(A,F(2)),2(A,F(10)));
     END;
- 
+    DONE:;
+  
     /* procedure MOV -----------------------------------------------*/
     MOV: PROC(N,F,T) RECURSIVE;
       DCL (N,F,T)  BIN FIXED(31);
