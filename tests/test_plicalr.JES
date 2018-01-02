@@ -1,0 +1,5 @@
+//** ##define  JOB    TPLICALR
+//** ##define  REGION 2000K
+//** ##define  DDSRC  test_plicalr.pli
+//** ##define  DDDAT  test_plicalr.dat
+//** ##include ../jcl/job_pli_clg.JESI

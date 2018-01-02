@@ -1,0 +1,4 @@
+//** ##define  JOB    TPLICAL
+//** ##define  DDSRC  test_plical.pli
+//** ##define  DDDAT  test_plicalr.dat
+//** ##include ../jcl/job_pli_clg.JESI

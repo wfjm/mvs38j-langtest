@@ -1,0 +1,4 @@
+//** ##define  JOB    TA60CAL
+//** ##define  DDSRC  test_a60calr.a60
+//** ##define  DDDAT  test_a60calr.dat
+//** ##include ../jcl/job_a60_clg.JESI

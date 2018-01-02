@@ -1,0 +1,51 @@
+'BEGIN'
+'COMMENT'
+* $Id: test_a60calr.a60 981 2018-01-02 13:30:49Z mueller $
+*
+* Copyright 2018- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*  
+* This program is free software, you may redistribute and/or modify
+* it under the terms of the GNU General Public License version 3.
+* See Licence.txt in distribition directory for further details.
+*  
+*   Revision History:
+*  Date         Rev Version  Comment
+*  2018-01-02   981   1.0    Initial version
+*;
+
+  'INTEGER' MAXCALL,DEPTH;
+  'INTEGER' NTOP,NCALL;
+
+  'PROCEDURE' RECPROC(D);
+    'VALUE'   D;
+    'INTEGER' D;
+  'BEGIN'
+    NCALL := NCALL + 1;
+    'IF' D > 1 'THEN' RECPROC(D-1);
+  'END';
+
+  'COMMENT' set record lenth = 132 and page length = 62;
+  SYSACT(1,6,132);
+  SYSACT(1,8,64);
+
+  ININTEGER(0,MAXCALL);
+  ININTEGER(0,DEPTH);
+
+  NTOP  := 0;
+  NCALL := 0;
+  LOOP:
+    NTOP := NTOP + 1;
+    RECPROC(DEPTH);
+    'IF' NCALL < MAXCALL 'THEN' 'GOTO' LOOP;
+
+  OUTSTRING (1,'('TA60CAL maxcall=')');
+  OUTINTEGER(1, MAXCALL);
+  OUTSTRING (1,'('  depth=')');
+  OUTINTEGER(1, DEPTH);
+  OUTSTRING (1,'('   ntop=')');
+  OUTINTEGER(1, NTOP);
+  OUTSTRING (1,'('   ncall=')');
+  OUTINTEGER(1, NCALL);
+  SYSACT(1,14,1);
+
+'END'

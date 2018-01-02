@@ -1,0 +1,38 @@
+ /*      1         2         3         4         5         6         7*/--------
+ /*4567890123456789012345678901234567890123456789012345678901234567890*/--------
+ /* $Id: test_plicalr.pli 981 2018-01-02 13:30:49Z mueller $ */
+ /*
+ /* Copyright 2018- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> */
+ /*
+ /* This program is free software; you may redistribute and/or modify */
+ /* it under the terms of the GNU General Public License version 3.   */
+ /* See Licence.txt in distribition directory for further details.    */
+ /*                                                                   */
+ /*  Revision History:                                                */
+ /* Date         Rev Version  Comment                                 */
+ /* 2018-01-02   981   1.0    Initial version                         */
+
+  TPLICAL: PROC OPTIONS(MAIN) REORDER;
+    DCL (MAXCALL,DEPTH)   BIN FIXED(31) INIT(0);
+    DCL (NTOP,NCALL)      BIN FIXED(31) INIT(0);
+ 
+    DCL RECPROC ENTRY(BIN FIXED(31));
+  
+    GET EDIT(MAXCALL,DEPTH) (F(10),F(10));
+
+    DO WHILE(NCALL < MAXCALL);
+      NTOP = NTOP + 1;
+      CALL RECPROC(DEPTH);
+    END;
+
+    PUT SKIP EDIT('TPLICALR maxcall=',MAXCALL, '  depth=',DEPTH,
+                  '  ntop=',NTOP, '  ncall=',NCALL) (4(A,F(10)));
+ 
+    /* procedure RECPROC -------------------------------------------*/
+    RECPROC: PROC(D) RECURSIVE;
+      DCL (D)  BIN FIXED(31);
+      NCALL = NCALL + 1;
+      IF (D > 1) THEN CALL RECPROC(D-1);
+    END RECPROC;
+ 
+  END TPLICAL;
