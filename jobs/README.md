@@ -73,11 +73,14 @@ The available Compiler-Case combinations are
 - **N02:** `mcpi_a60_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)
   update 08 due to a compiler bug.
   The code requires double precision floating point, which in IBM Algol 60
-  must be selected with a compiler option. Due to a bug in the compiler this
-  option is not recognized, simgle precision code generate, which is does not
-  give proper results.
-  The bug is reported to the maintainer, a fixed version of the compiler is
-  available and will ship with tk4- update 09.
+  must be selected with the compiler option `LONG`. Due to a bug in the
+  compiler this option is not recognized, single precision code is generated,
+  which is does not give proper results.
+  The bug is reported, see
+  [turnkey-mvs posting](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/topics/10401).
+  A fix of the compiler is available from the maintainer, Tom Armstrong, see
+  [turnkey-mvs/files/IEX10.zip](https://groups.yahoo.com/neo/groups/turnkey-mvs/files/IEX10.zip) and **must be installed** before running `mpci_a60*` jobs. This
+  fix will be included in tk4- update 09.
 
 ### Howto create JCL <a name="getjcl"></a>
 When `hercjis` is called with the `-o` option it will write the generated

@@ -102,15 +102,17 @@ However, the generation of the shuffle index and the modulo arithmetic
 utilize optimizations which are only possible in assembler.
 
 #### Algol 60 - [mcpi_a60.a60](mcpi_a60.a60)
-The compiler in the version coming with [tk4-](http://wotho.ethz.ch/tk4-/)
-update 08 has a bug in the compiler option handling.
+`mcpi_a60_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)
+update 08 due to a compiler bug.
 The code requires double precision floating point, which in IBM Algol 60
 must be selected with the compiler option `LONG`. Due to a bug in the
 compiler this option is not recognized, single precision code is generated,
 which is does not give proper results.
-
-**Note:** _A fix is available from the maintainer, can be installed in tk4-.
-Only with this fix one gets correct results for `mcpi_a60.c`.
+The bug is reported, see
+[turnkey-mvs posting](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/topics/10401).
+A fix of the compiler is available from the maintainer, Tom Armstrong, see
+[turnkey-mvs/files/IEX10.zip](https://groups.yahoo.com/neo/groups/turnkey-mvs/files/IEX10.zip) and **must be installed** before running `mpci_a60*` jobs. This
+fix will be included in tk4- update 09.
   
 #### C - [mcpi_cc.c](mcpi_cc.c)
 `JCC` in the version coming with [tk4-](http://wotho.ethz.ch/tk4-/) update 08
