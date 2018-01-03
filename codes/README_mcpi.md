@@ -111,7 +111,7 @@ which is does not give proper results.
 The bug is reported, see
 [turnkey-mvs posting](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/topics/10401).
 A fix of the compiler is available from the maintainer, Tom Armstrong, see
-[turnkey-mvs/files/IEX10.zip](https://groups.yahoo.com/neo/groups/turnkey-mvs/files/IEX10.zip) and **must be installed** before running `mpci_a60*` jobs. This
+[turnkey-mvs/files/IEX10.zip](https://groups.yahoo.com/neo/groups/turnkey-mvs/files/IEX10.zip), and **must be installed** before running `mpci_a60*` jobs. This
 fix will be included in tk4- update 09.
   
 #### C - [mcpi_cc.c](mcpi_cc.c)
