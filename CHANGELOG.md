@@ -13,6 +13,9 @@ the documentation is consistent.
 
 ### Summary
 
+- jobs/ltlib_{del,new}.JES added, two jobs to delete and re-create the full
+  set of test jobs as HERC01.LTLIB PDS.
+
 <!-- --------------------------------------------------------------------- -->
 ---
 ## 2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm) <a name="V0.50"></a>

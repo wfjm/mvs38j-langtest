@@ -1,0 +1,352 @@
+//NLTLIB JOB 'S322-0C4','WFJM',
+//      USER=HERC01,PASSWORD=CUL8TR,
+//      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
+//      REGION=256K,TIME=(1,0),PRTY=8
+//CREDS  EXEC PGM=IEBUPDTE,PARM=NEW
+//SYSPRINT DD  SYSOUT=A
+//SYSUT2   DD  DSNAME=HERC01.LTLIB,
+//      UNIT=3350,VOL=SER=PUB000,
+//      SPACE=(80,(2000,200,15)),DISP=(NEW,CATLG),
+//      DCB=(RECFM=FB,LRECL=80,BLKSIZE=3120)
+//SYSIN    DD  DATA,DLM='@@'
+//** /*
+//** /*  Index +++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+./        ADD   NAME=$$$INDEX,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include ltlib_index.txt
+//** /*
+//** /*  HEWO ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+./        ADD   NAME=HEWOA60,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_a60.jcl
+./        ADD   NAME=HEWOASM,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_asm.jcl
+./        ADD   NAME=HEWOCOB,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_cob.jcl
+./        ADD   NAME=HEWOFOG,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_forg.jcl
+./        ADD   NAME=HEWOFOH,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_forh.jcl
+./        ADD   NAME=HEWOFOW,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_forw.jcl
+./        ADD   NAME=HEWOGCC,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_gcc.jcl
+./        ADD   NAME=HEWOJCC,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_jcc.jcl
+./        ADD   NAME=HEWOPAS,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_pas.jcl
+./        ADD   NAME=HEWOPLI,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_pli.jcl
+./        ADD   NAME=HEWOSIM,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include hewo_sim.jcl
+//** /*
+//** /*  SINE ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+./        ADD   NAME=SINEA60,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_a60.jcl
+./        ADD   NAME=SINEFOG,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_forg.jcl
+./        ADD   NAME=SINEFOH,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_forh.jcl
+./        ADD   NAME=SINEFOW,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_forw.jcl
+./        ADD   NAME=SINEGCC,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_gcc.jcl
+./        ADD   NAME=SINEJCC,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_jcc.jcl
+./        ADD   NAME=SINEPAS,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_pas.jcl
+./        ADD   NAME=SINEPLI,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_pli.jcl
+./        ADD   NAME=SINESIM,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include sine_sim.jcl
+//** /*
+//** /*  SOEP ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+//** /*  SOEP - A60 ------------------------------
+//** /*
+./        ADD   NAME=SOEPA60F,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_a60_f.jcl
+./        ADD   NAME=SOEPA60P,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_a60_p.jcl
+./        ADD   NAME=SOEPA60T,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_a60_t.jcl
+//** /*
+//** /*  SOEP - ASM ------------------------------
+//** /*
+./        ADD   NAME=SOEPASMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_asm_f.jcl
+./        ADD   NAME=SOEPASMP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_asm_p.jcl
+./        ADD   NAME=SOEPASMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_asm_t.jcl
+//** /*
+//** /*  SOEP - GCC ------------------------------
+//** /*
+./        ADD   NAME=SOEPGCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_gcc_f.jcl
+./        ADD   NAME=SOEPGCCP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_gcc_p.jcl
+./        ADD   NAME=SOEPGCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_gcc_t.jcl
+//** /*
+//** /*  SOEP - JCC ------------------------------
+//** /*
+./        ADD   NAME=SOEPJCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_jcc_f.jcl
+./        ADD   NAME=SOEPJCCP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_jcc_p.jcl
+./        ADD   NAME=SOEPJCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_jcc_t.jcl
+//** /*
+//** /*  SOEP - FOG ------------------------------
+//** /*
+./        ADD   NAME=SOEPFOGF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forg_f.jcl
+./        ADD   NAME=SOEPFOGP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forg_p.jcl
+./        ADD   NAME=SOEPFOGT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forg_t.jcl
+//** /*
+//** /*  SOEP - FOH ------------------------------
+//** /*
+./        ADD   NAME=SOEPFOHF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forh_f.jcl
+./        ADD   NAME=SOEPFOHP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forh_p.jcl
+./        ADD   NAME=SOEPFOHT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forh_t.jcl
+//** /*
+//** /*  SOEP - FOW ------------------------------
+//** /*
+./        ADD   NAME=SOEPFOWF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forw_f.jcl
+./        ADD   NAME=SOEPFOWP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forw_p.jcl
+./        ADD   NAME=SOEPFOWT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_forw_t.jcl
+//** /*
+//** /*  SOEP - PAS ------------------------------
+//** /*
+./        ADD   NAME=SOEPPASF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pas_f.jcl
+./        ADD   NAME=SOEPPASP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pas_p.jcl
+./        ADD   NAME=SOEPPAST,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pas_t.jcl
+//** /*
+//** /*  SOEP - PLI ------------------------------
+//** /*
+./        ADD   NAME=SOEPPLIF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pli_f.jcl
+./        ADD   NAME=SOEPPLIP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pli_p.jcl
+./        ADD   NAME=SOEPPLIT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_pli_t.jcl
+//** /*
+//** /*  SOEP - SIM ------------------------------
+//** /*
+./        ADD   NAME=SOEPSIMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_sim_f.jcl
+./        ADD   NAME=SOEPSIMP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_sim_p.jcl
+./        ADD   NAME=SOEPSIMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soep_sim_t.jcl
+//** /*
+//** /*  SOEQ ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+//** /*  SOEQ - ASM ------------------------------
+//** /*
+./        ADD   NAME=SOEQASMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_asm_f.jcl
+./        ADD   NAME=SOEQASMP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_asm_p.jcl
+./        ADD   NAME=SOEQASMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_asm_t.jcl
+//** /*
+//** /*  SOEQ - GCC ------------------------------
+//** /*
+./        ADD   NAME=SOEQGCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_gcc_f.jcl
+./        ADD   NAME=SOEQGCCP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_gcc_p.jcl
+./        ADD   NAME=SOEQGCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_gcc_t.jcl
+//** /*
+//** /*  SOEQ - JCC ------------------------------
+//** /*
+./        ADD   NAME=SOEQJCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_jcc_f.jcl
+./        ADD   NAME=SOEQJCCP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_jcc_p.jcl
+./        ADD   NAME=SOEQJCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_jcc_t.jcl
+//** /*
+//** /*  SOEQ - PAS ------------------------------
+//** /*
+./        ADD   NAME=SOEQPASF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pas_f.jcl
+./        ADD   NAME=SOEQPASP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pas_p.jcl
+./        ADD   NAME=SOEQPAST,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pas_t.jcl
+//** /*
+//** /*  SOEQ - PLI ------------------------------
+//** /*
+./        ADD   NAME=SOEQPLIF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pli_f.jcl
+./        ADD   NAME=SOEQPLIP,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pli_p.jcl
+./        ADD   NAME=SOEQPLIT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include soeq_pli_t.jcl
+//** /*
+//** /*  TOWH ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+//** /*  TOWH - A60 ------------------------------
+//** /*
+./        ADD   NAME=TOWHA60F,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_a60_f.jcl
+./        ADD   NAME=TOWHA60T,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_a60_t.jcl
+//** /*
+//** /*  TOWH - ASM ------------------------------
+//** /*
+./        ADD   NAME=TOWHASMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_asm_f.jcl
+./        ADD   NAME=TOWHASMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_asm_t.jcl
+//** /*
+//** /*  TOWH - GCC ------------------------------
+//** /*
+./        ADD   NAME=TOWHGCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_gcc_f.jcl
+./        ADD   NAME=TOWHGCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_gcc_t.jcl
+//** /*
+//** /*  TOWH - JCC ------------------------------
+//** /*
+./        ADD   NAME=TOWHJCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_jcc_f.jcl
+./        ADD   NAME=TOWHJCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_jcc_t.jcl
+//** /*
+//** /*  TOWH - FOG ------------------------------
+//** /*
+./        ADD   NAME=TOWHFOGF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forg_f.jcl
+./        ADD   NAME=TOWHFOGT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forg_t.jcl
+//** /*
+//** /*  TOWH - FOH ------------------------------
+//** /*
+./        ADD   NAME=TOWHFOHF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forh_f.jcl
+./        ADD   NAME=TOWHFOHT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forh_t.jcl
+//** /*
+//** /*  TOWH - FOW ------------------------------
+//** /*
+./        ADD   NAME=TOWHFOWF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forw_f.jcl
+./        ADD   NAME=TOWHFOWT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_forw_t.jcl
+//** /*
+//** /*  TOWH - PAS ------------------------------
+//** /*
+./        ADD   NAME=TOWHPASF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_pas_f.jcl
+./        ADD   NAME=TOWHPAST,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_pas_t.jcl
+//** /*
+//** /*  TOWH - PLI ------------------------------
+//** /*
+./        ADD   NAME=TOWHPLIF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_pli_f.jcl
+./        ADD   NAME=TOWHPLIT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_pli_t.jcl
+//** /*
+//** /*  TOWH - SIM ------------------------------
+//** /*
+./        ADD   NAME=TOWHSIMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_sim_f.jcl
+./        ADD   NAME=TOWHSIMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include towh_sim_t.jcl
+//** /*
+//** /*  MCPI ++++++++++++++++++++++++++++++++++++++++++++++
+//** /*
+//** /*  MCPI - A60 ------------------------------
+//** /*
+./        ADD   NAME=MCPIA60F,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_a60_f.jcl
+./        ADD   NAME=MCPIA60T,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_a60_t.jcl
+//** /*
+//** /*  MCPI - ASM ------------------------------
+//** /*
+./        ADD   NAME=MCPIASMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_asm_f.jcl
+./        ADD   NAME=MCPIASMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_asm_t.jcl
+//** /*
+//** /*  MCPI - GCC ------------------------------
+//** /*
+./        ADD   NAME=MCPIGCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_gcc_f.jcl
+./        ADD   NAME=MCPIGCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_gcc_t.jcl
+//** /*
+//** /*  MCPI - JCC ------------------------------
+//** /*
+./        ADD   NAME=MCPIJCCF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_jcc_f.jcl
+./        ADD   NAME=MCPIJCCT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_jcc_t.jcl
+//** /*
+//** /*  MCPI - FOG ------------------------------
+//** /*
+./        ADD   NAME=MCPIFOGF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forg_f.jcl
+./        ADD   NAME=MCPIFOGT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forg_t.jcl
+//** /*
+//** /*  MCPI - FOH ------------------------------
+//** /*
+./        ADD   NAME=MCPIFOHF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forh_f.jcl
+./        ADD   NAME=MCPIFOHT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forh_t.jcl
+//** /*
+//** /*  MCPI - FOW ------------------------------
+//** /*
+./        ADD   NAME=MCPIFOWF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forw_f.jcl
+./        ADD   NAME=MCPIFOWT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_forw_t.jcl
+//** /*
+//** /*  MCPI - PAS ------------------------------
+//** /*
+./        ADD   NAME=MCPIPASF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_pas_f.jcl
+./        ADD   NAME=MCPIPAST,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_pas_t.jcl
+//** /*
+//** /*  MCPI - PLI ------------------------------
+//** /*
+./        ADD   NAME=MCPIPLIF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_pli_f.jcl
+./        ADD   NAME=MCPIPLIT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_pli_t.jcl
+//** /*
+//** /*  MCPI - SIM ------------------------------
+//** /*
+./        ADD   NAME=MCPISIMF,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_sim_f.jcl
+./        ADD   NAME=MCPISIMT,LEVEL=00,SOURCE=0,LIST=ALL
+//** ##include mcpi_sim_t.jcl
+//** /*
+//** /*  end - of - job ------------------------------------
+//** /*
+./        ENDUP
+@@
+/*
+//

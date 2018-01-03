@@ -1,0 +1,132 @@
+//********************************************************************
+//*
+//*  Name: HERC01.LTLIB($$$INDEX)
+//*
+//*  Desc: Short index of PDS with MVS 3.8j language test jobs
+//*  
+//*  For full information consult GitHub project wfjm/mvs38j-langtest
+//*    https://github.com/wfjm/mvs38j-langtest/blob/master/README.md
+//*
+//*  The index simply gives the relation between the 7 character
+//*  PDS member names and the jcl file names of the project.
+//*  Member names as well as file name are composed of
+//*    Case ID      - test case identifier (hewo,sine,....)
+//*    Compiler ID  - compiler identifier  (a60,asm,....)
+//*    Job type     - t --> test jobs
+//*                   f --> benchmark jobs
+//*                   p --> print benchmark jobs (for soep/soeq)
+//*
+//********************************************************************
+Membername Short description                                          x
+---------- ------------------------------------------------------------
+HEWO --- section --- The classical 'Hello Word'
+HEWOA60    hewo_a60.jcl
+HEWOASM    hewo_asm.jcl
+HEWOCOB    hewo_cob.jcl
+HEWOFOG    hewo_forg.jcl
+HEWOFOH    hewo_forh.jcl
+HEWOFOW    hewo_forw.jcl
+HEWOGCC    hewo_gcc.jcl
+HEWOJCC    hewo_jcc.jcl
+HEWOPAS    hewo_pas.jcl
+HEWOPLI    hewo_pli.jcl
+HEWOSIM    hewo_sim.jcl
+SINE --- section --- Line printer plot of sine and cosine
+SINEA60    sine_a60.jcl
+SINEFOG    sine_forg.jcl
+SINEFOH    sine_forh.jcl
+SINEFOW    sine_forw.jcl
+SINEGCC    sine_gcc.jcl
+SINEJCC    sine_jcc.jcl
+SINEPAS    sine_pas.jcl
+SINEPLI    sine_pli.jcl
+SINESIM    sine_sim.jcl
+SOEP --- section --- Sieve of Eratosthenes prime search (byte)
+SOEPA60    soep_a60_f.jcl
+SOEPA60    soep_a60_p.jcl
+SOEPA60    soep_a60_t.jcl
+SOEPASM    soep_asm_f.jcl
+SOEPASM    soep_asm_p.jcl
+SOEPASM    soep_asm_t.jcl
+SOEPGCC    soep_gcc_f.jcl
+SOEPGCC    soep_gcc_p.jcl
+SOEPGCC    soep_gcc_t.jcl
+SOEPJCC    soep_jcc_f.jcl
+SOEPJCC    soep_jcc_p.jcl
+SOEPJCC    soep_jcc_t.jcl
+SOEPFOG    soep_forg_f.jcl
+SOEPFOG    soep_forg_p.jcl
+SOEPFOG    soep_forg_t.jcl
+SOEPFOH    soep_forh_f.jcl
+SOEPFOH    soep_forh_p.jcl
+SOEPFOH    soep_forh_t.jcl
+SOEPFOW    soep_forw_f.jcl
+SOEPFOW    soep_forw_p.jcl
+SOEPFOW    soep_forw_t.jcl
+SOEPPAS    soep_pas_f.jcl
+SOEPPAS    soep_pas_p.jcl
+SOEPPAS    soep_pas_t.jcl
+SOEPPLI    soep_pli_f.jcl
+SOEPPLI    soep_pli_p.jcl
+SOEPPLI    soep_pli_t.jcl
+SOEPSIM    soep_sim_f.jcl
+SOEPSIM    soep_sim_p.jcl
+SOEPSIM    soep_sim_t.jcl
+SOEQ --- section --- Sieve of Eratosthenes prime search (bit)
+SOEQASM    soeq_asm_f.jcl
+SOEQASM    soeq_asm_p.jcl
+SOEQASM    soeq_asm_t.jcl
+SOEQGCC    soeq_gcc_f.jcl
+SOEQGCC    soeq_gcc_p.jcl
+SOEQGCC    soeq_gcc_t.jcl
+SOEQJCC    soeq_jcc_f.jcl
+SOEQJCC    soeq_jcc_p.jcl
+SOEQJCC    soeq_jcc_t.jcl
+SOEQPAS    soeq_pas_f.jcl
+SOEQPAS    soeq_pas_p.jcl
+SOEQPAS    soeq_pas_t.jcl
+SOEQPLI    soeq_pli_f.jcl
+SOEQPLI    soeq_pli_p.jcl
+SOEQPLI    soeq_pli_t.jcl
+TOWH --- section --- Tower of Hanoi solver
+TOWHA60    towh_a60_f.jcl
+TOWHA60    towh_a60_t.jcl
+TOWHASM    towh_asm_f.jcl
+TOWHASM    towh_asm_t.jcl
+TOWHGCC    towh_gcc_f.jcl
+TOWHGCC    towh_gcc_t.jcl
+TOWHJCC    towh_jcc_f.jcl
+TOWHJCC    towh_jcc_t.jcl
+TOWHFOG    towh_forg_f.jcl
+TOWHFOG    towh_forg_t.jcl
+TOWHFOH    towh_forh_f.jcl
+TOWHFOH    towh_forh_t.jcl
+TOWHFOW    towh_forw_f.jcl
+TOWHFOW    towh_forw_t.jcl
+TOWHPAS    towh_pas_f.jcl
+TOWHPAS    towh_pas_t.jcl
+TOWHPLI    towh_pli_f.jcl
+TOWHPLI    towh_pli_t.jcl
+TOWHSIM    towh_sim_f.jcl
+TOWHSIM    towh_sim_t.jcl
+MCPI --- section --- Monte Carlo estimate of pi
+MCPIA60    mcpi_a60_f.jcl
+MCPIA60    mcpi_a60_t.jcl
+MCPIASM    mcpi_asm_f.jcl
+MCPIASM    mcpi_asm_t.jcl
+MCPIGCC    mcpi_gcc_f.jcl
+MCPIGCC    mcpi_gcc_t.jcl
+MCPIJCC    mcpi_jcc_f.jcl
+MCPIJCC    mcpi_jcc_t.jcl
+MCPIFOG    mcpi_forg_f.jcl
+MCPIFOG    mcpi_forg_t.jcl
+MCPIFOH    mcpi_forh_f.jcl
+MCPIFOH    mcpi_forh_t.jcl
+MCPIFOW    mcpi_forw_f.jcl
+MCPIFOW    mcpi_forw_t.jcl
+MCPIPAS    mcpi_pas_f.jcl
+MCPIPAS    mcpi_pas_t.jcl
+MCPIPLI    mcpi_pli_f.jcl
+MCPIPLI    mcpi_pli_t.jcl
+MCPISIM    mcpi_sim_f.jcl
+MCPISIM    mcpi_sim_t.jcl
