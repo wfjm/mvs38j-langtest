@@ -208,7 +208,8 @@ implementation could be still improved.
 My suspicion was that the `EX` instruction is expensive, and that inline
 calculation of the bit masks is faster than a table look-up.
 To have a quantitative basis I wrote a instruction benchmark, which after
-a lot of work grew into perf_asm.
+a lot of work grew into s370_perf, which is now a GitHub project of its
+own under [wfjm/s370-perf](https://github.com/wfjm/s370-perf).
 With the instruction timings at hand it turned out that my suspicion was correct.
 So in the end my code likely beats Juergens code in speed, but it is by far
 not as elegant and compact.

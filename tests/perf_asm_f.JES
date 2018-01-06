@@ -1,9 +1,0 @@
-//** ##define  JOB    PERF#ASM
-//** ##define  TIME   (10,0)
-//** ##define  REGION 2500K
-//** ##define  DDSRC  perf_asm.asm
-//** ##define  DDDAT  /dev/null
-//** ##define  SYSUT2SPA  (1700,(900,200))
-//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
-//** ##define  PARMG  '/GAUT'
-//** ##include ../jcl/job_asm_clg.JESI
