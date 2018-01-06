@@ -1,10 +1,15 @@
+//** /* This job creates the PDF xxx.LTLIB with all langtest jobs
+//** /* The username/password is configurable via definition of
+//** /*    USER        default  HERC03
+//** /*    PASSWORD    default  PASS4U
+//** /*
 //NLTLIB JOB 'S322-0C4','WFJM',
-//      USER=HERC01,PASSWORD=CUL8TR,
+//      USER=${USER:=HERC03},PASSWORD=${PASSWORD:-PASS4U},
 //      CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),
 //      REGION=256K,TIME=(1,0),PRTY=8
 //DELDS EXEC PGM=IEFBR14
 //SYSPRINT DD  SYSOUT=*
-//SYSUT2   DD  DSN=HERC01.LTLIB,
+//SYSUT2   DD  DSN=${USER}.LTLIB,
 //      DISP=(OLD,DELETE,DELETE)
 /*
 //
