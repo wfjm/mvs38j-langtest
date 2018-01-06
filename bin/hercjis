@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
-# $Id: hercjis 977 2017-12-27 12:46:21Z mueller $
+# $Id: hercjis 986 2018-01-06 13:41:50Z mueller $
 #
-# Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+# Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 #
 # This program is free software; you may redistribute and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -14,6 +14,7 @@
 #
 #  Revision History:
 # Date         Rev Version  Comment
+# 2018-01-04   986   1.4    add -d and -D; change/docu substitution precedence
 # 2017-12-27   977   1.3    add -c option for $CLASS definition shortcut
 # 2017-11-19   965   1.2    add -M option, generate dependency info
 # 2017-11-11   960   1.1    use map to HERCJIS_* env vars; add ##rinclude
@@ -34,12 +35,16 @@ my %optdsc = ('-h' => 0,
               '-a' => 1,
               '-w' => 1,
               '-c' => 1,
+              '-d' => 1,
+              '-D' => 1,
               '-v' => 0,
               '-M' => 0);
 my %opt;
 
 my $defoport = '3505';
-my %defs;
+my %defs_def;                               # from ##defines
+my %defs_cmd;                               # from -d options
+my %defs_ovr;                               # from -D options
 
 # setup signal handlers
 sub catch_pipe;
@@ -78,7 +83,7 @@ my $fh_out = open_out();
 
 foreach my $fname (@ARGV) {
   # reset define hash
-  %defs = ();
+  %defs_def = ();
 
   # handle input file
   my $irc = do_file($fname);
@@ -113,7 +118,20 @@ sub getopts {
           printf STDERR "hercjis-E missing argument after '$arg', abort\n";
           exit 1;
         }
-        $opt{$arg} = shift @ARGV;
+        if ($arg eq '-d' or $arg eq '-D') {
+          my $dsc = shift @ARGV;
+          if ($dsc =~ m/^(.*?)=(.*)$/) {
+            $defs_cmd{$1} = $2 if $arg eq '-d';
+            $defs_ovr{$1} = $2 if $arg eq '-D';
+          } else {
+            printf STDERR "hercjis-E -d,-D argument '$dsc' has no '=', abort\n";
+            exit 1;
+          }
+        } elsif ($arg eq '-c') {
+          $defs_ovr{CLASS} = shift @ARGV;
+        } else {
+          $opt{$arg} = shift @ARGV;
+        }
       } else {
         $opt{$arg} = 1;
       }
@@ -133,7 +151,9 @@ sub do_help {
   print "usage: hercjis [OPTIONS]... [FILE]...\n";
   print "  -a [nam:]port  sockdev address, default localhost:$defoport\n";
   print "  -o file        convert one deck, write to 'file'\n";
-  print "  -c x           use x as substitution for \${CLASS}\n";
+  print "  -d nam=val     define default for \${nam} substitution\n";
+  print "  -D nam=val     define override for \${nam} substitution\n";
+  print "  -c x           short cut for -D CLASS=x\n";
   print "  -f             run as filter (read stdin, write stdout)\n";
   print "  -v             verbose, print statistics\n";
   print "  -M             output Makefile dependencies to STDOUT\n";
@@ -143,10 +163,16 @@ sub do_help {
   print "  //** ##include  fname       ;fnames relative to CWD \n";
   print "  //** ##rinclude fname       ;fnames relative to including file\n";
   print "  //** ##define   name value\n";
-  print "substitutions (shell style):\n";
+  print "variable substitution syntax (shell style):\n";
   print '  ${name}        fails if name not defined'."\n";
   print '  ${name:=def}   if name undefined, use val, define name'."\n";
   print '  ${name:-def}   if name undefined, use val, name stays undefined'."\n";
+  print "substitution of XXX precedence (highest to lowest):\n";
+  print "  -D XXX=value             --> -D overrides all\n";
+  print "  HERCJIS_XXX environment  --> environment almost all\n";
+  print "  ##define XXX value\n";
+  print "  -d XXX=value             --> -d is below ##define\n";
+  print "  \${XXX:-value}            --> the last resort\n";
   return;
 }
 
@@ -267,20 +293,16 @@ sub do_file {
       my $name = $1;
       my $typ  = $2;
       my $val  = $3;
-      my $lup  = do_lookup($name);
-      if (defined $lup) {
-	$line = $` . $lup . $';
-      } else {
-	$line = $` . $val . $';
-	$defs{$name} = $val if ($typ eq "=");
-      }
+      my $sup  = getsup($name,$val);
+      $line = $` . $sup . $';
+      $defs_def{$name} = $val if ($typ eq "=");
     }
 
     while ($line =~ /\$\{(\w*)\}/) {       # ${name} seen
       my $name = $1;
-      my $lup  = do_lookup($name);
-      if (defined $lup) {
-	$line = $` . $lup . $';
+      my $sup  = getsup($name,undef);
+      if (defined $sup) {
+	$line = $` . $sup . $';
       } else {
 	print STDERR "hercjis-E: variable \"$name\" not defined\n";
         $irc = 1;
@@ -312,7 +334,7 @@ sub do_file {
 
       } elsif ($dir eq 'define') {          # ##define ---------------
         if ($val =~ m/^([a-zA-Z][a-zA-Z0-9]*)\s+(.+)/) {
-          $defs{$1} = $2;
+          $defs_def{$1} = $2;
         } else {
           printf STDERR "hercjis-E: bad ##define '$val', abort\n";
           $irc = 1;
@@ -329,21 +351,20 @@ sub do_file {
 }
 
 #
-# -- do_lookup: handle name lookup -------------------------------------------
-# - return local definition if available
-# - otherwise lookup of environment vars
-#   - if variable is $XXX --> lookup XXX
-#   - if variable is  XXX --> lookup HERCJIS_XXX
+# -- getsup: get substitution value ------------------------------------------
+# precedence (from highest to lowest):
+#    -D XXX=value               --> -D overrides everything
+#    HERCJIS_XXX environment    --> HERCJIS_XXX environments almost
+#    ##define XXX value
+#    -d XXX=value               --> -d is below ##define !!
+#    ${XXX:-value}              --> last resort
 #
-# - the -c option is equivalent to setting the HERCJIS_CLASS environment, like
-#     HERCJIS_CLASS=C hercjis *_asm_t.JES
-#     hercjis -c C *_asm_t.JES
-#   Note: In case HERCJIS_CLASS and -c defined, the -c has precedence
-#
-sub do_lookup {
-  my ($name) = @_;
-  return $defs{$name} if defined $defs{$name};
-  return $opt{-c} if $name eq 'CLASS' && defined $opt{-c};
-  my $ename = (substr($name,0,1) eq '$') ? $name : 'HERCJIS_'.$name;
-  return $ENV{$ename};
+sub getsup {
+  my ($name,$def) = @_;
+  return $defs_ovr{$name} if defined $defs_ovr{$name}; # -D name=
+  my $envval = $ENV{'HERCJIS_'.$name};
+  return $envval          if defined $envval;          # HERCJIS_name_
+  return $defs_def{$name} if defined $defs_def{$name}; # ##defined name
+  return $defs_cmd{$name} if defined $defs_cmd{$name}; # -d name=
+  return $def;                                         # ${name=-}
 }
