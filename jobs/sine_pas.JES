@@ -1,4 +1,5 @@
 //** ##define  JOB    SINE#PAS
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/sine_pas.pas
 //** ##define  DDDAT  /dev/null
 //** ##include ../jcl/job_pas_clg.JESI

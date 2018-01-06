@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEP#PLI
+//** ##define  CLASS  B
 //** ##define  REGION  2200K
 //** ##define  DDSRC  ../codes/soep_pli.pli
 //** ##define  DDDAT  ../codes/soep_ctst.dat

@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEP#PAS
+//** ##define  CLASS  C
 //** ##define  REGION  6500K
 //** ##define  GOSTACK 5500K
 //** ##define  DDSRC  ../codes/soep_pas.pas

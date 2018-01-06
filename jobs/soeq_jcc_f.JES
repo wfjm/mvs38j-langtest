@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEQ#JCC
+//** ##define  CLASS  C
 //** ##define  REGION 7000K
 //** ##define  DDSRC  ../codes/soeq_cc.c
 //** ##define  DDDAT  ../codes/soeq_cher.dat

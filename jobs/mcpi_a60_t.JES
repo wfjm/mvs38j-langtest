@@ -1,4 +1,5 @@
 //** ##define  JOB    MCPI#A60
+//** ##define  CLASS  B
 //** ##define  PARMC  'LONG'
 //** ##define  DDSRC  ../codes/mcpi_a60.a60
 //** ##define  DDDAT  ../codes/mcpi_ctst.dat

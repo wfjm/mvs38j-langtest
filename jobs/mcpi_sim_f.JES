@@ -1,4 +1,5 @@
 //** ##define  JOB    MCPI#SIM
+//** ##define  CLASS  A
 //** ##define  TIME   (10,0)
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/mcpi_sim.sim

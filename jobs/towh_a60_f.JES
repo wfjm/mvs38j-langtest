@@ -1,4 +1,5 @@
 //** ##define  JOB    TOWH#A60
+//** ##define  CLASS  A
 //** ##define  TIME   (10,0)
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/towh_a60.a60

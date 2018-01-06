@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEQ#JCC
+//** ##define  CLASS  A
 //** ##define  DDSRC  ../codes/soeq_cc.c
 //** ##define  DDDAT  ../codes/soep_cprt.dat
 //** ##define  OUTLIM 100000

@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEP#ASM
+//** ##define  CLASS  C
 //** ##define  REGION 6000K
 //** ##define  DDSRC  ../codes/soep_asm.asm
 //** ##define  DDDAT  ../codes/soep_cprt.dat

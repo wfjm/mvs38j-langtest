@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEP#FOW
+//** ##define  CLASS  C
 //** ##define  REGION 6000K
 //** ##define  DDSRC  ../codes/soep_for.f
 //** ##define  DDDAT  ../codes/soep_cher.dat

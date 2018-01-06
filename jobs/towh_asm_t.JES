@@ -1,4 +1,5 @@
 //** ##define  JOB    TOWH#ASM
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/towh_asm.asm
 //** ##define  DDDAT  ../codes/towh_ctst.dat
 //** ##include ../jcl/job_asm_clg.JESI

@@ -1,4 +1,5 @@
 //** ##define  JOB    MCPI#FOH
+//** ##define  CLASS  A
 //** ##define  TIME   (1440)
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/mcpi_for.f

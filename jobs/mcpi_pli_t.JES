@@ -1,4 +1,5 @@
 //** ##define  JOB    MCPI#PLI
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/mcpi_pli.pli
 //** ##define  DDDAT  ../codes/mcpi_ctst.dat
 //** ##include ../jcl/job_pli_clg.JESI

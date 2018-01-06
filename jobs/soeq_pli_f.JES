@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEQ#PLI
+//** ##define  CLASS  A
 //** ##define  REGION  2200K
 //** ##define  TIME   (5,0)
 //** ##define  PRTY   2

@@ -1,4 +1,5 @@
 //** ##define  JOB    HEWO#SIM
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/hewo_sim.sim
 //** ##define  DDDAT  /dev/null
 //** ##include ../jcl/job_sim_clg.JESI

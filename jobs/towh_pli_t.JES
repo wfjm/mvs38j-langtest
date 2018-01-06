@@ -1,4 +1,5 @@
 //** ##define  JOB    TOWH#PLI
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/towh_pli.pli
 //** ##define  DDDAT  ../codes/towh_ctst.dat
 //** ##include ../jcl/job_pli_clg.JESI

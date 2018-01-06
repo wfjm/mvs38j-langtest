@@ -1,4 +1,5 @@
 //** ##define  JOB    HEWO#COB
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/hewo_cob.cob
 //** ##define  DDDAT  /dev/null
 //** ##include ../jcl/job_cob_clg.JESI

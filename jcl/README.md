@@ -9,6 +9,8 @@ set of variables is compiler specific, the common ones are
 | Variable | Function |
 | -------- | -------- |
 | JOB      | job name |
+| JOBPOS   | job card positional parameters |
+| JOBEXT   | job extra parameters |
 | CLASS    | job class |
 | MSGCLASS | message class |
 | MSGLEVEL | message level |

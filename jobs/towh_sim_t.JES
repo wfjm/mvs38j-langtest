@@ -1,4 +1,5 @@
 //** ##define  JOB    TOWH#SIM
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/towh_sim.sim
 //** ##define  DDDAT  ../codes/towh_ctst.dat
 //** ##include ../jcl/job_sim_clg.JESI

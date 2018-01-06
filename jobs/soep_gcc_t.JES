@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEP#GCC
+//** ##define  CLASS  B
 //** ##define  DDSRC  ../codes/soep_cc.c
 //** ##define  DDDAT  ../codes/soep_ctst.dat
 //** ##include ../jcl/job_gcc_clg.JESI

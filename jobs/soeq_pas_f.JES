@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEQ#PAS
+//** ##define  CLASS  C
 //** ##define  REGION  7500K
 //** ##define  GOSTACK 6500K
 //** ##define  TIME   (5,0)

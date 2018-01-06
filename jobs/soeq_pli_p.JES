@@ -1,4 +1,5 @@
 //** ##define  JOB    SOEQ#PLI
+//** ##define  CLASS  A
 //** ##define  REGION  2200K
 //** ##define  TIME   (2,0)
 //** ##define  DDSRC  ../codes/soeq_pli.pli

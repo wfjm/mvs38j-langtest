@@ -1,4 +1,5 @@
 //** ##define  JOB    TOWH#ASM
+//** ##define  CLASS  A
 //** ##define  TIME   (10,0)
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/towh_asm.asm

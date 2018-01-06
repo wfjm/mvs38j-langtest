@@ -13,6 +13,19 @@ the documentation is consistent.
 
 ### Summary
 
+- jobs/*.JES:
+  - now job class always explicitely defined via parameter CLASS
+  - use CLASS B for fast runners: hewo*,sine*,*_t
+  - use CLASS A for rest: *_f,*_p
+  - use CLASS C for jobs with REGIONS >= 6000K
+- jcl/*.JESI
+  - new parameters JOBPOS,JOBEXT added
+  - the job header is now fully configurable via hercjis -D
+  - JOBEXT can be used to setup USER= and PASSWORD=.
+- ltlib_*.JES:
+  - add USER,PASSWORD substitution
+  - the default user is now HERC03/PASS4U
+- hercjis: add -d and -D; change/docu substitution precedence
 - remove the instruction timing tested perf_asm from this project, it is now a
   GitHub project of its own right under
   [wfjm/s370-perf](https://github.com/wfjm/s370-perf).
