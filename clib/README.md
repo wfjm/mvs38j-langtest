@@ -16,7 +16,7 @@ text handling and a very simple I/O system. The modules are
 | [sos_oint04.asm](sos_oint04.asm)     | `OINT04`: output integer in `%4d` format  |
 | [sos_oint10.asm](sos_oint10.asm)     | `OINT10`: output integer in `%10d` format  |
 | [sos_oint12.asm](sos_oint12.asm)     | `OINT12`: output integer in `%12d` format  |
-| [sos_oregdmp.asm](sos_oregdmp.asm)   | `OREGDMP`: output regsister dump |
+| [sos_oregdmp.asm](sos_oregdmp.asm)   | `OREGDMP`: output register dump |
 
 See also the test code [test_sos.asm](../tests/test_sos.asm) in the
 [tests](../tests) directory which serves as simple test bench for
