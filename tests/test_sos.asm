@@ -2,7 +2,7 @@
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
 * $Id: test_sos.asm 969 2017-12-10 23:06:29Z mueller $
 *
-* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
 * This program is free software; you may redistribute and/or modify
 * it under the terms of the GNU General Public License version 3.
@@ -205,7 +205,6 @@ EXIT     CLOSE SYSPRINT           close SYSPRINT
 *
 SAVE     DS    18F                local save area
 RC       DC    F'0'               return code
-GMUL     DC    F'100'             general multiplier
 *
 * message strings --------------------------------
 *
