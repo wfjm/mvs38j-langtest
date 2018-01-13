@@ -83,9 +83,9 @@ OPUTLINE ST    R14,OPUTLNEL       save R14
          SH    R15,OLMAX          R15 := OLCNT-OLMAX
          BL    OPUTLNES           if < no new page
          XR    R15,R15            R15 := 0
-         SH    R15,OLCNT          clear line counter
+         STH   R15,OLCNT          clear line counter
          L     R15,=A(OLBUF)      point to CC of OLBUF
-*        MVI   0(R15),C'1'        set new page CC in OLBUF
+         MVI   0(R15),C'1'        set new page CC in OLBUF
 OPUTLNES L     R14,OPUTLNEL       restore R14 linkage
          BR    R14
 *
