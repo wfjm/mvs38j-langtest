@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: test_sos.asm 969 2017-12-10 23:06:29Z mueller $
+* $Id: test_sos.asm 988 2018-01-13 13:34:57Z mueller $
 *
 * Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
