@@ -73,6 +73,7 @@ The project files are organized in directories as
 | --------- | ------- |
 | [clib](clib)   | assembler code sniplets |
 | [codes](codes) | the codes |
+| herc-tools     | the [herc-tools](https://github.com/wfjm/herc-tools) project as submodule, mainly for access to `hercjis`|
 | [jcl](jcl)     | JCL job templates |
 | [jobs](jobs)   | the jobs |
 | [tests](tests) | some test programs |
