@@ -71,7 +71,6 @@ The project files are organized in directories as
 
 | Directory | Content |
 | --------- | ------- |
-| [bin](bin)     | some helper scripts |
 | [clib](clib)   | assembler code sniplets |
 | [codes](codes) | the codes |
 | [jcl](jcl)     | JCL job templates |

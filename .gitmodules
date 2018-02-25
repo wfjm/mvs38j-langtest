@@ -1,0 +1,3 @@
+[submodule "herc-tools"]
+	path = herc-tools
+	url = git://github.com/wfjm/herc-tools.git
