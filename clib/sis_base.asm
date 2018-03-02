@@ -33,6 +33,9 @@ IGETLNEL DS    F                  save area for R14 (return linkage)
 IEOFHDL  BALR  R12,R0             where are we ?
          LA    R15,*-MAIN         offset from MAIN to here
          SR    R12,R15            base reg now points to MAIN
+         L     R15,IEOFEXIT       load user exit address
+         LTR   R15,R15            test address
+         BNER  R15                if !=, use user exit
          LA    R14,EXIT
          CLI   IEOFOK,X'00'       is EOF ok ?
          BNER  R14                if != yes, jump to EXIT
@@ -43,6 +46,7 @@ IEOFHDL  BALR  R12,R0             where are we ?
 *
 ILPTR    DC    A(ILBUF)           current input line position
 IEOFOK   DS    X'00'              EOF ok flag
+IEOFEXIT DS    F'0'               user exit address (if != 0)
 ICVB     DS    D                  buffer for CVB (8 byte, DW aligned)
 *
 * DCB and OLBUF in separate CSECT
