@@ -1,8 +1,8 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: towh_asm.asm 968 2017-12-03 16:58:43Z mueller $
+* $Id: towh_asm.asm 996 2018-03-03 13:59:23Z mueller $
 *
-* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
 * This program is free software; you may redistribute and/or modify
 * it under the terms of the GNU General Public License version 3.
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2018-03-03   996   1.0.1  use sios as path for sios snippets
 * 2017-11-12   961   1.0    Initial version
 * 2017-10-10   955   0.1    First draft
 *
@@ -24,7 +25,7 @@
 *
 * local macros --------------------------------------------------------
 *
-//** ##rinclude ../clib/otxtdsc.asm
+//** ##rinclude ../sios/otxtdsc.asm
 *
 * main preamble -------------------------------------------------------
 *
@@ -268,12 +269,12 @@ MOVTRC   BAL   R14,OTEXT          print prefix
          BR    R9
 *
 * include simple output system ----------------------------------------
-//** ##rinclude ../clib/sos_base.asm
-//** ##rinclude ../clib/sos_oint10.asm
-//** ##rinclude ../clib/sos_oint04.asm
+//** ##rinclude ../sios/sos_base.asm
+//** ##rinclude ../sios/sos_oint10.asm
+//** ##rinclude ../sios/sos_oint04.asm
 * include simple input system -----------------------------------------
-//** ##rinclude ../clib/sis_base.asm
-//** ##rinclude ../clib/sis_iint05.asm
+//** ##rinclude ../sios/sis_base.asm
+//** ##rinclude ../sios/sis_iint05.asm
 *
 * Work area definitions -----------------------------------------------
 *

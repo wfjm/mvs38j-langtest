@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: test_sos.asm 988 2018-01-13 13:34:57Z mueller $
+* $Id: test_sos.asm 996 2018-03-03 13:59:23Z mueller $
 *
 * Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2018-03-03   996   1.1.3  use sios as path for sios snippets
 * 2017-12-09   968   1.1.2  add OINT02 test
 * 2017-12-01   967   1.1.1  add OFIX1200,OREGDMP tests
 * 2017-11-26   966   1.1    add OINT04,OINT12,OFIX1306 tests
@@ -23,7 +24,7 @@
 *   RC = 16  open SYSPRINT failed
 *
 * local macros --------------------------------------------------------
-//** ##rinclude ../clib/otxtdsc.asm
+//** ##rinclude ../sios/otxtdsc.asm
 *
 * main preamble -------------------------------------------------------
 *
@@ -395,16 +396,16 @@ CFF002N  DC    D'-1.'
 MAIN     CSECT
 *
 * include simple output system ----------------------------------------
-//** ##rinclude ../clib/sos_base.asm
-//** ##rinclude ../clib/sos_oint02.asm
-//** ##rinclude ../clib/sos_oint04.asm
-//** ##rinclude ../clib/sos_oint10.asm
-//** ##rinclude ../clib/sos_oint12.asm
-//** ##rinclude ../clib/sos_ohex10.asm
-//** ##rinclude ../clib/sos_ohex210.asm
-//** ##rinclude ../clib/sos_ofix1308.asm
-//** ##rinclude ../clib/sos_ofix1200.asm
-//** ##rinclude ../clib/sos_oregdmp.asm
+//** ##rinclude ../sios/sos_base.asm
+//** ##rinclude ../sios/sos_oint02.asm
+//** ##rinclude ../sios/sos_oint04.asm
+//** ##rinclude ../sios/sos_oint10.asm
+//** ##rinclude ../sios/sos_oint12.asm
+//** ##rinclude ../sios/sos_ohex10.asm
+//** ##rinclude ../sios/sos_ohex210.asm
+//** ##rinclude ../sios/sos_ofix1308.asm
+//** ##rinclude ../sios/sos_ofix1200.asm
+//** ##rinclude ../sios/sos_oregdmp.asm
 *
 * spill literal pool for MAIN
 *

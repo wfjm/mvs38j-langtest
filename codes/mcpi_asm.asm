@@ -1,8 +1,8 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: mcpi_asm.asm 979 2017-12-29 18:40:40Z mueller $
+* $Id: mcpi_asm.asm 996 2018-03-03 13:59:23Z mueller $
 *
-* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+* Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
 * This program is free software; you may redistribute and/or modify
 * it under the terms of the GNU General Public License version 3.
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2018-03-03   996   1.2.1  use sios as path for sios snippets
 * 2017-12-29   979   1.2    some more code optimizations
 * 2017-12-28   978   1.1    use inverse to avoid divide by constant
 * 2017-11-12   961   1.0    Initial version
@@ -25,7 +26,7 @@
 *
 * local macros --------------------------------------------------------
 *
-//** ##rinclude ../clib/otxtdsc.asm
+//** ##rinclude ../sios/otxtdsc.asm
 *
 * main preamble -------------------------------------------------------
 *
@@ -260,15 +261,15 @@ RANRAWNT LD    FR0,RNEW
          BR    R9
 *
 * include simple output system ----------------------------------------
-//** ##rinclude ../clib/sos_base.asm
-//** ##rinclude ../clib/sos_oint10.asm
-//** ##rinclude ../clib/sos_ohex10.asm
-//** ##rinclude ../clib/sos_ohex210.asm
-//** ##rinclude ../clib/sos_ofix1308.asm
-//** ##rinclude ../clib/sos_ofix1200.asm
+//** ##rinclude ../sios/sos_base.asm
+//** ##rinclude ../sios/sos_oint10.asm
+//** ##rinclude ../sios/sos_ohex10.asm
+//** ##rinclude ../sios/sos_ohex210.asm
+//** ##rinclude ../sios/sos_ofix1308.asm
+//** ##rinclude ../sios/sos_ofix1200.asm
 * include simple input system -----------------------------------------
-//** ##rinclude ../clib/sis_base.asm
-//** ##rinclude ../clib/sis_iint10.asm
+//** ##rinclude ../sios/sis_base.asm
+//** ##rinclude ../sios/sis_iint10.asm
 *
 * Work area definitions -----------------------------------------------
 *

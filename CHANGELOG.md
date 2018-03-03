@@ -13,8 +13,11 @@ the documentation is consistent.
 
 ### Summary
 
+- rename clib -> sios
 - tests/test_sos.asm: drop superfluous variable
-- clib/sos_base.asm: fix OLCNT reset, enable auto form feed
+- clib
+  - sos_base.asm: fix OLCNT reset, enable auto form feed
+  - sis_base.asm: add IEOFEXIT to define EOS user exit
 - jobs/*.JES:
   - now job class always explicitely defined via parameter CLASS
   - use CLASS B for fast runners: hewo*,sine*,*_t
