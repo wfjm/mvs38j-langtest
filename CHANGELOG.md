@@ -13,6 +13,8 @@ the documentation is consistent.
 
 ### Summary
 
+- add INSTALL.md
+- remove bin; add instead whole herc-tools project as submodule
 - rename clib -> sios
 - tests/test_sos.asm: drop superfluous variable
 - clib
