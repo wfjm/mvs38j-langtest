@@ -1,3 +1,6 @@
 [submodule "herc-tools"]
 	path = herc-tools
 	url = git://github.com/wfjm/herc-tools.git
+[submodule "sios"]
+	path = sios
+	url = git://github.com/wfjm/mvs38j-sios.git
