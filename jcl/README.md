@@ -1,6 +1,8 @@
 This directory contains the compiler job templates.
 
-These templates, file type `.JESI`, are used by `hercjis` to generate
+These templates, file type `.JESI`, are used by
+[hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
+to generate
 from a meta-jcl `.JES` file a ready to run jcl job. The templates provide
 a standardized interface to the stored procedures in `SYSx.PROCLIB` and
 define variables which can be overridden from the `.JES` file. The

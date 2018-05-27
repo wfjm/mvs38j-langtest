@@ -6,13 +6,14 @@
 
 <!-- --------------------------------------------------------------------- -->
 ---
-## HEAD <a name="head"></a>
+## <a id="head">HEAD</a>
 ### General Proviso
 The HEAD version shows the current development. No guarantees that software or
 the documentation is consistent.
 
 ### Summary
 
+- drop sios code; add mvs38j-sios as submodule
 - add INSTALL.md
 - remove bin; add instead whole herc-tools project as submodule
 - rename clib -> sios
@@ -44,7 +45,7 @@ the documentation is consistent.
 
 <!-- --------------------------------------------------------------------- -->
 ---
-## 2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm) <a name="V0.50"></a>
+## <a id="V0.50">2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm)</a>
 
 ### Summary
 - first release, announced in [turnkey-mvs message 10795](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/messages/10795)

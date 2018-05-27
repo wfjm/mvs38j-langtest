@@ -10,7 +10,7 @@
 - [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 The [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) is a
 is a mathematical game or puzzle. It can be implemented with a few lines
 of code, using only simplest integer arithmetic and a recursively called
@@ -18,7 +18,7 @@ procedure. It's nice as a simple integer benchmark, and was part of the
 **UNIX BENCH V4.1** benchmark suite published by the
 [**Byte Magazine**](https://en.wikipedia.org/wiki/Byte_(magazine)) ages ago.
 
-### Algorithm <a name="algorithm"></a>
+### <a id="algorithm">Algorithm</a>
 The `towh` codes follow closely the algorithm of the `hanoi` code of
 UNIX BENCH V4.1, see source on
 [GitHub meteorfox/byte-unixbench](https://github.com/meteorfox/byte-unixbench/blob/master/UnixBench/src/hanoi.c).
@@ -45,7 +45,7 @@ array `tow` in a common scope, which in C looks like
     }
 ```
 
-### Input File <a name="ifile"></a>
+### <a id="ifile">Input File</a>
 The codes are controlled by an input file with a single line in `2I5` format
 ```
  NDSK TRCE
@@ -59,7 +59,7 @@ See typical [test run](towh_ctst.dat) or
 [benchmark run](towh_cnat.dat) input files.
 
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 
 #### FORTRAN 4 - [towh_for.f](towh_for.f)
 Fortran introduced recursive calls only with
@@ -70,7 +70,7 @@ allocated variables. That adds more array accesses, but eliminates all
 call overheads, so the Fortran implementation is in terms of speed
 quite competitive. But certainly not in terms of readability.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains three types of jobs for `towh` named
 
     towh_*_t.JES  --> trace all steps for small tower sizes (verification)
@@ -117,7 +117,7 @@ Usually `towh_*_t.JES` is used for a verification check and should produce
     DONE ndsk=  21:  maxstk=  21  ncall=   3145726  nmove=   2097151
     DONE ndsk=  22:  maxstk=  22  ncall=   6291454  nmove=   4194303
 
-### Benchmarks <a name="benchmarks"></a>
+### <a id="benchmarks">Benchmarks</a>
 An initial round of benchmark tests was done in December 2017
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
@@ -144,7 +144,7 @@ in the last column the time normalized to the fastest case (asm):
 See also the [benchmark summary](../README_bench.md) for an overview
 table and a compiler ranking.
 
-### Author's Note <a name="anote"></a>
+### <a id="anote">Author's Note</a>
 
 I worked in the late 70's and early 80's a lot with mainframes, mainly
 [IBM System/370](https://en.wikipedia.org/wiki/IBM_System/370) and

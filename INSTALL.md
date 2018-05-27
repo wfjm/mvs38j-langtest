@@ -2,7 +2,8 @@
 
 The mvs38j-langtest uses git
 [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
-to embed the project
+to embed the projects
+[mvs38j-sios](https://github.com/wfjm/mvs38j-sios) and
 [herc-tools](https://github.com/wfjm/herc-tools).
 
 To install use

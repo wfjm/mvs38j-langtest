@@ -1,6 +1,6 @@
 # mvs38j-langtest: MVS 3.8J Compiler and Language Tests
 
-### Overview <a name="overview"></a>
+### <a id="overview">Overview</a>
 The project contains example codes for many of the languages available
 on the MVS 3.8J turnkey systems. Several test cases have been implemented
 with equivalent logic in the available languages.
@@ -9,7 +9,7 @@ compilers (in some cases several for one language). Test jobs, which
 generate detailed output for verification, as well as benchmark jobs,
 which consume a significant amount of CPU time, are provided.
 
-### The Cases <a name="cases"></a>
+### <a id="cases">The Cases</a>
 The test cases are chosen to test different aspects of languages and
 are identified by a 4 character case ID:
 
@@ -30,7 +30,7 @@ description of the test case.
 The pick of cases is highly biased by the background of the author,
 see '_Author's Note_' section in each of the READMEs.
 
-### The Compilers and Languages <a name="compilers"></a>
+### <a id="compilers">The Compilers and Languages</a>
 The [tk4-](http://wotho.ethz.ch/tk4-/) system contains a nice selection of
 languages and compilers which are for further reference identified by
 a 3 or 4 character compiler ID.
@@ -51,12 +51,12 @@ compilers and the options used, and the
 [benchmark summary](README_bench.md) for an overview of some
 benchmark runs and a compiler ranking.
 
-### The Codes <a name="codes"></a>
+### <a id="codes">The Codes</a>
 The test cases were, if possible, implemented in these languages.
 The [Language-Case matrix](codes/README.md) with all Language - Case
 combinations is shown in the README of the [codes](codes) directory.
 
-### The Jobs <a name="jobs"></a>
+### <a id="jobs">The Jobs</a>
 For each Language-Case combination one or several batch jobs are provided
 in the [jobs](jobs) directory. See
 [README](jobs/README.md) for the 
@@ -71,11 +71,11 @@ The project files are organized in directories as
 
 | Directory | Content |
 | --------- | ------- |
-| [sios](sios)   | assembler code snippets |
 | [codes](codes) | the codes |
 | herc-tools     | the [herc-tools](https://github.com/wfjm/herc-tools) project as submodule, mainly for access to `hercjis`|
 | [jcl](jcl)     | JCL job templates |
 | [jobs](jobs)   | the jobs |
+| sios           | the [mvs38j-sios](https://github.com/wfjm/mvs38j-sios) project as submodule, simple I/O system asm code |
 | [tests](tests) | some test programs |
 
 ### License
@@ -85,7 +85,7 @@ all files contain the disclaimer:
 
     This program is free software; you may redistribute and/or modify
     it under the terms of the GNU General Public License version 3.
-    See Licence.txt in distribition directory for further details.
+    See License.txt in distribition directory for further details.
 
 The full text of the GPL license is in this directory as
 [License.txt](License.txt).

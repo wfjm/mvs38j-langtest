@@ -10,11 +10,11 @@
 - [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 A [Monte Carlo simulation](https://en.wikipedia.org/wiki/Monte_Carlo_method)
 is done to determine an estimate of pi.
 
-### Algorithm <a name="algorithm"></a>
+### <a id="algorithm">Algorithm</a>
 The area enclosed by a circle of radius 1 is pi. Based on this pi can
 be determined by a simple Monte Carlo simulation
 - draw two random number x and y in the range [-1,+1]
@@ -71,7 +71,7 @@ benchmark. Because a constant
 is used the results are fully deterministic and should be the same for
 all languages.
 
-### Input File <a name="ifile"></a>
+### <a id="ifile">Input File</a>
 The codes are controlled by an input file with a first line in `3I10` format
 and several following lines in `1I10` format
 ```
@@ -92,7 +92,7 @@ should be done. A `0` or an end-of-file terminates the simulation.
 See typical [test run](mcpi_ctst.dat) or
 [benchmark run](mcpi_cnat.dat) input files.
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 
 #### Assembler - [mcpi_asm.asm](mcpi_asm.asm)
 The assembler implementation also uses double floating point arithmetic
@@ -119,7 +119,7 @@ fix will be included in tk4- update 09.
 has a severe bug which leads to a wrong constant, as result the JCC runs give
 wrong results.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains three types of jobs for `mcpi` named
 
     mcpi_*_t.JES  --> trace all random numbers are decisions for 10 rounds
@@ -159,7 +159,7 @@ Usually `mcpi_*_t.JES` is used for a verification check and should produce
     
 where the highest statistics point depends on the language.
 
-### Benchmarks <a name="benchmarks"></a>
+### <a id="benchmarks">Benchmarks</a>
 An initial round of benchmark tests was done in December 2017
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
@@ -185,7 +185,7 @@ in the last column the time normalized to the fastest case (asm):
 See also the [benchmark summary](../README_bench.md) for an overview
 table and a compiler ranking.
 
-### Author's Note <a name="anote"></a>
+### <a id="anote">Author's Note</a>
 I got exposed to large scale
 [Monte Carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method)
 in the mid 80's when I used the

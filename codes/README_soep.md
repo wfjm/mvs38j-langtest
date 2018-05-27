@@ -10,7 +10,7 @@
 - [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 The [sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
 algorithm is used to determine the
 [prime numbers](https://en.wikipedia.org/wiki/Prime_number) up to a given
@@ -40,7 +40,7 @@ example [this page](https://primes.utm.edu/howmany.html):
      10,000,000      664,579
     100,000,000    5,761,455
 
-### Algorithm <a name="algorithm"></a>
+### <a id="algorithm">Algorithm</a>
 The basic algorithm for the determinion of all prime numbers up to a
 limit `nmax` can be summarized as
 - **init**: initialize an array `prime` of dimension `[1,nmax]` with `TRUE`
@@ -61,7 +61,7 @@ The core of the algorithm is just 4 lines in C (with nmsqrt = sqrt(nmax)):
     }
 ```
 
-### Input File <a name="ifile"></a>
+### <a id="ifile">Input File</a>
 The codes are controlled by an input file with a single line in `2I10` format
 ```
       NMAX      PRNT
@@ -74,7 +74,7 @@ See typical [test run](soep_ctst.dat) or
 [algorithm benchmark run](soep_cnat.dat) or
 [print benchmark run](soep_cprt.dat) input files.
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 The sieve array is dynamically allocated whenever feasible.
 
 #### PL/I - [soep_pli.pli](soep_pli.pli)
@@ -121,7 +121,7 @@ that this happens in the initialization of the `FOR` loop. Replacing the
 
 works around this issue.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains three types of jobs for `soep` named
 
     soep_*_t.JES  --> print primes up to 100k (or implementation limit)
@@ -144,7 +144,7 @@ Usually `soep_*_t.JES` is used for a verification check.
 or 53 to 85 MByte of output. The CPU time will be dominated by the print
 part, this is therefore essentially a _formatted output_ benchmark.
 
-### Benchmarks <a name="benchmarks"></a>
+### <a id="benchmarks">Benchmarks</a>
 An initial round of benchmark tests was done in December 2017
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
@@ -189,7 +189,7 @@ _'print an integer'_ performance:
 |  jcc | 10M | 664579 | 00:00:01,02 | 00:00:13,32 |  12.30 s | 18.51 us |
 |  gcc | 10M | 664579 | 00:00:00,75 | 00:00:18,05 |  17.30 s | 26.01 us |
 
-### Author's Note <a name="anote"></a>
+### <a id="anote">Author's Note</a>
 Having prime search as test case was inspired by the collection of such
 codes in [tk4-](http://wotho.ethz.ch/tk4-/) under `SYS2.JCLLIB(PRIM*)`.
 These examples were **extremely helpful** to refresh my memory on some

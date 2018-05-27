@@ -6,7 +6,7 @@
 - [Language and Compiler Notes](#user-content-langcomp)
 - [Jobs](#user-content-jobs)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 The task is simply to print the single line
 
     Hello World !
@@ -23,7 +23,7 @@ COBOL examples is the operator console.
 Here the task is more strictly defined as _print a line to `SYSPRINT`_
 via normal file I/O.
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 
 #### Assembler - [hewo_asm.asm](hewo_asm.asm)
 The 'Hello, world' example shown in
@@ -44,7 +44,7 @@ prints to operator console, as the job output shows.
 
 The code from this collection prints to `SYSPRINT`.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains only one type of jobs for `hewo` named
 
     hewo_*.JES

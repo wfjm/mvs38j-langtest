@@ -7,7 +7,7 @@
 - [Howto create JCL](#user-content-getjcl)
 - [Howto submit directly](#user-content-submit)
 
-### Overview <a name="overview"></a>
+### <a id="overview">Overview</a>
 
 Each case in implemented in different languages, and for some cases
 several job types (like test job, benchmark job) are provided.
@@ -17,7 +17,8 @@ This leads to a fairly large number of case-language-type combinations where
 - the basic JCL structure is only langauage, but not case or type specific
 
 The final jcl for a job is therefore dynamically created by the tool
-`hercjis` (in [bin](../bin) directory)
+[hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
+(in `herc-tools/bin` directory)
 based on descriptor files with the file type `.JES` stored this directory.
 The `.JES` are short and contain
 - name of source code (from [codes](../codes) directory)
@@ -25,7 +26,7 @@ The `.JES` are short and contain
 - name of jcl template file (type `.JESI`, from [jcl](../jcl) directory)
 - if required, special job parameters used by the template
 
-### Available Job Types <a name="types"></a>
+### <a id="types">Available Job Types</a>
 For some test cases several job types are provided
 
 | Case ID | Job Type | Decription |
@@ -47,7 +48,7 @@ For details follow the link in the Case ID column and consult the
 "Jobs" section. See also the [benchmark summary](../README_bench.md) for an
 overview table of benchmark results and a compiler ranking.
 
-### Available Jobs <a name="jobs"></a>
+### <a id="jobs">Available Jobs</a>
 The available Compiler-Case combinations are
 
 | Language  | Compiler ID | [hewo](../codes/README_hewo.md) | [sine](../codes/README_sine.md) | [soep](../codes/README_soep.md) | [soeq](../codes/README_soeq.md) | [towh](../codes/README_towh.md) | [mcpi](../codes/README_mcpi.md) |
@@ -64,7 +65,7 @@ The available Compiler-Case combinations are
 | PL/I      | [pli](../jcl/job_pli_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
 
-#### Known Issues <a name="issues"></a>
+#### <a id="issues">Known Issues</a>
 - **N01:** `mcpi_jcc_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)
   update 08 due to a compiler bug.
   JCC generates a wrong constant, which screws up the random number sequence.
@@ -82,9 +83,11 @@ The available Compiler-Case combinations are
   [turnkey-mvs/files/IEX10.zip](https://groups.yahoo.com/neo/groups/turnkey-mvs/files/IEX10.zip), and **must be installed** before running `mpci_a60*` jobs.
   This fix will be included in tk4- update 09.
 
-### Howto create JCL <a name="getjcl"></a>
-When `hercjis` is called with the `-o` option it will write the generated
-job to the file given after the `-o` option, like
+### <a id="getjcl">Howto create JCL</a>
+When [hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
+is called with the
+[-o option](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md#user-content-opt-o)
+it will write the generated job to the file given after the `-o` option, like
 ```
    hercjis -o hewo_asm.jcl  hewo_asm.JES
 ```
@@ -93,24 +96,32 @@ Converting all `.JES` files is easiest done with `make`.
 A [Makefile](Makefile) is provided which allows to convert a single
 file or all files if `make` is called with no target or `all` as target.
 To convert all `.JES` into `.jcl` simply
-- ensure that `bin/hercjis` is in the search path (e.g. set `$PATH` properly)
+- ensure that `herc-tools/bin/hercjis` is in the search path
+  (e.g. set `$PATH` properly)
 - type `make`
 
-### Howto submit directly <a name="submit"></a>
-When `hercjis` is called without `-o` option it will send the job to a
+### <a id="submit">Howto submit directly</a>
+When
+[hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
+is called without `-o` option it will send the job to a
 `sockdev` reader on port 3505. To use this most direct way to submit a job
 - setup hercules with `devinit 00c 3505 sockdev ascii trunc eof`
-- ensure that `bin/hercjis` is in the search path (e.g. set `$PATH` properly)
+- ensure that `herc-tools/bin/hercjis` is in the search path
+  (e.g. set `$PATH` properly)
 - submit with `hercjis <file>.JES`
 
-Since `hercjis` accepts multiple input files whole job trains can be submitted,
+Since
+[hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
+accepts multiple input files whole job trains can be submitted,
 for example all simple and test jobs with
 ```
    hercjis hewo*.JES sine*.JES *_t.JES
 ```
 
 For benchmarking it is often better to ensure that only one job is active
-at a time. On tk4- `CLASS=C` jobs have only a single initiator, so
+at a time. On a [tk4-](http://wotho.ethz.ch/tk4-/)
+system `CLASS=C` jobs have only a single initiator. The
+[-c option](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md#user-content-opt-c) allows to override the `CLASS`, so a 
 ```
    hercjis -c C *_f.JES
 ```

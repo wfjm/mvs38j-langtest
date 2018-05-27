@@ -10,22 +10,22 @@
 - [Benchmarks](#user-content-benchmarks)
 - [Author's Note](#user-content-anote)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 Same prime number search as [soep](README_soep.md), but now the sieve is
 implemented using one bit per odd number. This allows the jobs to target
 the primes up to 1.E8, resulting in a 6.25 MByte sieve array size.
 
-### Algorithm <a name="algorithm"></a>
+### <a id="algorithm">Algorithm</a>
 The basic algorithm is as described under
 [soep](README.md#user-content-algorithm).
 Only the special considerations for a _'one bit per sieve array element'_
 implementation are covered in the
 [Language and Compiler Notes](#user-content-langcomp).
 
-### Input File <a name="ifile"></a>
+### <a id="ifile">Input File</a>
 Same input file format as [soep](README_soep.md#user-content-ifile).
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 This can be only be implemented efficiently in languages which directly
 support bit handling.
 
@@ -140,7 +140,7 @@ As result the `seoq` PL/I code is rather slow.
 Due to the 2 MByte total array size limitation the PL/I jobs can only search
 for the first 32000000 primes, instead of 100000000 as usual.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains three types of jobs for `soeq` named
 
     soeq_*_t.JES  --> print primes up to 100k (or implementation limit)
@@ -161,7 +161,7 @@ The `soeq_*_f.JES` should in output the equivalent of
     pi(  10000000):     664579
     pi( 100000000):    5761455
 
-### Benchmarks <a name="benchmarks"></a>
+### <a id="benchmarks">Benchmarks</a>
 An initial round of benchmark tests was done in December 2017
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
@@ -195,7 +195,7 @@ the simpler [soep](README_soep.md#user-content-benchmarks) algorithm
 |  pas | 00:00:01,62 | 00:00:00,91 | 00:00:04,03 | 00:00:02,15 | 1.87 |
 |  pli | 00:00:06,09 | 00:00:01,54 | 00:00:15,53 |         n/a | 3.95 |
 
-### Author's Note <a name="anote"></a>
+### <a id="anote">Author's Note</a>
 The assembler code [soeq_asm.asm](soeq_asm.asm) was much inspired by
 `SYS2.JCLLIB(PRIMASM)` in [tk4-](http://wotho.ethz.ch/tk4-/).
 This code is **very compact and very elegant**, and was for me the single

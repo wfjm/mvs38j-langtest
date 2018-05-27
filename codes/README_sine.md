@@ -7,7 +7,7 @@
 - [Jobs](#user-content-jobs)
 - [Author's Note](#user-content-anote)
 
-### Description <a name="description"></a>
+### <a id="description">Description</a>
 In the age of _plain character_ line printers it was customary to create
 simple graphs and even graphics by just using the basic printable characters
 in some intelligent form. The _sine_ codes plot a graph showing sin(x) and
@@ -17,7 +17,7 @@ In the early 70's not all languages had decent support for handling text.
 FORTRAN 4 or Algol 60 were targeted for handling numeric problems, and
 doing text handling with them was a bit tricky. 
 
-### Language and Compiler Notes <a name="langcomp"></a>
+### <a id="langcomp">Language and Compiler Notes</a>
 
 #### C - [sine_cc.c](sine_cc.c)
 `GCCMVS` in the version coming with [tk4-](http://wotho.ethz.ch/tk4-/)
@@ -32,7 +32,7 @@ That's what the code tricks around with `'A'` formats and Hollerith constants
 like `/1H*/` in `DATA` statements, ancient features not needed in Fortran 77
 and later.
 
-### Jobs <a name="jobs"></a>
+### <a id="jobs">Jobs</a>
 The [jobs](../jobs) directory contains only one type of jobs for `sine` named
 
     sine_*.JES
@@ -40,7 +40,7 @@ The [jobs](../jobs) directory contains only one type of jobs for `sine` named
 which run the code and produce a nice plot.
 Not much to benchmark here.
 
-### Author's Note <a name="anote"></a>
+### <a id="anote">Author's Note</a>
 Before laser printers allowed to easily combine text and graphical output
 in the mid 80's the only way to produce high quality graphics was the usage
 _plotters_. In general as slow as cumbersome. To get quick, low quality
