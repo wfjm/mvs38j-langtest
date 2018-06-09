@@ -12,6 +12,9 @@
 //** /*    ${PRTY}      8                   job priority
 //** /*    ${DDSRC}     n/a                 source file
 //** /*    ${DDDAT}     n/a                 data file
+//** /*    ${MAC1}      'SYS2.MACLIB'       1st extra lib SYS2.MACLIB
+//** /*    ${MAC2}      'SYS1.AMODGEN'      2nd extra lib SYS1.AMODGEN
+//** /*    ${MAC3}      'SYS1.MACLIB'       3rd extra lib (dummy)
 //** /*    ${SYSUT1SPA} (1700,(600,100))    SYSUT1   SPACE
 //** /*    ${SYSUT2SPA} (1700,(300,50))     SYSUT2/3 SPACE
 //** /*    ${SYSGOSPA}  (80,(2000,500))     SYSGO    SPACE
@@ -31,7 +34,9 @@
 //      CLASS=${CLASS:-A},MSGCLASS=${MSGCLASS:-A},MSGLEVEL=${MSGLEVEL:-(1,1)},
 //      REGION=${REGION:-128K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
 //CLG EXEC ASMFCLG,
-//      MAC1='SYS2.MACLIB',
+//      MAC1=${MAC1:-'SYS2.MACLIB'},
+//      MAC2=${MAC2:-'SYS1.AMODGEN'},
+//      MAC3=${MAC3:-'SYS1.MACLIB'},
 //      PARM.ASM=${PARMC:-'NODECK,LOAD'},
 //      PARM.LKED=${PARML:-'MAP,LIST,LET,NCAL'},
 //      COND.LKED=(8,LE,ASM),

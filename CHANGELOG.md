@@ -13,6 +13,7 @@ the documentation is consistent.
 
 ### Summary
 
+- job_asm_clg: MAC[1-3] parametrizable, SYS1.AMODGEN default for MAC2
 - drop sios code; add mvs38j-sios as submodule
 - add INSTALL.md
 - remove bin; add instead whole herc-tools project as submodule
