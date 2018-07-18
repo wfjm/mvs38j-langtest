@@ -1,6 +1,5 @@
 //** ##define  JOB    SOEQ#PLI
 //** ##define  CLASS  B
-//** ##define  REGION  2200K
 //** ##define  DDSRC  ../codes/soeq_pli.pli
 //** ##define  DDDAT  ../codes/soep_ctst.dat
 //** ##include ../jcl/job_pli_clg.JESI

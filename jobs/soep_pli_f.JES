@@ -1,6 +1,6 @@
 //** ##define  JOB    SOEP#PLI
-//** ##define  CLASS  A
-//** ##define  REGION  2200K
+//** ##define  CLASS  C
+//** ##define  REGION  5500K
 //** ##define  DDSRC  ../codes/soep_pli.pli
-//** ##define  DDDAT  ../codes/soep_c04m.dat
+//** ##define  DDDAT  ../codes/soep_cher.dat
 //** ##include ../jcl/job_pli_clg.JESI

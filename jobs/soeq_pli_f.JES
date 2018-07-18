@@ -1,8 +1,8 @@
 //** ##define  JOB    SOEQ#PLI
-//** ##define  CLASS  A
-//** ##define  REGION  2200K
-//** ##define  TIME   (5,0)
+//** ##define  CLASS  C
+//** ##define  REGION  6500K
+//** ##define  TIME   (10,0)
 //** ##define  PRTY   2
 //** ##define  DDSRC  ../codes/soeq_pli.pli
-//** ##define  DDDAT  ../codes/soeq_c32m.dat
+//** ##define  DDDAT  ../codes/soeq_cher.dat
 //** ##include ../jcl/job_pli_clg.JESI
