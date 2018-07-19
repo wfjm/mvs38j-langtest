@@ -3,6 +3,7 @@
 - [Overview](#user-content-overview)
 - [Available Job Types](#user-content-types)
 - [Available Jobs](#user-content-jobs)
+  - [Job CLASS Usage](#user-content-class)
   - [Known Issues](#user-content-issues)
 - [Howto create JCL](#user-content-getjcl)
 - [Howto submit directly](#user-content-submit)
@@ -14,7 +15,8 @@ several job types (like test job, benchmark job) are provided.
 This leads to a fairly large number of case-language-type combinations where 
 - same code is used for compilers of the same language
 - same data input files are used across languages
-- the basic JCL structure is only langauage, but not case or type specific
+- the basic [JCL](https://en.wikipedia.org/wiki/Job_Control_Language) structure
+  is only language, but not case or type specific
 
 The final jcl for a job is therefore dynamically created by the tool
 [hercjis](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md)
@@ -27,7 +29,7 @@ The `.JES` are short and contain
 - if required, special job parameters used by the template
 
 ### <a id="types">Available Job Types</a>
-For some test cases several job types are provided
+For most test cases several job types are provided
 
 | Case ID | Job Type | Decription |
 | :-----: | -------- | --------- |
@@ -37,7 +39,8 @@ For some test cases several job types are provided
 |                              | soep_*_f.JES | benchmark job (algorithm) |
 |                              | soep_*_p.JES | benchmark job (formatted output)|
 | [soeq](../codes/README_soeq.md) | soeq_*_t.JES | test job (verification) |
-|                              | soeq_*_f.JES | benchmark job (algorithm) |
+|                              | soeq_*_f_10.JES | benchmark job (algorithm, 10M sieve for `soep` comparison) |
+|                              | soeq_*_f.JES | benchmark job (algorithm, full 100M sieve) |
 |                              | soeq_*_p.JES | benchmark job (formatted output)|
 | [towh](../codes/README_towh.md) | towh_*_t.JES | test job (verification) |
 |                              | towh_*_f.JES | benchmark job |
@@ -45,8 +48,9 @@ For some test cases several job types are provided
 |                              | mcpi_*_f.JES | benchmark job |
 
 For details follow the link in the Case ID column and consult the
-"Jobs" section. See also the [benchmark summary](../README_bench.md) for an
-overview table of benchmark results and a compiler ranking.
+[available jobs](#user-content-jobs) section. See also the
+[benchmark summary](../README_bench.md) for an overview table of benchmark
+results and a compiler ranking.
 
 ### <a id="jobs">Available Jobs</a>
 The available Compiler-Case combinations are
@@ -64,6 +68,19 @@ The available Compiler-Case combinations are
 | Pascal    | [pas](../jcl/job_pas_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | PL/I      | [pli](../jcl/job_pli_clg.JESI)   | yes  | yes  | _t, _f, _p  | _t, _f, _p  | _t, _f  | _t, _f         |
 | Simula    | [sim](../jcl/job_sim_clg.JESI)   | yes  | yes  | _t, _f, _p  | --          | _t, _f  | _t, _f         |
+
+#### <a id="class">Job CLASS Usage</a>
+The job `CLASS` is chosen to give best response on
+[tk4-](http://wotho.ethz.ch/tk4-/) systems and set to B,C or A
+depending on expected CPU time and memory consumption
+- `CLASS B` for fast runners: hewo*,sine*,*_t
+- `CLASS C` for jobs with `REGION` >= 5000K
+- `CLASS A` for rest: _f,_p
+
+The predefined job `CLASS` can be overridden with the `hercjis`
+[-c option](https://github.com/wfjm/herc-tools/blob/master/doc/hercjis.md#user-content-opt-c). For benchmarking it is highly advisable to use `CLASS C` via
+a `-c C` option, see
+[Howto submit directly](#user-content-submit) section.
 
 #### <a id="issues">Known Issues</a>
 - **N01:** `mcpi_jcc_*.JES` fails on [tk4-](http://wotho.ethz.ch/tk4-/)

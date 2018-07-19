@@ -1,0 +1,10 @@
+//** ##define  JOB    SQ10#PAS
+//** ##define  CLASS  C
+//** ##define  REGION  7500K
+//** ##define  GOSTACK 6500K
+//** ##define  TIME   (5,0)
+//** ##define  PRTY   2
+//** ##define  DDSRC  ../codes/soeq_pas.pas
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  COOPT  'M+,D-'
+//** ##include ../jcl/job_pas_clg.JESI

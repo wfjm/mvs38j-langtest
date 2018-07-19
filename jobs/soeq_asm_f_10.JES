@@ -1,0 +1,7 @@
+//** ##define  JOB    SQ10#ASM
+//** ##define  CLASS  A
+//** ##define  REGION 700K
+//** ##define  DDSRC  ../codes/soeq_asm.asm
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
+//** ##include ../jcl/job_asm_clg.JESI

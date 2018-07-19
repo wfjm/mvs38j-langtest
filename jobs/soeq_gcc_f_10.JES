@@ -1,0 +1,5 @@
+//** ##define  JOB    SQ10#GCC
+//** ##define  CLASS  A
+//** ##define  DDSRC  ../codes/soeq_cc.c
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##include ../jcl/job_gcc_clg.JESI

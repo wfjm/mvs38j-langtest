@@ -1,0 +1,7 @@
+//** ##define  JOB    SQ10#PLI
+//** ##define  CLASS  A
+//** ##define  REGION  700K
+//** ##define  TIME   (2,0)
+//** ##define  DDSRC  ../codes/soeq_pli.pli
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##include ../jcl/job_pli_clg.JESI
