@@ -84,22 +84,27 @@ in the [soeq](README_soeq.md) section.
 The PL/I compiler available with MVS3.8J restricts array bounds to
 16 bit integer values. To avoid this 64k storage limitation the `PRIME`
 array is two-dimensional. In addition, the compiler restricts the size of
-aggregates to 2 MByte. The dimensions are chosen such that the index
-calculation can be efficiently done (`MOD` is inlined by the compiler):
+global statict aggregates to 2 MByte, larger allocations result in a
 ```
-    DCL PRIME(0:1953,0:1023)  CHAR(1);
+  IEM1088I  THE SIZE OF AGGREGATE PRIME IS GREATER THAN 2,097,151 BYTES.
+            STORAGE ALLOCATION WILL BE UNSUCCESSFUL.
+```
+
+Local aggregates have no size limit, the sieve algorithm is therefore
+implemented in a separate `PROC` where the `PRIME` array is a local object.
+The dimensions are chosen such that the index calculation can be efficiently
+done (`MOD` is inlined by the compiler):
+```
+    DCL PRIME(0:JMAX,0:1023)  CHAR(1);
     ...
     DO I=IMIN TO IMAX BY N;
-      PRIME(I/1024,MOD(I,1024)) = '1';
+      PRIME(I/1024,MOD(I,1024)) = '0';
     END;
 ```
 
 Of course it costs CPU cycles to first split up the index into two
 components, just combine them a few instructions later to calculate
 the effective address. As result the `seop` PL/I code is rather slow.
-
-Due to the 2 MByte total array size limitation the PL/I jobs can only search
-for the first 4000000 primes, instead of 10000000 as usual.
 
 #### Simula - [soep_sim.sim](soep_sim.sim)
 Due to compiler bug in SIMULA 67 (VERS 12.00) the obvious implementation
@@ -145,7 +150,7 @@ or 53 to 85 MByte of output. The CPU time will be dominated by the print
 part, this is therefore essentially a _formatted output_ benchmark.
 
 ### <a id="benchmarks">Benchmarks</a>
-An initial round of benchmark tests was done in December 2017
+An round of benchmark tests was done in July 2018
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
 - staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
@@ -155,18 +160,18 @@ The key result is the GO-step time of the `soep_*_f` type jobs for different
 compilers. The table is sorted from fastest to slowest results and shows
 in the last column the time normalized to the fastest case (asm):
 
-| [Compiler ID](../README_comp.md) | 4M search | 10M search | */asm |
-| :--: | ----------: | ----------: | ----: |
-|  asm | 00:00:00,17 | 00:00:00,43 |  1.00 |
-| forh | 00:00:00,26 | 00:00:00,64 |  1.49 |
-|  gcc | 00:00:00,30 | 00:00:00,75 |  1.74 |
-|  jcc | 00:00:00,41 | 00:00:01,02 |  2.37 |
-|  pas | 00:00:00,91 | 00:00:02,15 |  5.00 |
-| forg | 00:00:00,90 | 00:00:02,25 |  5.23 |
-|  sim | 00:00:01,40 | 00:00:03,44 |  8.00 |
-|  pli | 00:00:01,54 |         n/a |  9.06 |
-|  a60 | 00:00:01,85 | 00:00:04,62 | 10.74 |
-| forw | 00:00:03,55 | 00:00:08,88 | 20.65 |
+| [Compiler ID](../README_comp.md) | 10M search | */asm |
+| :--: | ----: | ----: |
+|  asm |  0.45 |  1.00 |
+| forh |  0.66 |  1.47 |
+|  gcc |  0.76 |  1.67 |
+|  jcc |  1.02 |  2.27 |
+|  pas |  2.12 |  4.71 |
+| forg |  2.29 |  5.09 |
+|  pli |  3.00 |  6.67 |
+|  sim |  3.43 |  7.62 |
+|  a60 |  4.57 | 10.15 |
+| forw |  9.57 | 21.27 |
 
 See also the [benchmark summary](../README_bench.md) for an overview
 table and a compiler ranking.
@@ -177,17 +182,17 @@ job times the `soep_*_f` job times, again sort from fastest to slowest
 _'print an integer'_ performance:
 
 | [Compiler ID](../README_comp.md) | nmax | #prime | `_f` job time | `_p` job time |  dt | time/int |
-| :--: | --: | -----: | ----------: | ----------: | -------: | -------: |
-|  asm | 10M | 664579 | 00:00:00,43 | 00:00:01,38 |   0.95 s |  1.42 us |
-|  pas | 10M | 664579 | 00:00:02,15 | 00:00:04,11 |   1.96 s |  2.95 us |
-| forh | 10M | 664579 | 00:00:00,64 | 00:00:03,04 |   2.40 s |  3.61 us |
-|  sim | 10M | 664579 | 00:00:03,44 | 00:00:06,17 |   2.73 s |  4.11 us |
-| forg | 10M | 664579 | 00:00:02,25 | 00:00:05,10 |   2.85 s |  4.29 us |
-| forw | 10M | 664579 | 00:00:08,88 | 00:00:12,17 |   3.29 s |  4.95 us |
-|  a60 | 10M | 664579 | 00:00:04,62 | 00:00:09,44 |   4.82 s |  7.25 us |
-|  pli |  4M | 283146 | 00:00:01,41 | 00:00:04,88 |   3.47 s | 12.26 us |
-|  jcc | 10M | 664579 | 00:00:01,02 | 00:00:13,32 |  12.30 s | 18.51 us |
-|  gcc | 10M | 664579 | 00:00:00,75 | 00:00:18,05 |  17.30 s | 26.01 us |
+| :--: | --: | -----: | ----: | ----: | -------: | -------: |
+|  asm | 10M | 664579 |  0.45 |  1.38 |   0.93 s |  1.40 us |
+|  pas | 10M | 664579 |  2.12 |  4.18 |   2.06 s |  3.01 us |
+| forh | 10M | 664579 |  0.66 |  3.04 |   2.38 s |  3.58 us |
+|  sim | 10M | 664579 |  3.43 |  6.23 |   2.80 s |  4.21 us |
+| forg | 10M | 664579 |  2.29 |  5.11 |   2.82 s |  4.24 us |
+| forw | 10M | 664579 |  9.57 | 13.09 |   3.52 s |  5.30 us |
+|  a60 | 10M | 664579 |  4.57 |  9.42 |   4.85 s |  7.30 us |
+|  pli | 10M | 664579 |  3.00 | 11.22 |   8.22 s | 12.36 us |
+|  jcc | 10M | 664579 |  1.02 | 13.43 |  12.41 s | 18.67 us |
+|  gcc | 10M | 664579 |  0.76 | 18.36 |  17.60 s | 26.48 us |
 
 ### <a id="anote">Author's Note</a>
 Having prime search as test case was inspired by the collection of such

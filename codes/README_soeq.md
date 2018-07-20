@@ -64,8 +64,8 @@ The code uses on-the-fly calculation of the bits masks, conceptually
 similar to the C implementation described above.
 
 Here a right (MSB) to left (MSB) mapping is used, this reversal of bit
-order allows to generate the `clrmsk` by right shifting `X'FF7F' in a
-register which is 32 bit anyway.
+order allows to generate the `clrmsk` by right shifting `X'FF7F'` in a
+register which is 32 bit wide.
 This leads to a very compact inner loop
 ```
     SIEVI    LR    R2,R3              i
@@ -117,15 +117,24 @@ array and minor adoptions due to this type change.
 The PL/I compiler available with MVS3.8J restricts array bounds to
 16 bit integer values. To avoid this 64k storage limitation the `PRIME`
 array is two-dimensional. In addition, the compiler restricts the size of
-aggregates to 2 MByte or 16 Mbits. The dimensions are chosen such that the
-index calculation can be efficiently done (`MOD` is inlined by the compiler):
+global statict aggregates to 2 MByte, larger allocations result in a
 ```
-    DCL PRIME(0:15625,0:1023)  BIT(1);
+  IEM1088I  THE SIZE OF AGGREGATE PRIME IS GREATER THAN 2,097,151 BYTES.
+            STORAGE ALLOCATION WILL BE UNSUCCESSFUL.
+```
+
+Local aggregates have no size limit, the sieve algorithm is therefore
+implemented in a separate `PROC` where the `PRIME` array is a local object.
+The dimensions are chosen such that the index calculation can be efficiently
+done (`MOD` is inlined by the compiler):
+```
+    DCL PRIME(0:JMAX,0:8191)  BIT(1);
     ...
     DO I=IMIN TO IMAX BY N;
-      PRIME(I/1024,MOD(I,1024)) = '1'B;
+      PRIME(I/8192,MOD(I,8192)) = '0'B;
     END;
 ```
+
 The access the `BIT(1)` array is implemented via run-time library
 function calls, inspection of the generated assembler code shows
 ```
@@ -133,19 +142,19 @@ function calls, inspection of the generated assembler code shows
       PRIME(...) = '0'B;    --> IHEBSKA
       IF (PRIME(...))       --> IHEBSD0
 ```
+
 The extra code for index splitting and the rather indirect way the
 `BIT(1)` is accessed cost a lot of CPU cycles.
 As result the `seoq` PL/I code is rather slow.
 
-Due to the 2 MByte total array size limitation the PL/I jobs can only search
-for the first 32000000 primes, instead of 100000000 as usual.
 
 ### <a id="jobs">Jobs</a>
-The [jobs](../jobs) directory contains three types of jobs for `soeq` named
+The [jobs](../jobs) directory contains four types of jobs for `soeq` named
 
-    soeq_*_t.JES  --> print primes up to 100k (or implementation limit)
-    soeq_*_f.JES  --> print number of primes up to 100M
-    soeq_*_p.JES  --> print primes up to 10M (print speed test)
+    soeq_*_t.JES     --> print primes up to 100k (or implementation limit)
+    soeq_*_f_10.JES  --> print number of primes up to 10M
+    soeq_*_f.JES     --> print number of primes up to 100M
+    soeq_*_p.JES     --> print primes up to 10M (print speed test)
 
 The `_t` and `_p` jobs serve the same purpose as described for
 [soep](README_soep.md).
@@ -162,38 +171,38 @@ The `soeq_*_f.JES` should in output the equivalent of
     pi( 100000000):    5761455
 
 ### <a id="benchmarks">Benchmarks</a>
-An initial round of benchmark tests was done in December 2017
+An initial round of benchmark tests was done in July 2018
 - on an Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz  (Quad-Core with HT)
 - using [tk4-](http://wotho.ethz.ch/tk4-/) update 08
 - staring hercules with `NUMCPU=2 MAXCPU=2 ./mvs`
 - using `CLASS=C` jobs, thus only one test job running at a time
 
 The key result is the GO-step time of the `soeq_*_f` type jobs, as packaged
-for a 100M search, and modified for 32M, 10M and 4M, for different
-compilers. The table is sorted from fastest to slowest results and shows
+for a 100M search, for different compilers.
+The table is sorted from fastest to slowest results and shows
 in the last column the time normalized to the fastest case (asm):
 
-| [Compiler ID](../README_comp.md) |   4M search |  10M search |  32M search | 100M search | */asm |
-| :--: | ----------: | ----------: | ----------: | ----------: | ----: |
-|  asm | 00:00:00,32 | 00:00:00,80 | 00:00:02,67 | 00:00:08,57 |  1.00 |
-|  gcc | 00:00:00,52 | 00:00:01,34 | 00:00:04,30 | 00:00:13,80 |  1.61 |
-|  jcc | 00:00:00,72 | 00:00:01,85 | 00:00:06,01 | 00:00:19,39 |  2.26 |
-|  pas | 00:00:01,62 | 00:00:04,03 | 00:00:12,97 | 00:00:41,58 |  4.85 |
-|  pli | 00:00:06,09 | 00:00:15,53 | 00:00:50,51 |         n/a | 18.92 |
+| [Compiler ID](../README_comp.md) | 100M search | */asm |
+| :--: |  -----: | ----: |
+|  asm |    8.12 |  1.00 |
+|  gcc |   13.87 |  1.70 |
+|  jcc |   20.77 |  2.55 |
+|  pas |   42.00 |  5.17 |
+|  pli |  159.35 | 19.62 |
 
 See also the [benchmark summary](../README_bench.md) for an overview
 table and a compiler ranking.
 
-It's interesting to compare for the 4M and 10M searches the times for
+It's interesting to compare for the 10M searches the times with
 the simpler [soep](README_soep.md#user-content-benchmarks) algorithm
 
-| [Compiler ID](../README_comp.md) | 4M soeq | 4M seop | 10M soeq | 10M soep | seoq/soep |
-| :--: | ----------: | ----------: | ----------: | ----------: | ---: |
-|  asm | 00:00:00,32 | 00:00:00,17 | 00:00:00,80 | 00:00:00,43 | 1.86 |
-|  gcc | 00:00:00,52 | 00:00:00,30 | 00:00:01,34 | 00:00:00,75 | 1.79 |
-|  jcc | 00:00:00,72 | 00:00:00,41 | 00:00:01,85 | 00:00:01,02 | 1.81 |
-|  pas | 00:00:01,62 | 00:00:00,91 | 00:00:04,03 | 00:00:02,15 | 1.87 |
-|  pli | 00:00:06,09 | 00:00:01,54 | 00:00:15,53 |         n/a | 3.95 |
+| [Compiler ID](../README_comp.md) |  10M soeq | 10M soep | seoq/soep |
+| :--: | ----: | ----: | ---: |
+|  asm |  0.83 |  0.45 | 1.84 |
+|  gcc |  1.19 |  0.76 | 1.57 |
+|  jcc |  1.67 |  1.02 | 1.64 |
+|  pas |  4.19 |  2.12 | 1.98 |
+|  pli | 15.05 |  3.00 | 5.02 |
 
 ### <a id="anote">Author's Note</a>
 The assembler code [soeq_asm.asm](soeq_asm.asm) was much inspired by
@@ -207,8 +216,10 @@ Nevertheless I wondered whether the speed of this highly tuned assembler
 implementation could be still improved.
 My suspicion was that the `EX` instruction is expensive, and that inline
 calculation of the bit masks is faster than a table look-up.
-To have a quantitative basis I wrote a instruction benchmark, which after
-a lot of work grew into s370_perf, which is now a GitHub project of its
+To have a quantitative basis I wrote an instruction benchmark, which after
+a lot of work grew into
+[s370_perf](https://github.com/wfjm/s370-perf/blob/master/codes/s370_perf.asm),
+which is now a GitHub project of its
 own under [wfjm/s370-perf](https://github.com/wfjm/s370-perf).
 With the instruction timings at hand it turned out that my suspicion was correct.
 So in the end my code likely beats Juergens code in speed, but it is by far

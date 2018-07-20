@@ -18,15 +18,15 @@ by CPU time relative to the Assembler implementation:
 |  soep |       |  soeq |       |  towh |       |  mcpi |       |
 | :--: | -----: | :--: | -----: | :--: | -----: | :--: | -----: |
 |  asm |   1.00 |  asm |   1.00 |  asm |   1.00 |  asm |   1.00 |
-| forh |   1.49 |      |        |  pas |   1.41 |  gcc |   1.84 |
-|  gcc |   1.74 |  gcc |   1.61 |  gcc |   1.64 |  pas |   2.47 |
-|  jcc |   2.37 |  jcc |   2.26 |  jcc |   1.76 | forh |   2.70 |
-|  pas |   5.00 |  pas |   4.85 | forh |   1.76 | forg |   3.25 |
-| forg |   5.23 |      |        | forg |   3.10 |  pli |   4.89 |
-|  sim |   8.00 |      |        |  sim |   6.49 |  sim |   9.16 |
-|  pli |   9.06 |  pli |  18.92 |  pli |  10.62 | forw |  10.29 |
-|  a60 |  10.74 |      |        | forw |  17.17 |  a60 |  53.15 |
-| forw |  20.65 |      |        |  a60 |  49.48 |      |        |
+| forh |   1.47 |      |        |  pas |   1.41 |  gcc |   1.84 |
+|  gcc |   1.67 |  gcc |   1.70 |  gcc |   1.64 |  pas |   2.47 |
+|  jcc |   2.27 |  jcc |   2.55 |  jcc |   1.76 | forh |   2.70 |
+|  pas |   4.71 |  pas |   5.17 | forh |   1.76 | forg |   3.25 |
+| forg |   5.09 |      |        | forg |   3.10 |  pli |   4.89 |
+|  pli |   6.67 |  pli |  19.62 |  sim |   6.49 |  sim |   9.16 |
+|  sim |   7.62 |      |        |  pli |  10.62 | forw |  10.29 |
+|  a60 |  10.15 |      |        | forw |  17.17 |  a60 |  53.15 |
+| forw |  21.27 |      |        |  a60 |  49.48 |      |        |
 
 Some findings:
 - **FORTRAN H** performs very well, it was certainly the best optimizing
