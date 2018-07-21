@@ -1,0 +1,8 @@
+//** ##define  JOB    SOEP#AC1
+//** ##define  CLASS  C
+//** ##define  REGION 6000K
+//** ##define  DDSRC  ../codes/soep_asm.asm
+//** ##define  DDDAT  ../codes/soep_cher.dat
+//** ##define  PARMC  'NOLIST,NOXREF,NORLD,NODECK,LOAD'
+//** ##define  SET_CHOPAT  1
+//** ##include ../jcl/job_asm_clg.JESI

@@ -1,6 +1,6 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
-* $Id: soeq_asm.asm 996 2018-03-03 13:59:23Z mueller $
+* $Id: soeq_asm.asm 1035 2018-07-20 16:18:30Z mueller $
 *
 * Copyright 2017-2018 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
 *
@@ -10,6 +10,7 @@
 *
 *  Revision History:
 * Date         Rev Version  Comment
+* 2018-07-13  1034   1.0.3  at CHOPAT quit points
 * 2018-03-03   996   1.0.2  use sios as path for sios snippets
 * 2017-12-23   972   1.0.1  change (n-1)/2 --> n/2
 * 2017-11-19   965   1.1    no XR in inner loop, bit reversed prime[]
@@ -18,6 +19,13 @@
         PRINT NOGEN              don't show macro expansions
 *
 * Prime number search
+*
+* Code configuration options via hercjis variable substitutions
+*   SET_CHOPAT   0   normal code execution (default)
+*                1   quit after init, before sieve
+*                2   quit after sieve, before print
+*
+* Return codes:
 *   RC =  0  ok
 *   RC =  4  open SYSPRINT failed
 *   RC =  8  open SYSIN failed
@@ -127,6 +135,9 @@ NMSQRTOK EQU   *
          L     R7,=X'FF000000'    R7 := padding=0xFF and length=0
          MVCL  R4,R6              set all PRIME words to 0xFFFF
 *
+         CLI   CHOPAT,X'01'       quit after init, before sieve ?
+         BE    EXIT               if = quit
+*
 * sieve phase ---------------------------------------------------------
 *   outer loop:  ind  R6   n
 *                inc  R4   2
@@ -186,6 +197,9 @@ SIEVI    LR    R2,R3              i
          BXLE  R3,R6,SIEVI
 *
 SIEVOC   BXLE  R6,R4,SIEVO
+*
+         CLI   CHOPAT,X'02'       quit after sieve, before print ?
+         BE    EXIT               if = quit
 *
 * print primes table --------------------------------------------------
 *   loop:  ind  R3   i
@@ -338,6 +352,7 @@ BIMAX    DS    F                  highest prime array bit index
 WIMAX    DS    F                  highest prime array word index
 PRIME    DS    F                  prime array pointer
 PRNT     DC    X'00'              print enable flag
+CHOPAT   DC    FL1'${SET_CHOPAT:-0}' chop flag
 *
 * message strings
 *

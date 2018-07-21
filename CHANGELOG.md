@@ -14,6 +14,7 @@ the documentation is consistent.
 ### Summary
 
 - codes:
+  - soe[pq]_asm.asm: at CHOPAT quit points
   - soep_pli.pli: use stack allocated PRIME array; now 10M search OK
   - soeq_pli.pli: use stack allocated PRIME array; now 100M search OK
   - soep_{c04m,cp4m}.dat,soeq_c32m.dat removed, now obsolete
