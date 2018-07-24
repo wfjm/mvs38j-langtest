@@ -171,16 +171,16 @@ compilers. The table is sorted from fastest to slowest results and shows
 in the last column the time normalized to the fastest case (asm):
 
 | [Compiler ID](../README_comp.md) | job time | */asm |
-| :--: | ----------: | ----: |
-|  asm | 00:00:04,02 |  1.00 |
-|  gcc | 00:00:07,40 |  1.84 |
-|  pas | 00:00:09,93 |  2.47 |
-| forh | 00:00:10,86 |  2.70 |
-| forg | 00:00:13,08 |  3.25 |
-|  pli | 00:00:19,69 |  4.89 |
-|  sim | 00:00:36,83 |  9.16 |
-| forw | 00:00:41,35 | 10.29 |
-|  a60 | 00:03:33,66 | 53.15 |
+| :--: | -----: | ----: |
+|  asm |   4.02 |  1.00 |
+|  gcc |   7.40 |  1.84 |
+|  pas |   9.93 |  2.47 |
+| forh |  10.86 |  2.70 |
+| forg |  13.08 |  3.25 |
+|  pli |  19.69 |  4.89 |
+|  sim |  36.83 |  9.16 |
+| forw |  41.35 | 10.29 |
+|  a60 | 213.66 | 53.15 |
 
 See also the [benchmark summary](../README_bench.md) for an overview
 table and a compiler ranking.
