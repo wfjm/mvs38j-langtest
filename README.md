@@ -66,6 +66,14 @@ all available jobs types and the
 available jobs. The later also includes a list of
 [known issues](jobs/README.md#user-content-issues).
 
+### Reception
+Moshe Bar covered the langtest suite in a tutorial entitled
+>>  Test your IBM MVS 3.8 compilers and benchmark your Hercules  
+>>  https://www.youtube.com/watch?v=hH0dlylJVCY
+
+This is part of the [moshix suite](https://www.youtube.com/user/moshe5760/videos)
+of mainframe (mostly MVS) related tutorials.
+
 ### Directory organization
 The project files are organized in directories as
 
