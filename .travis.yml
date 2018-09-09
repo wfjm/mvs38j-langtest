@@ -1,0 +1,36 @@
+os: linux
+dist: trusty
+language: c
+#
+install:
+  - pushd .travis
+  - mkdir work
+  - cd work
+  - wget http://wotho.ethz.ch/tk4-/tk4-_v1.00_current.zip
+  - unzip tk4-_v1.00_current.zip
+  - rm tk4-_v1.00_current.zip
+  - popd
+#
+script:
+  - pushd .travis/work
+  - ./mvs &
+  - pidherc=$!
+  - (sleep 1200; kill -9 $pidherc) &
+  - pidtout=$!
+  - sleep 180
+  - popd
+#
+  - export PATH=$PATH:$PWD/bin:$PWD/herc-tools/bin
+  - pushd jobs
+  - hercjis -c C {hewo,sine}_*.JES
+  - hercjis -c C mcpi_{asm,for*,*cc,pas,pli,sim}_t.JES
+  - hercjis -c C {soep,soeq}_*_t.JES
+  - popd
+  - pushd .travis &&  hercjis -c C shutdown.jcl && popd
+  - wait $pidherc
+  - kill $pidtout || true
+#
+  - pushd .travis/work/prt
+  - hercjos -db -dt -i prt00e.txt
+  - hercjsu *J????*.prt
+  - popd

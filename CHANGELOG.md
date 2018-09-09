@@ -48,6 +48,7 @@ the documentation is consistent.
   [wfjm/s370-perf](https://github.com/wfjm/s370-perf).
 - jobs/ltlib_{del,new}.JES added, two jobs to delete and re-create the full
   set of test jobs as `HERC01.LTLIB` PDS.
+- add Travis CI integration
 
 <!-- --------------------------------------------------------------------- -->
 ---

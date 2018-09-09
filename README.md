@@ -1,5 +1,7 @@
 # mvs38j-langtest: MVS 3.8J Compiler and Language Tests
 
+[![Build Status](https://travis-ci.org/wfjm/mvs38j-langtest.svg?branch=master)](https://travis-ci.org/wfjm/mvs38j-langtest)
+
 ### <a id="overview">Overview</a>
 The project contains example codes for many of the languages available
 on the MVS 3.8J turnkey systems. Several test cases have been implemented
