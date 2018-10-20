@@ -16,7 +16,14 @@ To update use
 ```bash
 cd <install-root>/mvs38j-langtest
 git pull  --recurse-submodules
+git submodule update --init --recursive
+```
 
+To get proper submodule state after `git checkout` of commit or branch, e.g.
+```bash
+cd <install-root>/mvs38j-langtest
+git checkout <commit-id> .
+git submodule update --init --recursive
 ```
 
 To setup the environment use
