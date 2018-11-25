@@ -26,11 +26,13 @@ script:
   - hercjis -c C mcpi_{asm,for*,*cc,pas,pli,sim}_t.JES
   - hercjis -c C {soep,soeq}_*_t.JES
   - popd
-  - pushd .travis &&  hercjis -c C shutdown.jcl && popd
+  - (cd .travis && hercjis -c C shutdown.jcl)
   - wait $pidherc
   - kill $pidtout || true
 #
   - pushd .travis/work/prt
   - hercjos -db -dt -i prt00e.txt
-  - hercjsu *J????*.prt
+  - hercjsu *J????*.prt || (echo "FAILED steps:" && hercjsu -fail *J????*.prt)
   - popd
+#
+  - .travis/deploy.sh
