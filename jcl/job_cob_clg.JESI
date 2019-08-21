@@ -10,13 +10,15 @@
 //** /*    ${REGION}    2048K               job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${ROOM}      4242                room number for banner (4 char)
 //** /*    ${DDSRC}     n/a                 source file
 //** /*    ${DDDAT}     n/a                 data file
 //** /*    ${PARML}     'MAP,LIST,LET'      linker step PARM
 //** /*
 //${JOB} JOB ${JOBPOS:-'S322-0C4','WFJM'},${JOBEXT:-}
 //      CLASS=${CLASS:-A},MSGCLASS=${MSGCLASS:-A},MSGLEVEL=${MSGLEVEL:-(1,1)},
-// REGION=${REGION:-2048K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+//      REGION=${REGION:-2048K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+/*JOBPARM  ROOM=${ROOM:-4242}
 //CLG EXEC COBUCLG,
 //      PARM.LKED=${PARML:-'MAP,LIST,LET'}
 //COB.SYSIN DD *

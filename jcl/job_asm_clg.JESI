@@ -10,6 +10,7 @@
 //** /*    ${REGION}    128K                job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${ROOM}      4242                room number for banner (4 char)
 //** /*    ${DDSRC}     n/a                 source file
 //** /*    ${DDDAT}     n/a                 data file
 //** /*    ${MAC1}      'SYS2.MACLIB'       1st extra lib SYS2.MACLIB
@@ -33,6 +34,7 @@
 //${JOB} JOB ${JOBPOS:-'S322-0C4','WFJM'},${JOBEXT:-}
 //      CLASS=${CLASS:-A},MSGCLASS=${MSGCLASS:-A},MSGLEVEL=${MSGLEVEL:-(1,1)},
 //      REGION=${REGION:-128K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+/*JOBPARM  ROOM=${ROOM:-4242}
 //CLG EXEC ASMFCLG,
 //      MAC1=${MAC1:-'SYS2.MACLIB'},
 //      MAC2=${MAC2:-'SYS1.AMODGEN'},

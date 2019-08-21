@@ -10,6 +10,7 @@
 //** /*    ${REGION}    8192K               job memory
 //** /*    ${TIME}      (1,0)               job time limit
 //** /*    ${PRTY}      8                   job priority
+//** /*    ${ROOM}      4242                room number for banner (4 char)
 //** /*    ${DDSRC}     n/a                 source file
 //** /*    ${DDDAT}     n/a                 data file
 //** /*    ${PARMC}     '-O3'               compile step PARM
@@ -19,6 +20,7 @@
 //${JOB} JOB ${JOBPOS:-'S322-0C4','WFJM'},${JOBEXT:-}
 //      CLASS=${CLASS:-A},MSGCLASS=${MSGCLASS:-A},MSGLEVEL=${MSGLEVEL:-(1,1)},
 //      REGION=${REGION:-8192K},TIME=${TIME:-(1,0)},PRTY=${PRTY:-8}
+/*JOBPARM  ROOM=${ROOM:-4242}
 //CLG EXEC GCCCLG,COPTS=${PARMC:-'-O3'},
 //      PARM.LKED=${PARML:-'MAP,LIST'}
 //COMP.SYSIN DD DATA,DLM='/@'
