@@ -69,9 +69,11 @@ available jobs. The later also includes a list of
 [known issues](jobs/README.md#user-content-issues).
 
 ### Reception
-Moshe Bar covered the langtest suite in a tutorial entitled
+Moshe Bar covered the langtest and herc-tools suites in tutorials entitled
 >>  Test your IBM MVS 3.8 compilers and benchmark your Hercules  
->>  https://www.youtube.com/watch?v=hH0dlylJVCY
+>>  https://www.youtube.com/watch?v=hH0dlylJVCY  
+>>  Building an MVS printout distribution system  
+>>  https://www.youtube.com/watch?v=GF677Z3Zidw
 
 This is part of the [moshix suite](https://www.youtube.com/user/moshe5760/videos)
 of mainframe (mostly MVS) related tutorials.
@@ -91,11 +93,9 @@ The project files are organized in directories as
 ### License
 This project is released under the 
 [GPL V3 license](https://www.gnu.org/licenses/gpl-3.0.html),
-all files contain the disclaimer:
+all files contain a [SPDX](https://spdx.org/)-style disclaimer:
 
-    This program is free software; you may redistribute and/or modify
-    it under the terms of the GNU General Public License version 3.
-    See License.txt in distribition directory for further details.
+    SPDX-License-Identifier: GPL-3.0-or-later
 
 The full text of the GPL license is in this directory as
 [License.txt](License.txt).

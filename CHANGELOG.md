@@ -12,6 +12,9 @@
 The HEAD version shows the current development. No guarantees that software or
 the documentation is consistent.
 
+### Summary
+- use SPDX style disclaimers (see [w11 blog entry](https://wfjm.github.io/blogs/w11/2019-07-21-spdx.html), same basic arguments here)
+
 <!-- --------------------------------------------------------------------- -->
 ---
 ## <a id="V0.70">2019-01-05: [V0.70](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.70) - rev 1103(wfjm)</a>

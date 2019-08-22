@@ -1,10 +1,6 @@
-(* $Id: sine_pas.pas 964 2017-11-19 08:47:46Z mueller $ *)
-(*
-(* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
-(*
-(* This program is free software; you may redistribute and/or modify *)
-(* it under the terms of the GNU General Public License version 3.   *)
-(* See Licence.txt in distribition directory for further details.    *)
+(* $Id: sine_pas.pas 1171 2019-06-28 19:02:57Z mueller $ *)
+(* SPDX-License-Identifier: GPL-3.0-or-later                         *)
+(* Copyright 2017-2019 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*                                                                   *)
 (*  Revision History:                                                *)
 (* Date         Rev Version  Comment                                 *)

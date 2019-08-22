@@ -1,5 +1,8 @@
 *        1         2         3         4         5         6         71
 *23456789*12345*789012345678901234*678901234567890123456789012345678901
+* SPDX-License-Identifier: GPL-3.0-or-later
+* Copyright 2017-2019 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+*        
          PRINT NOGEN              don't show macro expansions
 HEWO     START 0                  start main code csect at base 0
          SAVE  (14,12)            Save input registers

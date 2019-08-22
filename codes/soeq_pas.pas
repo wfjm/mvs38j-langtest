@@ -1,10 +1,6 @@
-(* $Id: soeq_pas.pas 977 2017-12-27 12:46:21Z mueller $ *)
-(*
-(* Copyright 2017- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
-(*
-(* This program is free software; you may redistribute and/or modify *)
-(* it under the terms of the GNU General Public License version 3.   *)
-(* See Licence.txt in distribition directory for further details.    *)
+(* $Id: soeq_pas.pas 1195 2019-07-20 08:05:15Z mueller $ *)
+(* SPDX-License-Identifier: GPL-3.0-or-later                         *)
+(* Copyright 2017-2019 by Walter F.J. Mueller <W.F.J.Mueller@gsi.de> *)
 (*                                                                   *)
 (* Remarks:                                                          *)
 (* - The MVS Compiler uses 8 bytes to represent a set, sets are      *)
