@@ -1,0 +1,50 @@
+# $Id: ci.yml 1240 2022-05-22 13:57:50Z mueller $
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright 2022- by Walter F.J. Mueller <W.F.J.Mueller@gsi.de>
+
+name: ci
+on: [push,workflow_dispatch]
+jobs:
+  ci:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: install
+      run: |
+        pushd .github
+        mkdir work
+        cd work
+        wget -nv --no-check https://wotho.ethz.ch/tk4-/tk4-_v1.00_current.zip
+        unzip -q tk4-_v1.00_current.zip
+        rm tk4-_v1.00_current.zip
+        popd
+    - name: test
+      run: |
+        pushd .github/work
+        ./mvs &
+        pidherc=$!
+        (sleep 1200; kill -9 $pidherc) &
+        pidtout=$!
+        sleep 180
+        popd
+        export PATH=$PATH:$PWD/bin:$PWD/herc-tools/bin
+        pushd jobs
+        hercjis -c C {hewo,sine}_*.JES
+        hercjis -c C mcpi_{asm,for*,*cc,pas,pli,sim}_t.JES
+        hercjis -c C {soep,soeq}_*_t.JES
+        popd
+        (cd .github/bin &&  hercjis -c C shutdown.jcl)
+        wait $pidherc
+        kill $pidtout || true
+        pushd .github/work/prt
+        hercjos -db -dt -i prt00e.txt
+        hercjsu *J????*.prt || (echo "FAILED steps:" && hercjsu -fail *J????*.prt)
+        popd
+    - name: deploy
+      run: |
+        export PATH=$PATH:$PWD/bin:$PWD/herc-tools/bin
+        export JOBID=1
+        .github/bin/deploy.sh

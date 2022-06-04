@@ -2,8 +2,8 @@
 
 ### Table of contents
 - Current [HEAD](#user-content-head)
-- Release [V0.70](#user-content-V0.70)
-- Release [V0.50](#user-content-V0.50)
+- Release [V0.70](#user-content-v0.70)
+- Release [V0.50](#user-content-v0.50)
 
 <!-- --------------------------------------------------------------------- -->
 ---
@@ -16,10 +16,12 @@ the documentation is consistent.
 - use SPDX style disclaimers (see [w11 blog entry](https://wfjm.github.io/blogs/w11/2019-07-21-spdx.html), same basic arguments here)
 - .gitmodules: use https: instead of not longer supported git:
 - remove now defunct Travis support
+- add GitHub Action based CI workflow
+- CHANGELOG: fix user-content label case issue (must be lower case)
 
 <!-- --------------------------------------------------------------------- -->
 ---
-## <a id="V0.70">2019-01-05: [V0.70](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.70) - rev 1103(wfjm)</a>
+## <a id="v0.70">2019-01-05: [V0.70](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.70) - rev 1103(wfjm)</a>
 
 ### Summary
 
@@ -64,7 +66,7 @@ the documentation is consistent.
 
 <!-- --------------------------------------------------------------------- -->
 ---
-## <a id="V0.50">2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm)</a>
+## <a id="v0.50">2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm)</a>
 
 ### Summary
 - first release, announced in [turnkey-mvs message 10795](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/messages/10795)
