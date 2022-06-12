@@ -2,6 +2,7 @@
 
 ### Table of contents
 - Current [HEAD](#user-content-head)
+- Release [V1.00](#user-content-v1.00)
 - Release [V0.70](#user-content-v0.70)
 - Release [V0.50](#user-content-v0.50)
 
@@ -13,11 +14,17 @@ The HEAD version shows the current development. No guarantees that software or
 the documentation is consistent.
 
 ### Summary
+
+<!-- --------------------------------------------------------------------- -->
+---
+## <a id="v1.00">2022-06-12: [V1.00](https://github.com/wfjm/mvs38j-langtest/releases/tag/V1.00) - rev 1247(wfjm)</a>
+### Summary
 - use SPDX style disclaimers (see [w11 blog entry](https://wfjm.github.io/blogs/w11/2019-07-21-spdx.html), same basic arguments here)
 - .gitmodules: use https: instead of not longer supported git:
 - remove now defunct Travis support
 - add GitHub Action based CI workflow
 - CHANGELOG: fix user-content label case issue (must be lower case)
+- project mature, a good point to release V1.00
 
 <!-- --------------------------------------------------------------------- -->
 ---
@@ -69,4 +76,6 @@ the documentation is consistent.
 ## <a id="v0.50">2017-12-30: [V0.50](https://github.com/wfjm/mvs38j-langtest/releases/tag/V0.50) - rev 980(wfjm)</a>
 
 ### Summary
-- first release, announced in [turnkey-mvs message 10795](https://groups.yahoo.com/neo/groups/turnkey-mvs/conversations/messages/10795)
+- first release
+- announced in Yahoo! Group turnkey-MVS,
+  see [mvs blog entry](https://wfjm.github.io/blogs/mvs/2017-12-30-GitHub-project-mvs38j-langtest.html).

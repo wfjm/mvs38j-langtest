@@ -99,3 +99,9 @@ all files contain a [SPDX](https://spdx.org/)-style disclaimer:
 
 The full text of the GPL license is in this directory as
 [License.txt](License.txt).
+
+### Installation
+This project uses submodules, therefore use
+```
+  git clone --recurse-submodules git@github.com:wfjm/mvs38j-langtest.git
+```
